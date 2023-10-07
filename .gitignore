@@ -1,10 +1,13 @@
 *.nes
 *.ips
 main.cdl
+SMBBase.cdl
 dumbshit
 famitone
 yychr
 crash
 tools
 dumbshit.zip
-lething.zip
+le thing.zip
+*.smc
+*.deb

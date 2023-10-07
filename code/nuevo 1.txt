@@ -1,0 +1,9 @@
+;We will input the music data next to these labels
+UG_sq2: .hex 1a302e0404040404041a2e2e34040404041a302e040404041a302e0404040404041a2e2e34040404041604161a041604161a04042204041a041604161a0404040404040404040400
+UG_sq1: .hex 1a1a04041a0404043004041a34040404041a1a04041a0404043004041a341a0404041604161a041604161a04042204041a041604161a04040404040404041e04
+UG_tri:
+UG_noi:
+
+UG_sq1_pointer = UG_sq1-UG_sq2 ;These calculate the pointers that will be stored in the header.
+UG_tri_pointer = UG_tri-UG_sq2 ;SQ2 doesn't need one, because it's the main address
+UG_noi_pointer = UG_noi-UG_sq2 ;for e.g. SQ2 starting address + one of these pointers = where the current channel data starts

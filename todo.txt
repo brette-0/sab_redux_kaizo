@@ -1,0 +1,11 @@
+Fast:
+-Make each world have a different palette
+Slow:
+-Rewrite enemygfxhandler using jump engine
+-Expand the enemy gfx table for more enemies
+-CHR Bankswitch depending on loaded enemies
+-Add enemies:
+	-Monty mole
+	-Thwomp (maybe)
+Hell:
+-World 1-4 to 8-4
