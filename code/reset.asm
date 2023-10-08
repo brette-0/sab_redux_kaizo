@@ -1,11 +1,10 @@
-;Start:
              sei                          ;pretty standard 6502 type init here
              cld
-            if DPCM
-              ldx #$00
-              stx $4010
-            endif
-Start:		 
+             if DPCM
+             ldx #$00
+             stx $4010
+             endif
+Start:         
              lda #%00001000               ;init PPU control register 1 
              sta PPU_CTRL_REG1
              ldx #$ff                     ;reset stack pointer
@@ -38,14 +37,14 @@ ColdBoot:    jsr InitializeMemory         ;clear memory using pointer in Y
              jsr MoveSpritesOffscreen
              jsr InitializeNameTables     ;initialize both name tables
              inc DisableScreenFlag        ;set flag to disable screen output
-			 lda #$40                     ;disable frame counter to make irq work
+             lda #$40                     ;disable frame counter to make irq work
              sta $4017 
              cli      
              lda Mirror_PPU_CTRL_REG1
              ora #%10000000               ;enable NMIs
              jsr WritePPUReg1
-			 ;jmp EndlessLoop
-			 ;jsr _FamitoneInit
+             ;jmp EndlessLoop
+             ;jsr _FamitoneInit
 EndlessLoop: 
-			;lda $00						 ;idk if this does something but literally is in smb2j
-			jmp EndlessLoop              ;endless loop, need I say more? -yes
+             ;lda $00                         ;idk if this does something but literally is in smb2j
+             jmp EndlessLoop              ;endless loop, need I say more? -yes
