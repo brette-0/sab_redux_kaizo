@@ -2,6 +2,9 @@
 *.ips
 main.cdl
 SMBBase.cdl
+SMBBase.mbl
+Readme.txt
+list.txt
 dumbshit
 famitone
 yychr
@@ -12,7 +15,3 @@ le thing.zip
 *.smc
 *.deb
 old stuff
-levelz_-_1-8.asm
-notleveldata3e1.asm
-thelagmaker.asm
-Readme.txt
