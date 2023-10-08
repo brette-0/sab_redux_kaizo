@@ -2,10 +2,9 @@
 *.ips
 main.cdl
 SMBBase.cdl
-SMBBase.mbl
-SMBBase.nes.ram.nl
-Readme.txt
+SMBBase.mlb
 list.txt
+SMBBase.nes.ram.n
 dumbshit
 famitone
 yychr
@@ -16,5 +15,4 @@ le thing.zip
 *.smc
 *.deb
 old stuff
-SMBBase.mlb
-list.txt
+
