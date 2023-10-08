@@ -11,7 +11,7 @@ BrickQBlockMetatiles1:
     if $ == -
         error Check "LEVEL_DATA" in code/settings.asm
     endif
-	
+    
 MetatileGraphics_Low:
   .db <Palette0_MTiles, <Palette1_MTiles, <Palette2_MTiles, <Palette3_MTiles
 
@@ -225,109 +225,109 @@ Palette3_MTiles:
 ;-------------------------------------------------------------------------------------
 ;VRAM BUFFER DATA FOR LOCATIONS IN PRG-ROM
 AreaParserTaskHandler:
-			  lda #%10000111
-			  sta Old8000
+    		  lda #%10000111
+    		  sta Old8000
 			  sta $8000
-			  lda LevelBank
-			  clc
-			  adc #FirstLevelBank
-			  
-			  sta $8001
-			  lda #$01
-			  sta DecodingLevel
-			  lda AreaParserTaskNum
-			  bne +
-			  lda ScrollLeftFlag
-			  bne SkipATRender
+    		  lda LevelBank
+    		  clc
+    		  adc #FirstLevelBank
+    		  
+    		  sta $8001
+    		  lda #$01
+    		  sta DecodingLevel
+    		  lda AreaParserTaskNum
+    		  bne +
+    		  lda ScrollLeftFlag
+    		  bne SkipATRender
 +:			  lda DisableScreenFlag2
-			  bne +
-			  lda DisableScreenFlag
-			  beq +
+    		  bne +
+    		  lda DisableScreenFlag
+    		  beq +
 -:			  jsr AreaParserCoreS
-		      jsr IncrementColumnPosS
-			  lda stopload
-			  beq -
-			  ldy #$00
-			  sty AreaParserTaskNum
-			  sty DecodingLevel
-			  sty $14
-			  iny
-			  sty DisableScreenFlag2
+    	      jsr IncrementColumnPosS
+    		  lda stopload
+    		  beq -
+    		  ldy #$00
+    		  sty AreaParserTaskNum
+    		  sty DecodingLevel
+    		  sty $14
+    		  iny
+    		  sty DisableScreenFlag2
 +:			  ldy AreaParserTaskNum     ;check number of tasks here
               bne DoAPTasks             ;if already set, go ahead
-			  ;ldy Player_X_Scroll
-			  ;bmi SkipATRender
-			  ldy #$08
+    		  ;ldy Player_X_Scroll
+    		  ;bmi SkipATRender
+    		  ldy #$08
               sty AreaParserTaskNum     ;otherwise, set eight by default
 DoAPTasks:    dey
               tya
               jsr AreaParserTasks
               dec AreaParserTaskNum     ;if all tasks not complete do not
               bne SkipATRender          ;render attribute table yet
-			  lda tempXD
-			  bne SkipATRender
+    		  lda tempXD
+    		  bne SkipATRender
 +:            jmp RenderAttributeTables
 SkipATRender: rts
 NoThing:
-	  ;dec AreaParserTaskNum
-	  ;lda AreaParserTaskNum
-	  ;rts
+      ;dec AreaParserTaskNum
+      ;lda AreaParserTaskNum
+      ;rts
 AreaParserTasks:
       jsr JumpEngine
 
       .dw IncrementColumnPos
-	  .dw RenderAreaGraphics
       .dw RenderAreaGraphics
-	  .dw AreaParserCore
-	  .dw IncrementColumnPos
-	  .dw RenderAreaGraphics
       .dw RenderAreaGraphics
-	  .dw AreaParserCore
-	  
-	  .dw IncrementColumnPosS
-	  .dw AreaParserCore
-	  
+      .dw AreaParserCore
+      .dw IncrementColumnPos
+      .dw RenderAreaGraphics
+      .dw RenderAreaGraphics
+      .dw AreaParserCore
+      
+      .dw IncrementColumnPosS
+      .dw AreaParserCore
+      
 RenderAreaGraphics:
-			lda ScrollLeftLock
-			sec
-			sbc #$01
-			cmp $fa
-			beq ExitDrawM1
+    		lda ScrollLeftLock
+    		sec
+    		sbc #$01
+    		cmp $fa
+    		beq ExitDrawM1
 NoSkipATRender:			
-			lda $ff         ;store LSB of where we're at
+    		lda $ff         ;store LSB of where we're at
             and #$01
             sta $05
-			lda olddirscroll
-			eor #$01
-			sta temp9
+    		lda olddirscroll
+    		eor #$01
+    		sta temp9
             ldy VRAM_Buffer2_Offset      ;store vram buffer offset
             sty $00
             lda CurrentNTAddr_Low        ;get current name table address we're supposed to render
-			sec
-			sbc temp9
-			cmp #$7f
-			bne +
-			pha
-			lda olddirscroll
-			bne ++
-			lda CurrentNTAddr_High
-			eor #%00000100
-			sta VRAM_Buffer2,y
-			pla
-			clc
-			adc #$20
-			sta VRAM_Buffer2+1,y
-			jmp +++
+    		sec
+    		sbc temp9
+    		cmp #$7f
+    		bne +
+    		pha
+    		lda olddirscroll
+    		bne ++
+    		lda CurrentNTAddr_High
+    		eor #%00000100
+    		sta VRAM_Buffer2,y
+    		pla
+    		clc
+    		adc #$20
+    		sta VRAM_Buffer2+1,y
+    		jmp +++
 ExitDrawM1: lda olddirscroll
-			beq NoSkipATRender
-			lda $63cb
-			cmp #$07
-			bcc @bru
-			lda #$00
-			sta tempXD
-			jmp NoSkipATRender
+    		beq NoSkipATRender
+    		lda $63cb
+    		cmp #$07
+    		bcc @bru
+    		lda #$00
+    		sta tempXD
+    		jmp NoSkipATRender
 @bru:		inc tempXD
-			jmp SkipATRender
+    		jmp SkipATRender
 ++:			pla
 +:          sta VRAM_Buffer2+1,y
             lda CurrentNTAddr_High
@@ -338,62 +338,62 @@ ExitDrawM1: lda olddirscroll
             sta $04
             tax
 DrawMTLoop: stx $01                      ;store init value of 0 or incremented offset for buffer
-			sty temp9
-			lda $ff
-			and #$0f
-			sta tempC
-			sta $63cb
-			txa
-			asl
-			asl
-			asl
-			asl
-			clc
-			adc tempC
-			sta $02
-			tay
+    		sty temp9
+    		lda $ff
+    		and #$0f
+    		sta tempC
+    		sta $63cb
+    		txa
+    		asl
+    		asl
+    		asl
+    		asl
+    		clc
+    		adc tempC
+    		sta $02
+    		tay
             lda ($f9),y                  ;get first metatile number, and mask out all but 2 MSB
-			;cmp #$10
-			;beq ++
-			;cmp #$12
-			;bne +
+    		;cmp #$10
+    		;beq ++
+    		;cmp #$12
+    		;bne +
 ++:			;pha
-			;lda AreaParserTaskNum        ;get current task number for level processing and
-			;eor olddirscroll
+    		;lda AreaParserTaskNum        ;get current task number for level processing and
+    		;eor olddirscroll
             ;and #%00000001  
-			;jmp ++
-			;jsr FindEmptyEnemySlot   ;check for an empty moving data buffer space
-			;  bcs ++             ;if not found, too many enemies, thus skip
-			;  lda $fa
-			;  sub #$66
-			 ;; tay
-			  ;lda $ff
-			  ;and #$0f
-			  ;asl
-			  ;asl
-			  ;asl
-			  ;asl
-			  ;clc
-			  ;adc #$08                 ;add eight to put the piranha plant in the center
-			  ;sta Enemy_X_Position,x   ;store as enemy's horizontal coordinate
-			  ;tya
-			  ;adc #$00
-			  ;sta Enemy_PageLoc,x      ;store as enemy's page coordinate
-			  ;lda #$01
-			  ;sta Enemy_Y_HighPos,x
-			  ;sta Enemy_Flag,x         ;activate enemy flag
-			  ;lda $02  					;get piranha plant's vertical coordinate and store here
-			  ;and #$f0
-			  ;clc
-			  ;adc #$20
-			  ;sta Enemy_Y_Position,x
-			  ;lda #PiranhaPlant
-			  ;sta Enemy_ID,x
-			  ;jsr InitPiranhaPlant1
-			  ;ldy $02
+    		;jmp ++
+    		;jsr FindEmptyEnemySlot   ;check for an empty moving data buffer space
+    		;  bcs ++             ;if not found, too many enemies, thus skip
+    		;  lda $fa
+    		;  sub #$66
+    		 ;; tay
+    		  ;lda $ff
+    		  ;and #$0f
+    		  ;asl
+    		  ;asl
+    		  ;asl
+    		  ;asl
+    		  ;clc
+    		  ;adc #$08                 ;add eight to put the piranha plant in the center
+    		  ;sta Enemy_X_Position,x   ;store as enemy's horizontal coordinate
+    		  ;tya
+    		  ;adc #$00
+    		  ;sta Enemy_PageLoc,x      ;store as enemy's page coordinate
+    		  ;lda #$01
+    		  ;sta Enemy_Y_HighPos,x
+    		  ;sta Enemy_Flag,x         ;activate enemy flag
+    		  ;lda $02  					;get piranha plant's vertical coordinate and store here
+    		  ;and #$f0
+    		  ;clc
+    		  ;adc #$20
+    		  ;sta Enemy_Y_Position,x
+    		  ;lda #PiranhaPlant
+    		  ;sta Enemy_ID,x
+    		  ;jsr InitPiranhaPlant1
+    		  ;ldy $02
 ++:			;pla
 +:			pha
-			pha
+    		pha
             and #%11000000
             ;sta $03                      ;store attribute table bits here
             asl                          ;note that metatile format is:
@@ -404,24 +404,24 @@ DrawMTLoop: stx $01                      ;store init value of 0 or incremented o
             sta $06
             lda MetatileGraphics_High,y
             sta $07
-			sty temp9
-			pla
-			tay
-			lda PaletteMTtable,y
-			lsr
-			ror
-			ror
-		    sta $03
-			
-			txa
-			tay
+    		sty temp9
+    		pla
+    		tay
+    		lda PaletteMTtable,y
+    		lsr
+    		ror
+    		ror
+    	    sta $03
+    		
+    		txa
+    		tay
             pla                		     ;get metatile number again
             asl                          ;multiply by 4 and use as tile offset
             asl
             sta $02
-			ldy temp9
+    		ldy temp9
             lda AreaParserTaskNum        ;get current task number for level processing and
-			eor olddirscroll
+    		eor olddirscroll
             and #%00000001               ;mask out all but LSB, then invert LSB, multiply by 2
             ;eor #%00000001               ;to get the correct column position in the metatile,
             asl                          ;then add to the tile offset so we can draw either side
@@ -471,14 +471,14 @@ SetAttrib:  lda AttributeBuffer,y        ;get previously saved bits from before
             lda #$00
             sta VRAM_Buffer2,y           ;put null terminator at end of data for name table
             sty VRAM_Buffer2_Offset      ;store new buffer offset
-			lda olddirscroll
-			bne +
-			dec CurrentNTAddr_Low
-			lda CurrentNTAddr_Low
-			bmi ExitDrawM
+    		lda olddirscroll
+    		bne +
+    		dec CurrentNTAddr_Low
+    		lda CurrentNTAddr_Low
+    		bmi ExitDrawM
 ++:			lda #$9f
-			sta CurrentNTAddr_Low
-			jmp ++
+    		sta CurrentNTAddr_Low
+    		jmp ++
 +:          inc CurrentNTAddr_Low        ;increment name table address low
             lda CurrentNTAddr_Low        ;check current low byte
             and #%00011111               ;if no wraparound, just skip this part
@@ -497,10 +497,10 @@ ExitDrawM:  jmp SetVRAMCtrl              ;jump to set buffer to $0341 and leave
 RenderAttributeTables:
              lda CurrentNTAddr_Low    ;get low byte of next name table address
              and #%00011111           ;to be written to, mask out all but 5 LSB,
-			 ldy olddirscroll
-			 bne +
-			 clc
-			 adc #$04
+    		 ldy olddirscroll
+    		 bne +
+    		 clc
+    		 adc #$04
 +:           sec                      ;subtract four 
              sbc #$04
              and #%00011111           ;mask out bits again and store
@@ -546,115 +546,115 @@ SetVRAMCtrl: lda #$06
 
 ;-------------------------------------------------------------------------------------
 
-		      lda $fc
-		      bne +
-			  sta $fb
-			  lda #$66
-			  sta $fc
+    	      lda $fc
+    	      bne +
+    		  sta $fb
+    		  lda #$66
+    		  sta $fc
 +:			
-			  lda $fc
-			  cmp #$76
-			  beq ++
-			  inc $fb
-			  lda $fb
-			  cmp #$10
-			  bcc +
-			  lda #$00
-			  sta $fb
-			  inc $fc
-			  
+    		  lda $fc
+    		  cmp #$76
+    		  beq ++
+    		  inc $fb
+    		  lda $fb
+    		  cmp #$10
+    		  bcc +
+    		  lda #$00
+    		  sta $fb
+    		  inc $fc
+    		  
 +: 
 ++:	
 IncrementColumnPosS:	   
-		   inc CurrentColumnPos     ;increment column where we're at
+    	   inc CurrentColumnPos     ;increment column where we're at
            lda CurrentColumnPos
            and #%00001111           ;mask out higher nybble
-		   bne +
+    	   bne +
            sta CurrentColumnPos     ;if no bits left set, wrap back to zero (0-f)
            inc CurrentPageLoc       ;and increment page number where we're at
 +:		   inc BlockBufferColumnPos ;increment column offset where we're at
 -:         rts
 IncrementColumnPos:
-		   lda scrolldir
-		   beq DecrementColumnPos
-		   lda #$00
-		   sta temp9
-		   lda olddirscroll
-		   bne +
-		   inc $fa
-		   inc $fa
-		   lda $ff
-		   and #$0f
-		   cmp #$0f
-		   bne oke1
-		   inc $fa
+    	   lda scrolldir
+    	   beq DecrementColumnPos
+    	   lda #$00
+    	   sta temp9
+    	   lda olddirscroll
+    	   bne +
+    	   inc $fa
+    	   inc $fa
+    	   lda $ff
+    	   and #$0f
+    	   cmp #$0f
+    	   bne oke1
+    	   inc $fa
 oke1:	   lda tempXD
-		   bne ++
-		   dec $ff
-		   lda #$01
-		   sta temp9
-		   jmp +
+    	   bne ++
+    	   dec $ff
+    	   lda #$01
+    	   sta temp9
+    	   jmp +
 ++:		   inc $ff
 +:		   lda #$01
-		   sta olddirscroll
-		   lda tempXD
-		   bne -
+    	   sta olddirscroll
+    	   lda tempXD
+    	   bne -
            ;inc CurrentColumnPos
-		   ;lda temp9
-		   ;bne +
-		   lda iwantdie
-		   bne +
-		   lda $ff
-		   and #$0f
-		   cmp #$0f
-		   bne +
-		   inc $fa
+    	   ;lda temp9
+    	   ;bne +
+    	   lda iwantdie
+    	   bne +
+    	   lda $ff
+    	   and #$0f
+    	   cmp #$0f
+    	   bne +
+    	   inc $fa
 +:		   inc $ff
-		   lda iwantdie
-		   beq +
-		   dec iwantdie
+    	   lda iwantdie
+    	   beq +
+    	   dec iwantdie
 +:		   lda #$00
-		   sta temp9
+    	   sta temp9
            rts
-		   
+    	   
 DecrementColumnPos:
-		   ;inc ColumnSets
-			;dec CurrentNTAddr_Low
-		   lda olddirscroll
-		   beq +
-		   dec $fa
-		   dec $fa
-		   lda $ff
-		   and #$0f
-		   ;cmp #$00
-		   bne oke
-		   dec $fa
-		   inc iwantdie
+    	   ;inc ColumnSets
+    		;dec CurrentNTAddr_Low
+    	   lda olddirscroll
+    	   beq +
+    	   dec $fa
+    	   dec $fa
+    	   lda $ff
+    	   and #$0f
+    	   ;cmp #$00
+    	   bne oke
+    	   dec $fa
+    	   inc iwantdie
 oke:	   lda tempXD
-		   bne eadoek
-		   inc $ff
-		   
-		   jmp +
+    	   bne eadoek
+    	   inc $ff
+    	   
+    	   jmp +
 eadoek:    dec $ff
 +:		   sta temp9
-		   lda #$00
-		   sta olddirscroll
-		   lda tempXD
-		   bne ++
-		   lda $ff
-		   and #$0f
-		   ;cmp #$00
-		   bne +
+    	   lda #$00
+    	   sta olddirscroll
+    	   lda tempXD
+    	   bne ++
+    	   lda $ff
+    	   and #$0f
+    	   ;cmp #$00
+    	   bne +
 aeujh:	   lda iwantdie
-		   bne +
-		   dec $fa
+    	   bne +
+    	   dec $fa
 +:		   dec $ff     ;increment column where we're at
-		   lda iwantdie
-		   beq +
-		   dec iwantdie
+    	   lda iwantdie
+    	   beq +
+    	   dec iwantdie
 +:		   lda #$00
-		   sta temp9
-		   inc BlockBufferColumnPos
+    	   sta temp9
+    	   inc BlockBufferColumnPos
 ++:        rts
 
 ;-------------------------------------------------------------------------------------
@@ -677,23 +677,23 @@ TerrainMetatiles:
 
 TerrainRenderBits:
 -:    lda #$01
-	  sta stopload
-	  lsr
-	  sta tempA
-	  rts
+      sta stopload
+      lsr
+      sta tempA
+      rts
 AreaParserCore:
-	  lda AreaParserTaskNum
-	  cmp #$08
-	  bne +
-	  inc tempXD
-	  jsr IncrementColumnPos
-	  dec tempXD
+      lda AreaParserTaskNum
+      cmp #$08
+      bne +
+      inc tempXD
+      jsr IncrementColumnPos
+      dec tempXD
 +:	  rts
 AreaParserCoreS:
-	  lda $fc
-	  cmp #$76
-	  beq -
-	  lda BackloadingFlag       ;check to see if we are starting right of start
+      lda $fc
+      cmp #$76
+      beq -
+      lda BackloadingFlag       ;check to see if we are starting right of start
       beq RenderSceneryTerrain  ;if not, go ahead and render background, foreground and terrain
       jsr ProcessAreaData       ;otherwise skip ahead and load level data
 
@@ -841,195 +841,195 @@ BlockBuffLowBounds:
 ;$00 - used to store area object identifier
 ;$07 - used as adder to find proper area object code
 RdyDecode1:
-		rts
+    	rts
 LevelBanks:
-			lda $fc
-			sec
-			sbc #$66
-			sta tempA
-			ldy AreaDataOffset
-			lda (AreaData),y
-			cmp #$ff
-			beq RdyDecode1
-			
-			
-			
-			
-			
-			rts
+    		lda $fc
+    		sec
+    		sbc #$66
+    		sta tempA
+    		ldy AreaDataOffset
+    		lda (AreaData),y
+    		cmp #$ff
+    		beq RdyDecode1
+    		
+    		
+    		
+    		
+    		
+    		rts
 
 ProcessAreaData:
-		    jsr DecodeAreaData
-		   
-		    inc AreaDataOffset
-		    inc AreaDataOffset
-		   
-			lda AreaDataOffset
-			bpl ++
-			sec
-			sbc #$40
-			sta AreaDataOffset
-			
-			lda #$3f
-			adc AreaData
-			sta AreaData
-			bcc +
-			inc AreaDataHigh
+    	    jsr DecodeAreaData
+    	   
+    	    inc AreaDataOffset
+    	    inc AreaDataOffset
+    	   
+    		lda AreaDataOffset
+    		bpl ++
+    		sec
+    		sbc #$40
+    		sta AreaDataOffset
+    		
+    		lda #$3f
+    		adc AreaData
+    		sta AreaData
+    		bcc +
+    		inc AreaDataHigh
 +:			
-			ldy #$c0
-			ldx #$0d
+    		ldy #$c0
+    		ldx #$0d
 -:	
-			tya
-			clc
-			adc AreaObjOffsetBuffer,x
-			sta AreaObjOffsetBuffer,x
-			dex
-			bpl -
-		  
+    		tya
+    		clc
+    		adc AreaObjOffsetBuffer,x
+    		sta AreaObjOffsetBuffer,x
+    		dex
+    		bpl -
+    	  
 ++:		  
 EndAParse:  rts
 ProcessAreaData2:
-			;jmp ProcessAreaData 
+    		;jmp ProcessAreaData 
 BehindAreaIncrement:				;do things to get correct offset
-		  ldy AreaDataOffset
-		  lda (AreaData),y
-		  and #%00001111
-		  cmp #$0f
-		  bne +++
-		  iny
-		  lda (AreaData),y
-		  and #%01110000
-		  lsr
-		  lsr
-		  lsr
-		  lsr
-		  cmp #$07
-		  beq ++
-		  cmp #$06
-		  beq +
-		  cmp #$05
-		  beq +
+    	  ldy AreaDataOffset
+    	  lda (AreaData),y
+    	  and #%00001111
+    	  cmp #$0f
+    	  bne +++
+    	  iny
+    	  lda (AreaData),y
+    	  and #%01110000
+    	  lsr
+    	  lsr
+    	  lsr
+    	  lsr
+    	  cmp #$07
+    	  beq ++
+    	  cmp #$06
+    	  beq +
+    	  cmp #$05
+    	  beq +
 +++:	  rts
 ++:		  inc AreaDataOffset
-		  inc AreaDataOffset
-		  lda #$00              ;reset page select
-		  sta AreaObjectPageSel
-		  rts
+    	  inc AreaDataOffset
+    	  lda #$00              ;reset page select
+    	  sta AreaObjectPageSel
+    	  rts
 +:        inc AreaDataOffset
-		  lda #$00              ;reset page select
-		  sta AreaObjectPageSel
-		  rts
+    	  lda #$00              ;reset page select
+    	  sta AreaObjectPageSel
+    	  rts
 D4Bytes:
-	  ;inc AreaDataOffset
+      ;inc AreaDataOffset
 D3Bytes:
-	  ;inc AreaDataOffset
+      ;inc AreaDataOffset
 IncAreaObjOffset:
-	  inc AreaDataOffset
-	  inc AreaDataOffset
-	  lda #$00              ;reset page select
+      inc AreaDataOffset
+      inc AreaDataOffset
+      lda #$00              ;reset page select
       sta AreaObjectPageSel
 XD:	  rts
 
 --        inc stopload
-		  rts
+    	  rts
 
 StarTable:
-		.db $d2, $d3, $d4, $d5
+    	.db $d2, $d3, $d4, $d5
 DecodeAreaData:		  
-		  
-		  
-		  ldy AreaDataOffset
-		  lda (AreaData),y
-		  cmp #$fd
-		  bne +
-		  ldy #$00
+    	  
+    	  
+    	  ldy AreaDataOffset
+    	  lda (AreaData),y
+    	  cmp #$fd
+    	  bne +
+    	  ldy #$00
 -		  lda #$00
-		  sta ($fb),y
-		  dex
-		  lda $fb
-		  clc
-		  adc #$01
-		  sta $fb
-		  cmp #$d0
-		  bcc ++
-		  lda $fc
-		  clc
-		  adc #$01
-		  sta $fc
-		  cmp #$76
-		  bcs --
-		  lda #$00
-		  sta $fb
+    	  sta ($fb),y
+    	  dex
+    	  lda $fb
+    	  clc
+    	  adc #$01
+    	  sta $fb
+    	  cmp #$d0
+    	  bcc ++
+    	  lda $fc
+    	  clc
+    	  adc #$01
+    	  sta $fc
+    	  cmp #$76
+    	  bcs --
+    	  lda #$00
+    	  sta $fb
 ++:		  jmp -
-		  
-		  
-		  
+    	  
+    	  
+    	  
 +:		  tax
-		  iny
-		  lda (AreaData),y
-		  sta $03
-		  
-		  ldy #$00
+    	  iny
+    	  lda (AreaData),y
+    	  sta $03
+    	  
+    	  ldy #$00
 -		  lda $03
-		  bne +
-		  lda BackgroundColorCtrl
-		  beq +
-		  sty $01
-		  stx $02
-		  jsr RNG_call
-		  and #%00111111
-		  cmp #$04
-		  bcs ++
-		  tay 
-		  lda StarTable,y
-		  .db $2c
+    	  bne +
+    	  lda BackgroundColorCtrl
+    	  beq +
+    	  sty $01
+    	  stx $02
+    	  jsr RNG_call
+    	  and #%00111111
+    	  cmp #$04
+    	  bcs ++
+    	  tay 
+    	  lda StarTable,y
+    	  .db $2c
 ++:		  lda #$00
-		  ldx $02
-		  ldy $01
+    	  ldx $02
+    	  ldy $01
 +:		  
-		  sta ($fb),y
-		  dex
-		  lda $fb
-		  clc
-		  adc #$01
-		  sta $fb
-		  cmp #$d0
-		  bcc +
-		  lda $fc
-		  clc
-		  adc #$01
-		  sta $fc
-		  cmp #$76
-		  bcs --
-		  lda #$00
-		  sta $fb
+    	  sta ($fb),y
+    	  dex
+    	  lda $fb
+    	  clc
+    	  adc #$01
+    	  sta $fb
+    	  cmp #$d0
+    	  bcc +
+    	  lda $fc
+    	  clc
+    	  adc #$01
+    	  sta $fc
+    	  cmp #$76
+    	  bcs --
+    	  lda #$00
+    	  sta $fb
 +:		  cpx #$ff
-		  bne -
-		  
-		  
-		  
-		  
-		  
-		 
-		  
-		  rts
-		  
-		  jsr JumpEngine			 ;run the object!
-		
-	  
+    	  bne -
+    	  
+    	  
+    	  
+    	  
+    	  
+    	 
+    	  
+    	  rts
+    	  
+    	  jsr JumpEngine			 ;run the object!
+    	
+      
 ;s: scenery
 ;b: background
 ;j: change only background flag
-			
+    		
 
 ;-------------------------------------------------------------------------------------
 ;(these apply to all area object subroutines in this section unless otherwise stated)
 ;$00 - used to store offset used to find object code
 ;$07 - starts with adder from area parser, used to store row offset
 StopFrenzy:
-		 lda #$00
-		 sta LakituRespawning
-		 jmp AreaFrenzy
+    	 lda #$00
+    	 sta LakituRespawning
+    	 jmp AreaFrenzy
 AlterAreaAttributes:
          ldy AreaObjOffsetBuffer,x ;load offset for level object data saved in buffer
          iny                       ;load second byte
@@ -1062,37 +1062,37 @@ SetFore: sta ForegroundScenery     ;otherwise set new foreground scenery bits
 
 ScrollLockObject_Warp:
          lda ScrollLockPageLoc
-	     cmp #$ff
-	     bne +
-	     lda CurrentPageLoc
-	     clc
-		 adc #$66
-	     cmp $fa
-	     bcc +
-	     clc
-	     sta ScrollLockPageLoc
-	     lda CurrentColumnPos
-	     clc
-		 adc #$02
-		 sta ScrollLockColumnPos
-		 lda #$01
-		 sta WarpZoneCheck
-		 rts
+         cmp #$ff
+         bne +
+         lda CurrentPageLoc
+         clc
+    	 adc #$66
+         cmp $fa
+         bcc +
+         clc
+         sta ScrollLockPageLoc
+         lda CurrentColumnPos
+         clc
+    	 adc #$02
+    	 sta ScrollLockColumnPos
+    	 lda #$01
+    	 sta WarpZoneCheck
+    	 rts
 
 ScrollLockObject:
       lda ScrollLockPageLoc
-	  cmp #$75
-	  bne +
-	  lda CurrentPageLoc
-	  clc
-	  adc #$66
-	  cmp $fa
-	  bcc +
-	  sta ScrollLockPageLoc
-	  lda CurrentColumnPos
-	  clc
-	  adc #$01
-	  sta ScrollLockColumnPos
+      cmp #$75
+      bne +
+      lda CurrentPageLoc
+      clc
+      adc #$66
+      cmp $fa
+      bcc +
+      sta ScrollLockPageLoc
+      lda CurrentColumnPos
+      clc
+      adc #$01
+      sta ScrollLockColumnPos
 +:	  rts
 
 ;--------------------------------
@@ -1210,10 +1210,10 @@ CastleMetatiles:
 CastleObject:
             jsr GetLrgObjAttrib      ;save lower nybble as starting row
             sty $07                  ;if starting row is above $0a, game will crash!!! ok bummer
-			cpy #0b
-			bcs +
-			ldy #$0a
-			sty $07
+    		cpy #0b
+    		bcs +
+    		ldy #$0a
+    		sty $07
 +:          ldy #$04
             jsr ChkLrgObjFixedLength ;load length of castle if not already loaded
             txa                  
@@ -1321,11 +1321,11 @@ RenderSidewaysPipe:
 DrawSidePart: ldy $06                   ;render side pipe part at the bottom
               lda SidePipeTopPart,y
               sta MetatileBuffer,x      ;note that the pipe parts are stored
-			  lda AreaType
-			  bne +
-			  lda SidePipeBottomPartW,y
-			  sta MetatileBuffer+1,x
-			  rts
+    		  lda AreaType
+    		  bne +
+    		  lda SidePipeBottomPartW,y
+    		  sta MetatileBuffer+1,x
+    		  rts
 +:            lda SidePipeBottomPart,y  ;backwards horizontally
               sta MetatileBuffer+1,x
               rts
@@ -1335,22 +1335,22 @@ VerticalPipeData:
       .db $15, $14
       .db $13, $12 ;used by decoration pipes
       .db $15, $14
-	  .db $2d, $2c ;used by upside-down pipes
-	  .db $2f, $2e ;used by upside-down pipes (enterable)
+      .db $2d, $2c ;used by upside-down pipes
+      .db $2f, $2e ;used by upside-down pipes (enterable)
 
 VerticalPipeDataUW:
       .db $11, $10 ;used by pipes that lead somewhere
       .db $3d, $14
       .db $13, $12 ;used by decoration pipes
       .db $3d, $14
-	  .db $2d, $2c ;used by upside-down pipes
-	  .db $2f, $2e ;used by upside-down pipes (enterable)
+      .db $2d, $2c ;used by upside-down pipes
+      .db $2f, $2e ;used by upside-down pipes (enterable)
 VerticalPipe:
           pha
-		  lda AreaType
-		  beq VerticalPipeUW
-		  pla
-		  jsr GetPipeHeight
+    	  lda AreaType
+    	  beq VerticalPipeUW
+    	  pla
+    	  jsr GetPipeHeight
           lda $00                  ;check to see if value was nullified earlier
           beq WarpPipe             ;(if d3, the usage control bit of second byte, was set)
           iny
@@ -1359,16 +1359,16 @@ VerticalPipe:
           iny                      ;add four if usage control bit was not set
 WarpPipe: tya                      ;save value in stack
           pha
-		  if Enablew1l1PiranhaPlants !=1
-			  lda AreaNumber
-			  ora WorldNumber          ;if at world 1-1, do not add piranha plant ever
-			  beq DrawPipe
-		  endif
-		  ;lda AreaType
-		  ;beq DrawPipe
-		  
-		  lda DisableScreenFlag2
-		  beq DrawPipe
+    	  if Enablew1l1PiranhaPlants !=1
+    		  lda AreaNumber
+    		  ora WorldNumber          ;if at world 1-1, do not add piranha plant ever
+    		  beq DrawPipe
+    	  endif
+    	  ;lda AreaType
+    	  ;beq DrawPipe
+    	  
+    	  lda DisableScreenFlag2
+    	  beq DrawPipe
           ldy AreaObjectLength,x   ;if on second column of pipe, branch
           beq DrawPipe             ;(because we only need to do this once)
           jsr FindEmptyEnemySlot   ;check for an empty moving data buffer space
@@ -1398,10 +1398,10 @@ DrawPipe: pla                      ;get value saved earlier and use as Y
           ldy $06                  ;subtract one from length and render the part underneath
           dey
           jmp RenderUnderPart
-		  
+    	  
 VerticalPipeUW:
           pla
-		  jsr GetPipeHeight
+    	  jsr GetPipeHeight
           lda $00                  ;check to see if value was nullified earlier
           beq WarpPip1             ;(if d3, the usage control bit of second byte, was set)
           iny
@@ -1410,15 +1410,15 @@ VerticalPipeUW:
           iny                      ;add four if usage control bit was not set
 WarpPip1: tya                      ;save value in stack
           pha
-		  if Enablew1l1PiranhaPlants !=1
-			  lda AreaNumber
-			  ora WorldNumber          ;if at world 1-1, do not add piranha plant ever
-			  beq DrawPip1
-		  endif
-		  ;lda AreaType
-		  ;beq DrawPipe
-		  lda DisableScreenFlag2
-		  beq DrawPip1
+    	  if Enablew1l1PiranhaPlants !=1
+    		  lda AreaNumber
+    		  ora WorldNumber          ;if at world 1-1, do not add piranha plant ever
+    		  beq DrawPip1
+    	  endif
+    	  ;lda AreaType
+    	  ;beq DrawPipe
+    	  lda DisableScreenFlag2
+    	  beq DrawPip1
           ldy AreaObjectLength,x   ;if on second column of pipe, branch
           beq DrawPip1             ;(because we only need to do this once)
           jsr FindEmptyEnemySlot   ;check for an empty moving data buffer space
@@ -1458,37 +1458,37 @@ GetPipeHeight:
       sta $06        ;vertical length, then load Y with
       ldy AreaObjectLength,x    ;length left over
       rts
-	  
+      
 UpsideDownWarpPipe:
-	   lda AreaType
-	   beq UpsideDownWarpPipeUW
-	   lda #$01
-	   sta tempB
-	   jmp +
+       lda AreaType
+       beq UpsideDownWarpPipeUW
+       lda #$01
+       sta tempB
+       jmp +
 UpsideDownPipe:
-	   lda AreaType
-	   beq UpsideDownPipeUW
-	   lda #$00
-	   sta tempB
+       lda AreaType
+       beq UpsideDownPipeUW
+       lda #$00
+       sta tempB
 +:     txa
-	   pha
-	   lda ExtendedLength,x
+       pha
+       lda ExtendedLength,x
        pha
        jsr GetPipeHeight           ;get pipe height from object byte
-	   pla
+       pla
        sta $07                      ;save buffer offset temporarily
-	   pla
-	   tax
+       pla
+       tax
        tya
        pha                          ;save pipe height temporarily
-	   if Enablew1l1PiranhaPlants
-	   else
-		   lda AreaNumber
-		   ora WorldNumber          ;if at world 1-1, do not add piranha plant ever
-		   beq NoUDP
-	   endif
-	   ;lda AreaType
-	   ;beq NoUDP
+       if Enablew1l1PiranhaPlants
+       else
+    	   lda AreaNumber
+    	   ora WorldNumber          ;if at world 1-1, do not add piranha plant ever
+    	   beq NoUDP
+       endif
+       ;lda AreaType
+       ;beq NoUDP
 NoUDP: pla
        tay                          ;return tile offset
        pha
@@ -1499,41 +1499,41 @@ NoUDP: pla
        jsr RenderUnderPart
        pla
        tay
-	   lda tempB
-	   bne +
+       lda tempB
+       bne +
        lda VerticalPipeData+8,y     ;and render the pipe end
        sta MetatileBuffer,x
-	   rts
+       rts
 +:	   lda VerticalPipeData+10,y     ;and render the pipe end
        sta MetatileBuffer,x
        rts
 UpsideDownWarpPipeUW:
-	   lda #$01
-	   sta tempB
-	   jmp +
+       lda #$01
+       sta tempB
+       jmp +
 UpsideDownPipeUW:
-	   lda #$00
-	   sta tempB
+       lda #$00
+       sta tempB
 +:     txa
-	   pha
-	   lda ExtendedLength,x
+       pha
+       lda ExtendedLength,x
        pha
        jsr GetPipeHeight           ;get pipe height from object byte
-	   pla
+       pla
        sta $07                      ;save buffer offset temporarily
-	   pla
-	   tax
+       pla
+       tax
        tya
        pha                          ;save pipe height temporarily
-	   if Enablew1l1PiranhaPlants
-	   else
-		   lda AreaNumber
-		   ora WorldNumber          ;if at world 1-1, do not add piranha plant ever
-		   beq NoUD1
-	   endif
-	   ;lda AreaType
-	   ;beq NoUDP
-	   ldy AreaObjectLength,x       ;if on second column of pipe, skip this
+       if Enablew1l1PiranhaPlants
+       else
+    	   lda AreaNumber
+    	   ora WorldNumber          ;if at world 1-1, do not add piranha plant ever
+    	   beq NoUD1
+       endif
+       ;lda AreaType
+       ;beq NoUDP
+       ldy AreaObjectLength,x       ;if on second column of pipe, skip this
        beq NoUD1
        jsr FindEmptyEnemySlot       ;otherwise try to insert upside-down
        bcs NoUD1                    ;piranha plant, if no empty slots, skip this
@@ -1563,11 +1563,11 @@ NoUD1: pla
        jsr RenderUnderPart
        pla
        tay
-	   lda tempB
-	   bne +
+       lda tempB
+       bne +
        lda VerticalPipeDataUW+8,y     ;and render the pipe end
        sta MetatileBuffer,x
-	   rts
+       rts
 +:	   lda VerticalPipeDataUW+10,y     ;and render the pipe end
        sta MetatileBuffer,x
        rts
@@ -1582,8 +1582,8 @@ EmptyChkLoop: clc               ;clear carry flag by default
 ExitEmptyChk: rts               ;if all values nonzero, carry flag is set
 
 SetupPiranhaPlant
-		  lda #UDPiranhaPlant
-		  sta Enemy_ID,x
+    	  lda #UDPiranhaPlant
+    	  sta Enemy_ID,x
           jsr GetAreaObjXPosition  ;get horizontal pixel coordinate
           clc
           adc #$08                 ;add eight to put the piranha plant in the center
@@ -1600,10 +1600,10 @@ SetupPiranhaPlant
 ;--------------------------------
 Hole_Water:
       jsr ChkLrgObjLength   ;get low nybble and save as length
-	  lda #$90
+      lda #$90
       sta MetatileBuffer+10
       ldx #$0b
-	  ldy #$01              ;now render the water underneath
+      ldy #$01              ;now render the water underneath
       lda #$91
       jmp RenderUnderPart
 
@@ -1665,12 +1665,12 @@ FlagpoleObject:
       jsr RenderUnderPart
       lda #$61                 ;render solid block at the bottom
       sta MetatileBuffer+10
-	  lda CurrentPageLoc
-	  add #$66
-	  sta FlagpoleEnemyPage
-	  lda CurrentColumnPos
-	  sta FlagpoleEnemyCol
-	  rts
+      lda CurrentPageLoc
+      add #$66
+      sta FlagpoleEnemyPage
+      lda CurrentColumnPos
+      sta FlagpoleEnemyCol
+      rts
 
 ;--------------------------------
 
@@ -1737,92 +1737,92 @@ SolidBlockMetatiles:
 BrickMetatiles:
       .db $22, $51, $52, $28
       .db $88 ;used only by row of bricks object
-	  
+      
 CustomMTObject:
-	  lda ExtendedMetatile,x
-	  cmp #$36
-	  beq SidewayPipeRight
-	  cmp #$20
-	  beq SidewayPipeLeft
-	  pha
-	  jsr ChkLrgObjLength        ;get row number, load length
-	  ldy ExtendedHeight,x
-	  sty $06
-	  lda ExtendedLength,x
-	  tax
-	  pla
-	  cmp #$1d
-	  beq SidewayPipeShaft
-	  cmp #$90
-	  beq WaterXD
-	  jmp RenderUnderPart
+      lda ExtendedMetatile,x
+      cmp #$36
+      beq SidewayPipeRight
+      cmp #$20
+      beq SidewayPipeLeft
+      pha
+      jsr ChkLrgObjLength        ;get row number, load length
+      ldy ExtendedHeight,x
+      sty $06
+      lda ExtendedLength,x
+      tax
+      pla
+      cmp #$1d
+      beq SidewayPipeShaft
+      cmp #$90
+      beq WaterXD
+      jmp RenderUnderPart
 SidewayPipeShaft:
-	  ldy #$00
-	  jsr RenderUnderPart
-	  iny
-	  ;lda AreaType
-	  ;bne +
-	  lda #$20
-	  jmp RenderUnderPart
+      ldy #$00
+      jsr RenderUnderPart
+      iny
+      ;lda AreaType
+      ;bne +
+      lda #$20
+      jmp RenderUnderPart
 WaterXD:
-	  lda #$90
+      lda #$90
       sta MetatileBuffer,x
-	  dey
-	  inx
+      dey
+      inx
       lda #$91
-	  jmp RenderUnderPart
+      jmp RenderUnderPart
 SidewayPipeRight:
-	  jsr ChkLrgObjLength
-	  sty $06
-	  bcc +
-	  ldy #$00
-	  jmp ++
+      jsr ChkLrgObjLength
+      sty $06
+      bcc +
+      ldy #$00
+      jmp ++
 +:	  ldy #$02
 ++:
-	  lda ExtendedLength,x
-	  tax
-	  lda AreaType
-	  bne +
-	  lda webos2,y
+      lda ExtendedLength,x
+      tax
+      lda AreaType
+      bne +
+      lda webos2,y
       sta MetatileBuffer,x
-	  lda webos2+1,y
-	  sta MetatileBuffer+1,x
-	  rts
+      lda webos2+1,y
+      sta MetatileBuffer+1,x
+      rts
 +:    lda webos,y
       sta MetatileBuffer,x
-	  lda webos+1,y
-	  sta MetatileBuffer+1,x
-	  ;dec AreaObjectLength,x
-	  rts
+      lda webos+1,y
+      sta MetatileBuffer+1,x
+      ;dec AreaObjectLength,x
+      rts
 webos:
-	  .db $36, $37
-	  .db $1d, $20
+      .db $36, $37
+      .db $1d, $20
 webos2:
-	  .db $36, $37
-	  .db $1d, $3e
+      .db $36, $37
+      .db $1d, $3e
 SidewayPipeLeft:
-	  jsr ChkLrgObjLength
-	  sty $06
-	  beq +
-	  ldy #$02
-	  jmp ++
+      jsr ChkLrgObjLength
+      sty $06
+      beq +
+      ldy #$02
+      jmp ++
 +:	  ldy #$00
 ++:
-	  lda ExtendedLength,x
-	  tax
-	  lda AreaType
-	  bne +
-	  lda webos2,y
+      lda ExtendedLength,x
+      tax
+      lda AreaType
+      bne +
+      lda webos2,y
       sta MetatileBuffer,x
-	  lda webos2+1,y
-	  sta MetatileBuffer+1,x
-	  rts
+      lda webos2+1,y
+      sta MetatileBuffer+1,x
+      rts
 +:	  lda webos,y
       sta MetatileBuffer,x
-	  lda webos+1,y
-	  sta MetatileBuffer+1,x
-	  ;dec AreaObjectLength,x
-	  rts
+      lda webos+1,y
+      sta MetatileBuffer+1,x
+      ;dec AreaObjectLength,x
+      rts
 RowOfBricks:
             ldy AreaType           ;load area type obtained from area offset pointer
             lda CloudTypeOverride  ;check for cloud type override
@@ -1845,23 +1845,23 @@ ColumnOfBricks:
       ;ldy AreaType          ;load area type obtained from area offset
       ;lda BrickMetatiles,y  ;get metatile (no cloud override as for row)
       ;jmp GetRow2
-	  lda ExtendedMetatile,x
-	  pha
-	  txa
-	  pha
-	  jsr ChkLrgObjLength
-	  bcc +
-	  inc AreaDataOffset
-	  ldy AreaDataOffset
-	  pla
-	  tax
-	  pla
-	  dey
-	  lda (AreaData),y
-	  sta ExtendedMetatile,x	  
-	  jmp GetRow
+      lda ExtendedMetatile,x
+      pha
+      txa
+      pha
+      jsr ChkLrgObjLength
+      bcc +
+      inc AreaDataOffset
+      ldy AreaDataOffset
+      pla
+      tax
+      pla
+      dey
+      lda (AreaData),y
+      sta ExtendedMetatile,x	  
+      jmp GetRow
 +:	  pla
-	  pla
+      pla
       jmp GetRow
 
 ColumnOfSolidBlocks:
@@ -1929,11 +1929,11 @@ NextStair: dec StaircaseControl      ;move onto next step (or first if starting)
 
 Jumpspring:
       inc AreaDataOffset
-	  ldy AreaDataOffset
-	  dey
+      ldy AreaDataOffset
+      dey
       lda (AreaData),y			 ;load third byte and store here
-	  pha
-	  jsr GetLrgObjAttrib
+      pha
+      jsr GetLrgObjAttrib
       ldx $07
       pla
       sta MetatileBuffer,x
@@ -1945,71 +1945,71 @@ ExitJumpspring:
 
 QuestionBlock:
       ldy $00    ;get value saved from area parser routine ;get value from level decoder routine
-	  lda AreaType
-	  cmp #$03
-	  bne +
-	  cpy #$02
-	  bne +
+      lda AreaType
+      cmp #$03
+      bne +
+      cpy #$02
+      bne +
 ++:	  ldy #$11
 +:	  jmp DrawQBlk        ;go to render it
 
 HiddenCoin:
-	  lda #$5f
-	  ldy AreaType
-	  beq ++
-	  cpy #$03
-	  bne +
-	  lda #$29
-	  .db $2c
+      lda #$5f
+      ldy AreaType
+      beq ++
+      cpy #$03
+      bne +
+      lda #$29
+      .db $2c
 ++:	  lda #$38
 +:	  pha
-	  jmp DHB
-	  
+      jmp DHB
+      
 HiddenMushRoom:
-	  lda #$6f
-	  ldy AreaType
-	  beq ++
-	  cpy #$03
-	  bne +
-	  lda #$2b
-	  .db $2c
+      lda #$6f
+      ldy AreaType
+      beq ++
+      cpy #$03
+      bne +
+      lda #$2b
+      .db $2c
 ++:	  lda #$3a
 +:	  pha
-	  jmp DHB
-	  
+      jmp DHB
+      
 Hidden1UpBlock:
-	  lda #$60
-	  ldy AreaType
-	  beq ++
-	  cpy #$03
-	  bne +
-	  lda #$2a
-	  .db $2c
+      lda #$60
+      ldy AreaType
+      beq ++
+      cpy #$03
+      bne +
+      lda #$2a
+      .db $2c
 ++:	  lda #$39
 +:	  pha
 DHB:  jsr GetLrgObjAttrib
-	  jmp DrawRow
+      jmp DrawRow
 QuestionBlock1Up:
-	  lda #$c7
-	  jmp +
+      lda #$c7
+      jmp +
 QuestionBlockStar:
-	  lda #$c6
-	  jmp +
+      lda #$c6
+      jmp +
 HiddenStar:
-	  lda #$73
-	  ldy AreaType
-	  beq ++
-	  cpy #$03
-	  bne +
-	  lda #$30
-	  .db $2c
+      lda #$73
+      ldy AreaType
+      beq ++
+      cpy #$03
+      bne +
+      lda #$30
+      .db $2c
 ++:	  lda #$3b
 +:	  pha
-	  jmp DHB
+      jmp DHB
 BrickWithCoins:
       lda #$00                 ;initialize multi-coin timer flag
       sta BrickCoinTimerFlag
-	  jmp BrickWithCoins2
+      jmp BrickWithCoins2
 BrickWithItem:
           ldy $00   			      ;get value saved from area parser routine         ;save area object ID
           sty $07              
@@ -2038,25 +2038,25 @@ BrickCoins:	  .db $58, $58, $5d, $34
 Brick1up:	  .db $59, $59, $5e, $35
 
 BrickWithVine:
-			ldy #$04
-			jmp +
+    		ldy #$04
+    		jmp +
 BrickWithStar:
-			ldy #$08
-			jmp +
+    		ldy #$08
+    		jmp +
 BrickWithCoins2:
-			ldy #$0c
-			jmp +
+    		ldy #$0c
+    		jmp +
 BrickWith1up:
-			ldy #$10
-			jmp +
+    		ldy #$10
+    		jmp +
 BrickWithPowerUp:
-			ldy #$00
+    		ldy #$00
 +:			tya
-		    add AreaType
-			tay
-			lda Bricks,y
-			pha
-			jmp DHB
+    	    add AreaType
+    		tay
+    		lda Bricks,y
+    		pha
+    		jmp DHB
 ;--------------------------------
 
 HoleMetatiles:
@@ -2067,8 +2067,8 @@ Hole_Empty:
             bcc NoWhirlP                 ;skip this part if length already loaded
             lda SwimmingFlag             ;check for water type level
             beq NoWhirlP                 ;if not water type, skip this part
-			lda AreaType
-			bne NoWhirlP
+    		lda AreaType
+    		bne NoWhirlP
             ldx Whirlpool_Offset         ;get offset for data used by cannons and whirlpools
             jsr GetAreaObjXPosition      ;get proper vertical coordinate of where we're at
             sec
@@ -2109,14 +2109,14 @@ RenderUnderPart:
              beq DrawThisRow       ;if question block w/ coin, overwrite
              cpy #$c0
              bcs WaitOneRow        ;if any other metatile with palette 3, wait until next row
-			 cpy #$8a
-			 beq WaitOneRow
+    		 cpy #$8a
+    		 beq WaitOneRow
              cpy #$54
              bne DrawThisRow       ;if cracked rock terrain, overwrite
              cmp #$50
              beq WaitOneRow        ;if stem top of mushroom, wait until next row
-			 cmp #$4c
-			 beq WaitOneRow
+    		 cmp #$4c
+    		 beq WaitOneRow
 DrawThisRow: sta MetatileBuffer,x  ;render contents of A from routine that called this
 WaitOneRow:  inx
              cpx #$0d              ;stop rendering if we're at the bottom of the screen
@@ -2215,8 +2215,8 @@ HandlePipeEntry:
          bne ExPipeE               ;branch to leave if not found
          lda #$30
          sta ChangeAreaTimer       ;set timer for change of area
-		 lda #$01
-		 sta DontDecPT
+    	 lda #$01
+    	 sta DontDecPT
          lda #$03
          sta GameEngineSubroutine  ;set to run vertical pipe entry routine on next frame
          lda #Sfx_PipeDown_Injury
@@ -2261,19 +2261,19 @@ GetWNum: ldy WarpZoneNumbers1,x     ;get warp zone numbers
 ExPipeE: rts
 
 HandleUpPipeEntry:		 
-		 lda Up_Down_Buttons
-		 and #Up_Dir
-		 beq ExPipeU
-		 lda tempC
+    	 lda Up_Down_Buttons
+    	 and #Up_Dir
+    	 beq ExPipeU
+    	 lda tempC
          cmp #$2e                  ;check right foot metatile for warp pipe right metatile
          bne ExPipeU               ;branch to leave if not found
-		 lda tempD	
-		 cmp #$2f
-		 bne ExPipeU
-		 lda #$30
+    	 lda tempD	
+    	 cmp #$2f
+    	 bne ExPipeU
+    	 lda #$30
          sta ChangeAreaTimer       ;set timer for change of area
-		 lda #$01
-		 sta DontDecPT
+    	 lda #$01
+    	 sta DontDecPT
          lda #$0d
          sta GameEngineSubroutine  ;set to run vertical pipe entry routine on next frame
          lda #Sfx_PipeDown_Injury
@@ -2281,9 +2281,9 @@ HandleUpPipeEntry:
          lda #%00100000
          sta Player_SprAttrib      ;set background priority bit in player's attributes
 ExPipeU: lda #$00
-		 sta tempC
-		 sta tempD
-		 rts     
+    	 sta tempC
+    	 sta tempD
+    	 rts     
 
 ProcLoopCommand:
           ;jmp ChkEnemyFrenzy
@@ -2291,21 +2291,21 @@ ProcLoopCommand:
 
 ChkEnemyFrenzy:
       lda #%10000111
-	 sta Old8000
+     sta Old8000
  sta $8000
-	lda LevelBank
-	clc
-	adc #FirstLevelBank
-	
-	sta $8001
-	  lda EnemyFrenzyQueue  ;check for enemy object in frenzy queue
+    lda LevelBank
+    clc
+    adc #FirstLevelBank
+    
+    sta $8001
+      lda EnemyFrenzyQueue  ;check for enemy object in frenzy queue
       beq ProcessEnemyData  ;if not, skip this part
-	  if shufflelevels == 1
-		cmp #$36
-		bcc +
-		lda #$00
+      if shufflelevels == 1
+    	cmp #$36
+    	bcc +
+    	lda #$00
 +:
-	  endif
+      endif
       sta Enemy_ID,x        ;store as enemy object identifier here
       lda #$01
       sta Enemy_Flag,x      ;activate enemy object flag
@@ -2319,29 +2319,29 @@ ChkEnemyFrenzy:
 ;$07 - used to hold high nybble of position of extended right boundary
 ProcessEnemyData:
         ldy scrolldir
-		beq +
-		ldy StarFlagTaskControl
-		bne +
-		ldy EnemyDataOffset      ;get offset of enemy object data
-		if ExLVLID == 1
-			lda #$00
-			sta Tortilla
-		endif
+    	beq +
+    	ldy StarFlagTaskControl
+    	bne +
+    	ldy EnemyDataOffset      ;get offset of enemy object data
+    	if ExLVLID == 1
+    		lda #$00
+    		sta Tortilla
+    	endif
         lda (EnemyData),y        ;load first byte
         cmp #$ff                 ;check for EOD terminator
         bne CheckEndofBuffer
 +:      jmp CheckFrenzyBuffer    ;if found, jump to check frenzy buffer, otherwise
 
 CheckEndofBuffer:
-		if ExLVLID == 1
-			inc Tortilla
-		endif
-		and #%00001111           ;check for special row $0e
+    	if ExLVLID == 1
+    		inc Tortilla
+    	endif
+    	and #%00001111           ;check for special row $0e
         cmp #$0e
         beq CheckRightBounds     ;if found, branch, otherwise
-		if ExLVLID == 1
-			dec Tortilla
-		endif
+    	if ExLVLID == 1
+    		dec Tortilla
+    	endif
         cpx #$05                 ;check for end of buffer
         bcc CheckRightBounds     ;if not at end of buffer, branch
         iny 					 ;get identifier back and use as offset for jump engine
@@ -2349,11 +2349,11 @@ CheckEndofBuffer:
         and #%01111111           ;not sure what this was intended for, exactly
         cmp #$2e                 ;this part is quite possibly residual code
         beq CheckRightBounds     ;but it has the effect of keeping enemies out of
-		cmp #$30
-		beq CheckRightBounds
-		rts                      ;the sixth slot
+    	cmp #$30
+    	beq CheckRightBounds
+    	rts                      ;the sixth slot
 CheckRightBounds:
-		lda ScreenRight_X_Pos    ;add 48 to pixel coordinate of right boundary
+    	lda ScreenRight_X_Pos    ;add 48 to pixel coordinate of right boundary
         clc
         adc #$30
         and #%11110000           ;store high nybble
@@ -2361,23 +2361,23 @@ CheckRightBounds:
         lda ScreenRight_PageLoc  ;add carry to page location of right boundary
         adc #$00
         sta $06                  ;store page location + carry
-		ldy EnemyDataOffset
-		iny
-		if ExLVLID == 1
-			lda Tortilla
-			beq +
-			dec Tortilla
-			iny
-			iny
-			lda (EnemyData),y
-			dey
-			dey
-			jmp ++
+    	ldy EnemyDataOffset
+    	iny
+    	if ExLVLID == 1
+    		lda Tortilla
+    		beq +
+    		dec Tortilla
+    		iny
+    		iny
+    		lda (EnemyData),y
+    		dey
+    		dey
+    		jmp ++
 +:      	lda (EnemyData),y        ;if MSB of enemy object is clear, branch to check for row $0f
 ++:
-		else 
-			lda (EnemyData),y        ;if MSB of enemy object is clear, branch to check for row $0f
-		endif
+    	else 
+    		lda (EnemyData),y        ;if MSB of enemy object is clear, branch to check for row $0f
+    	endif
         bpl CheckPageCtrlRow
         lda EnemyObjectPageSel   ;if page select already set, do not set again
         bne CheckPageCtrlRow
@@ -2397,12 +2397,12 @@ CheckPageCtrlRow:
         and #%01111111
         sta EnemyObjectPageLoc   ;store as page control for enemy object data
         lda EnemyDataOffset
-		clc
-		adc #$02
-		sta EnemyDataOffset
-		lda EnemyDataHigh
-		adc #$00
-		sta EnemyDataHigh
+    	clc
+    	adc #$02
+    	sta EnemyDataOffset
+    	lda EnemyDataHigh
+    	adc #$00
+    	sta EnemyDataHigh
         inc EnemyObjectPageSel   ;set page select for enemy object data and 
         jmp ProcLoopCommand      ;jump back to process loop commands again
 CheckThreeBytes2: jmp CheckThreeBytes
@@ -2410,33 +2410,33 @@ ParseRow0e1:	  jmp ParseRow0e
 PositionEnemyObj:
         lda EnemyObjectPageLoc   ;store page control as page location
         sta Enemy_PageLoc,x      ;for enemy object
-		lda (EnemyData),y        ;get first byte of enemy object
+    	lda (EnemyData),y        ;get first byte of enemy object
         and #%11110000
         sta Enemy_X_Position,x   ;store column position
-		lda Enemy_PageLoc,x      ;without subtracting, then subtract borrow
-		cmp EntrancePage
-		beq +++
-		lda Enemy_X_Position,x
+    	lda Enemy_PageLoc,x      ;without subtracting, then subtract borrow
+    	cmp EntrancePage
+    	beq +++
+    	lda Enemy_X_Position,x
         cmp ScreenRight_X_Pos    ;check column position against right boundary
         lda Enemy_PageLoc,x      ;without subtracting, then subtract borrow
-		sbc ScreenRight_PageLoc  ;from page location
+    	sbc ScreenRight_PageLoc  ;from page location
         bcs CheckRightExtBounds  ;if enemy object beyond or at boundary, branch
         lda (EnemyData),y
         and #%00001111           ;check for special row $0e
         cmp #$0e                 ;if found, jump elsewhere
         beq ParseRow0e1
         iny
-		lda (EnemyData),y
-		and #%01111111
-		cmp #PowerUpObject
-		beq ++
-		cmp #Sign
-		bne +
+    	lda (EnemyData),y
+    	and #%01111111
+    	cmp #PowerUpObject
+    	beq ++
+    	cmp #Sign
+    	bne +
 ++:		inc EnemyDataOffset
-		;lda Enemy_PageLoc,x
-		;cmp ScreenRight_PageLoc
-		;bne CheckRightExtBounds
-		rts
+    	;lda Enemy_PageLoc,x
+    	;cmp ScreenRight_PageLoc
+    	;bne CheckRightExtBounds
+    	rts
 +:      jmp CheckThreeBytes      ;if not found, unconditional jump
 
 CheckRightExtBounds:
@@ -2478,36 +2478,36 @@ BuzzyBeetleMutate:
         beq StrID            ;and if so, change goomba to buzzy beetle
         lda #BuzzyBeetle
 StrID:  sta Enemy_ID,x       ;store enemy object number into buffer
-		lda #$01
+    	lda #$01
         sta Enemy_Flag,x     ;set flag for enemy in buffer
         jsr InitEnemyObject
-		lda DontRepeat
-		bne Inc2B3
+    	lda DontRepeat
+    	bne Inc2B3
         lda Enemy_Flag,x     ;check to see if flag is set
         bne Inc2B            ;if not, leave, otherwise branch
         rts
 Inc2B3: dec DontRepeat
 Inc2B2: jmp Inc2B
 CheckFrenzyBuffer:
-		lda EnemyFrenzyBuffer    ;if enemy object stored in frenzy buffer
+    	lda EnemyFrenzyBuffer    ;if enemy object stored in frenzy buffer
         bne StrFre               ;then branch ahead to store in enemy object buffer
         lda VineFlagOffset       ;otherwise check vine flag offset
         cmp #$01
         bne ExEPar+1		;if other value <> 1, leave
         lda #VineObject          ;otherwise put vine in enemy identifier
 StrFre: pha
-		lda Enemy_ID,x
-		cmp #FlagpoleFlagObject
-		beq ExEPar
-		pla
-		sta Enemy_ID,x           ;store contents of frenzy buffer into enemy identifier value
+    	lda Enemy_ID,x
+    	cmp #FlagpoleFlagObject
+    	beq ExEPar
+    	pla
+    	sta Enemy_ID,x           ;store contents of frenzy buffer into enemy identifier value
 
 InitEnemyObject:
         lda #$00                 ;initialize enemy state
         sta Enemy_State,x
         jmp CheckpointEnemyID    ;jump ahead to run jump engine and subroutines
 ExEPar: pla
-		rts                      ;then leave
+    	rts                      ;then leave
 
 DoGroup:
         jmp HandleGroupEnemies   ;handle enemy group objects
@@ -2515,16 +2515,16 @@ DoGroup:
 ParseRow0e:
         iny                      ;increment Y to load third byte of object
         iny
-		lda WorldNumber
-		and #%00000111
-		sta temp9
+    	lda WorldNumber
+    	and #%00000111
+    	sta temp9
         lda (EnemyData),y
 
         if WORLD9_PIPE_FIX
             cmp #World9              ;skip world number check if >= world 9
             bcs W9Skip
         endif
-		
+    	
         lsr                      ;move 3 MSB to the bottom, effectively
         lsr                      ;making %xxx00000 into %00000xxx
         lsr
@@ -2542,76 +2542,76 @@ W9Skip: dey                      ;of the same area, like the underground bonus a
 NotUse: jmp Inc3B
 
 CheckThreeBytes:
-		ldy EnemyDataOffset      ;load current offset for enemy object data
-		lda (EnemyData),y        ;get first byte
+    	ldy EnemyDataOffset      ;load current offset for enemy object data
+    	lda (EnemyData),y        ;get first byte
         and #%00001111           ;check for special row $0e
         cmp #$0e
         bne Inc2B
 Inc3B:  clc
-		lda EnemyDataOffset
-		if ExLVLID == 1
-			add #$04
-		else
-			add #$03
-		endif
-		sta EnemyDataOffset
-		jmp +
+    	lda EnemyDataOffset
+    	if ExLVLID == 1
+    		add #$04
+    	else
+    		add #$03
+    	endif
+    	sta EnemyDataOffset
+    	jmp +
 Inc2B:  clc
-		lda EnemyDataOffset
-		tay
-		clc
-		adc #$02
-		sta EnemyDataOffset
+    	lda EnemyDataOffset
+    	tay
+    	clc
+    	adc #$02
+    	sta EnemyDataOffset
 +:		lda EnemyDataHigh
-		adc #$00
-		sta EnemyDataHigh
+    	adc #$00
+    	sta EnemyDataHigh
         lda #$00                 ;init page select for enemy objects
         sta EnemyObjectPageSel
         ldx ObjectOffset         ;reload current offset in enemy buffers
         rts                      ;and leave
 CheckpointEnemyID:
         lda Enemy_ID,x
-		cmp #Sign
-		bne +
-		ldy EnemyDataOffset
-		iny
-		iny
-		lda (EnemyData),y
-		sta $7fce,x
-		inc EnemyDataOffset
-		lda Enemy_ID,x
-		jmp InitEnemyRoutines2
+    	cmp #Sign
+    	bne +
+    	ldy EnemyDataOffset
+    	iny
+    	iny
+    	lda (EnemyData),y
+    	sta $7fce,x
+    	inc EnemyDataOffset
+    	lda Enemy_ID,x
+    	jmp InitEnemyRoutines2
 +:		cmp #PowerUpObject
-		bne ++
-		ldy EnemyDataOffset
-		iny
-		iny
-		lda (EnemyData),y
-		sta $7fce,x
-		inc EnemyDataOffset
-		lda Enemy_ID,x
-		jmp InitEnemyRoutines2
+    	bne ++
+    	ldy EnemyDataOffset
+    	iny
+    	iny
+    	lda (EnemyData),y
+    	sta $7fce,x
+    	inc EnemyDataOffset
+    	lda Enemy_ID,x
+    	jmp InitEnemyRoutines2
 ++:		cmp #RedKoopaShell
-		beq +
-		cmp #UDPiranhaPlant
-		beq +++
-		cmp #RUDPiranhaPlant
-	    bne ++
+    	beq +
+    	cmp #UDPiranhaPlant
+    	beq +++
+    	cmp #RUDPiranhaPlant
+        bne ++
 +++:	lda Enemy_Y_Position,x
-		clc
+    	clc
         adc #$09                     ;add eight pixels to what will eventually be the
         sta Enemy_Y_Position,x       ;enemy object's vertical coordinate ($00-$14 only)
-		jsr InitUDPiranhaPlant
-		jmp DoSaveEnemyIntoSex
+    	jsr InitUDPiranhaPlant
+    	jmp DoSaveEnemyIntoSex
 ++:
-	    cmp #RedPiranhaPlant
-	    bne ++
-		lda Enemy_Y_Position,x
-		clc
+        cmp #RedPiranhaPlant
+        bne ++
+    	lda Enemy_Y_Position,x
+    	clc
         adc #$08                     ;add eight pixels to what will eventually be the
         sta Enemy_Y_Position,x       ;enemy object's vertical coordinate ($00-$14 only)
-		jsr InitPiranhaPlant
-		jmp DoSaveEnemyIntoSex
+    	jsr InitPiranhaPlant
+    	jmp DoSaveEnemyIntoSex
 ++:     cmp #$15                     ;check enemy object identifier for $15 or greater
         bcs InitEnemyRoutines2        ;and branch straight to the jump engine if found
 +:      tay                          ;save identifier in Y register for now
@@ -2620,77 +2620,77 @@ CheckpointEnemyID:
         sta Enemy_Y_Position,x       ;enemy object's vertical coordinate ($00-$14 only)
         lda #$01
         sta EnemyOffscrBitsMasked,x  ;set offscreen masked bit
-		tya
-		;jmp InitEnemyRoutines
+    	tya
+    	;jmp InitEnemyRoutines
 InitEnemyRoutines2:
-		ldy StarFlagTaskControl
-		bne InitEnemyRoutines
-		ldy Enemy_ID,x
-		cpy #Fireworks
-		beq InitEnemyRoutines
-		cpy #BBill_CCheep_Frenzy
-		beq InitEnemyRoutines
-		cpy #FlyCheepCheepFrenzy
-		beq InitEnemyRoutines
-		cpy #BulletBill_FrenzyVar
-		beq InitEnemyRoutines
-		cpy #BowserFlame
-		beq InitEnemyRoutines
-		cpy #VineObject
-		beq InitEnemyRoutines
-		cpy #PltRem
-		beq InitEnemyRoutines
-		;cpy #Spiny
-		;beq InitEnemyRoutines
-		cpy #Lakitu
-		beq InitEnemyRoutines
-		cpy #Stop_Frenzy
-		beq InitEnemyRoutines
-		;cpy #GreyCheepCheep
-		;beq InitEnemyRoutines
-		;cpy #RedCheepCheep
-		;beq InitEnemyRoutines
-		cpy #BulletBill_CannonVar
-		beq InitEnemyRoutines
-		pha
-		ldy Enemy_PageLoc,x
-		lda GlobalSaveOffset
-		clc
-		adc #$01
-		sta EnemyOffsetPage,y
-		inc GlobalSaveOffset
-		
-		ldy GlobalSaveOffset
-		tya
-		sta SavedOffset,x
-		lda Enemy_X_Position,x
-		sta Saved_X_Position,y
-		lda Enemy_Y_Position,x
-		sta Saved_Y_Position,y
-		lda Enemy_PageLoc,x
-		sta Saved_PageLoc,y
-		lda Enemy_ID,x
-		cmp #Sign
-		beq ++
-		cmp #PowerUpObject
-		bne +	
+    	ldy StarFlagTaskControl
+    	bne InitEnemyRoutines
+    	ldy Enemy_ID,x
+    	cpy #Fireworks
+    	beq InitEnemyRoutines
+    	cpy #BBill_CCheep_Frenzy
+    	beq InitEnemyRoutines
+    	cpy #FlyCheepCheepFrenzy
+    	beq InitEnemyRoutines
+    	cpy #BulletBill_FrenzyVar
+    	beq InitEnemyRoutines
+    	cpy #BowserFlame
+    	beq InitEnemyRoutines
+    	cpy #VineObject
+    	beq InitEnemyRoutines
+    	cpy #PltRem
+    	beq InitEnemyRoutines
+    	;cpy #Spiny
+    	;beq InitEnemyRoutines
+    	cpy #Lakitu
+    	beq InitEnemyRoutines
+    	cpy #Stop_Frenzy
+    	beq InitEnemyRoutines
+    	;cpy #GreyCheepCheep
+    	;beq InitEnemyRoutines
+    	;cpy #RedCheepCheep
+    	;beq InitEnemyRoutines
+    	cpy #BulletBill_CannonVar
+    	beq InitEnemyRoutines
+    	pha
+    	ldy Enemy_PageLoc,x
+    	lda GlobalSaveOffset
+    	clc
+    	adc #$01
+    	sta EnemyOffsetPage,y
+    	inc GlobalSaveOffset
+    	
+    	ldy GlobalSaveOffset
+    	tya
+    	sta SavedOffset,x
+    	lda Enemy_X_Position,x
+    	sta Saved_X_Position,y
+    	lda Enemy_Y_Position,x
+    	sta Saved_Y_Position,y
+    	lda Enemy_PageLoc,x
+    	sta Saved_PageLoc,y
+    	lda Enemy_ID,x
+    	cmp #Sign
+    	beq ++
+    	cmp #PowerUpObject
+    	bne +	
 ++:		lda $7fce,x
-		sta ExtraShit,y
-		lda Enemy_ID,x
+    	sta ExtraShit,y
+    	lda Enemy_ID,x
 +:		clc
-		adc #$01
-		sta Saved_ID,y
-		cmp #$43
-		beq + 
-		lda #$01
-		sta Saved_isDefeated,y
+    	adc #$01
+    	sta Saved_ID,y
+    	cmp #$43
+    	beq + 
+    	lda #$01
+    	sta Saved_isDefeated,y
 +:		sty tempB
         pla                          ;get identifier back and use as offset for jump engine
-		
+    	
 InitEnemyRoutines:
-		cmp #LastEnemyID+1
-		bcc +
-		jmp NoInitCode 
+    	cmp #LastEnemyID+1
+    	bcc +
+    	jmp NoInitCode 
 +:			jsr JumpEngine
       
 ;jump engine table for newly loaded enemy objects
@@ -2752,207 +2752,207 @@ InitEnemyRoutines:
       .dw NoInitCode	  ;33 bullet bill cannon var
       .dw NoInitCode	  ;34 warp zone
       .dw InitRetainerObj ;35
-	  .dw NoInitCode	  ;36
-	  .dw NoInitCode	  ;37
-	  .dw NoInitCode      ;38
-	  .dw NoInitCode      ;39
-	  .dw NoInitCode      ;3a
-	  .dw NoInitCode      ;3b
-	  .dw NoInitCode      ;3c
-	  .dw NoInitCode      ;3d
-	  .dw NoInitCode      ;3e
-	  .dw NoInitCode      ;3f
-	  .dw InitSign		  ;40
-	  .dw InitScrollLock1 ;41
-	  .dw InitCannon	  ;42
-	  .dw InitPlatformRem ;43
-	  
-	  .dw EndOfEnemyInitCode	;expandablen't (crash entity)
+      .dw NoInitCode	  ;36
+      .dw NoInitCode	  ;37
+      .dw NoInitCode      ;38
+      .dw NoInitCode      ;39
+      .dw NoInitCode      ;3a
+      .dw NoInitCode      ;3b
+      .dw NoInitCode      ;3c
+      .dw NoInitCode      ;3d
+      .dw NoInitCode      ;3e
+      .dw NoInitCode      ;3f
+      .dw InitSign		  ;40
+      .dw InitScrollLock1 ;41
+      .dw InitCannon	  ;42
+      .dw InitPlatformRem ;43
+      
+      .dw EndOfEnemyInitCode	;expandablen't (crash entity)
 InitScrollLock1:
-	  jmp InitScrollLock
+      jmp InitScrollLock
 InitPlatformRem:
-		
-		lda #$00
-		sta Enemy_Flag,x
-		ldy #$04
+    	
+    	lda #$00
+    	sta Enemy_Flag,x
+    	ldy #$04
 -:		;sta Enemy_Flag,y
-		;dey
-	;	bpl -
+    	;dey
+    ;	bpl -
 ;		rts
-		
-		lda Enemy_ID,y
-		cmp #$2a
-		beq +
-		dey
-		bpl -
+    	
+    	lda Enemy_ID,y
+    	cmp #$2a
+    	beq +
+    	dey
+    	bpl -
 +:		lda #$00
-		sta Enemy_Flag,y
-		inc DontRepeat
-		rts
+    	sta Enemy_Flag,y
+    	inc DontRepeat
+    	rts
 InitCannon:
-		ldy tempB
-		lda #$02
-		sta Saved_isDefeated,y
-		tya
-		sta Cannon_Creator,x
-		ldy Cannon_Offset
-		iny
-		lda Enemy_X_Position,x
-		sta Cannon_X_Position,y
-		lda Enemy_Y_Position,x
-		clc
-		adc #$10
-		sta Cannon_Y_Position,y
-		lda Enemy_PageLoc,x
-		sta Cannon_PageLoc,y
-		lda #$00
-		sta Enemy_Flag,x
-		cpy #$05
-		bcc +
-		tay
+    	ldy tempB
+    	lda #$02
+    	sta Saved_isDefeated,y
+    	tya
+    	sta Cannon_Creator,x
+    	ldy Cannon_Offset
+    	iny
+    	lda Enemy_X_Position,x
+    	sta Cannon_X_Position,y
+    	lda Enemy_Y_Position,x
+    	clc
+    	adc #$10
+    	sta Cannon_Y_Position,y
+    	lda Enemy_PageLoc,x
+    	sta Cannon_PageLoc,y
+    	lda #$00
+    	sta Enemy_Flag,x
+    	cpy #$05
+    	bcc +
+    	tay
 +:		sty Cannon_Offset
-		inc DontRepeat
-		rts
-	  ;$37-$3e are gruped goombas and koopas
-	  ;$3f crashes so is a potentially free slot
+    	inc DontRepeat
+    	rts
+      ;$37-$3e are gruped goombas and koopas
+      ;$3f crashes so is a potentially free slot
 InitSign:
-		lda $7fce,x
-		sta Enemy_State,x
-		lda #$01
+    	lda $7fce,x
+    	sta Enemy_State,x
+    	lda #$01
         sta Enemy_Flag,x          ;set buffer flag
-		lda #$03
+    	lda #$03
         sta Enemy_BoundBoxCtrl,x  ;set bounding box size control for sign object 
-		lda Enemy_Y_Position,x
-		clc 
-		adc #$07
-		sta Enemy_Y_Position,x
+    	lda Enemy_Y_Position,x
+    	clc 
+    	adc #$07
+    	sta Enemy_Y_Position,x
 NoInitCode:	
-		rts
+    	rts
 InitScrollLock:
-	  lda ScrollLockPageLoc
-	  cmp #$75
-	  bne +
-	  lda Enemy_PageLoc,x
-	  clc
-	  adc #$66
-	  sta ScrollLockPageLoc
-	  lda Enemy_X_Position,x
-	  lsr
-	  lsr
-	  lsr
-	  lsr
-	  clc
-	  adc #$01
-	  sta ScrollLockColumnPos
-	  sec
-	  sbc #$03
-	  sta ScrollLockColumnPos
-	  lda ScrollLockPageLoc
-	  sbc #$00
-	  sta ScrollLockPageLoc
-	  lda ScrollLockColumnPos
-	  and #$0f
-	  sta ScrollLockColumnPos
+      lda ScrollLockPageLoc
+      cmp #$75
+      bne +
+      lda Enemy_PageLoc,x
+      clc
+      adc #$66
+      sta ScrollLockPageLoc
+      lda Enemy_X_Position,x
+      lsr
+      lsr
+      lsr
+      lsr
+      clc
+      adc #$01
+      sta ScrollLockColumnPos
+      sec
+      sbc #$03
+      sta ScrollLockColumnPos
+      lda ScrollLockPageLoc
+      sbc #$00
+      sta ScrollLockPageLoc
+      lda ScrollLockColumnPos
+      and #$0f
+      sta ScrollLockColumnPos
 +:	  lda #$02
-	  sta Enemy_Y_HighPos,x
-	  lda #$00
-	  sta Enemy_X_Speed,x
-	  rts
+      sta Enemy_Y_HighPos,x
+      lda #$00
+      sta Enemy_X_Speed,x
+      rts
 
 InitFlag:
       stx $7fcc
-	  lda Enemy_X_Position,x
-	  
-	  lsr
-	  lsr
-	  lsr
-	  lsr
+      lda Enemy_X_Position,x
+      
+      lsr
+      lsr
+      lsr
+      lsr
       
       sta FlagpoleEnemyCol
-	  sta $7fba
-	  ;sta Enemy_X_Position,x   ;coordinate for the flag
+      sta $7fba
+      ;sta Enemy_X_Position,x   ;coordinate for the flag
       lda Enemy_PageLoc,x
-	  sta $7fb9      ;page location for the flag
+      sta $7fb9      ;page location for the flag
       clc
-	  adc #$66                 ;subtract borrow from page location and use as
-	  
-	  sta FlagpoleEnemyPage
+      adc #$66                 ;subtract borrow from page location and use as
+      
+      sta FlagpoleEnemyPage
       lda #$30
       sta Enemy_Y_Position,x   ;set vertical coordinate for flag
       lda #$b0
       sta FlagpoleFNum_Y_Pos   ;set initial vertical coordinate for flagpole's floatey number
-	  lda #$01
-	  sta FlagpoleOnScreen
-	  lda Enemy_X_Position,x
-	  sec
-	  sbc #$08
-	  sta Enemy_X_Position,x
+      lda #$01
+      sta FlagpoleOnScreen
+      lda Enemy_X_Position,x
+      sec
+      sbc #$08
+      sta Enemy_X_Position,x
       inc Enemy_Flag,x         ;use last space in enemy object buffer
-	  rts
+      rts
 DoSaveEnemyIntoSex:
-		pha
-		ldy Enemy_PageLoc,x
-		lda GlobalSaveOffset
-		clc
-		adc #$01
-		sta EnemyOffsetPage,y
-		inc GlobalSaveOffset
-		ldy GlobalSaveOffset
-		tya
-		sta SavedOffset,x
-		lda PiranhaPlantUpYPos,x
-		sta ExtraShit,y
-		lda PiranhaPlantDownYPos,x
-		sta ExtraShit2,y
-		lda PiranhaPlant_MoveFlag,x
-		sta ExtraShit3,y
-		lda PiranhaPlant_Y_Speed,x
-		sta ExtraShit4,y
-		lda Enemy_X_Position,x
-		sta Saved_X_Position,y
-		lda Enemy_Y_Position,x
-		and #$f0
-		sta Saved_Y_Position,y
-		lda Enemy_PageLoc,x
-		sta Saved_PageLoc,y
-		lda Enemy_ID,x
-		clc
-		adc #$01
-		sta Saved_ID,y
-		lda #$01
-		sta Saved_isDefeated,y
+    	pha
+    	ldy Enemy_PageLoc,x
+    	lda GlobalSaveOffset
+    	clc
+    	adc #$01
+    	sta EnemyOffsetPage,y
+    	inc GlobalSaveOffset
+    	ldy GlobalSaveOffset
+    	tya
+    	sta SavedOffset,x
+    	lda PiranhaPlantUpYPos,x
+    	sta ExtraShit,y
+    	lda PiranhaPlantDownYPos,x
+    	sta ExtraShit2,y
+    	lda PiranhaPlant_MoveFlag,x
+    	sta ExtraShit3,y
+    	lda PiranhaPlant_Y_Speed,x
+    	sta ExtraShit4,y
+    	lda Enemy_X_Position,x
+    	sta Saved_X_Position,y
+    	lda Enemy_Y_Position,x
+    	and #$f0
+    	sta Saved_Y_Position,y
+    	lda Enemy_PageLoc,x
+    	sta Saved_PageLoc,y
+    	lda Enemy_ID,x
+    	clc
+    	adc #$01
+    	sta Saved_ID,y
+    	lda #$01
+    	sta Saved_isDefeated,y
         pla                          ;get identifier back and use as offset for jump engine
-		rts
+    	rts
 
 ;--------------------------------
 InitGoomba:
       jsr InitNormalEnemy  ;set appropriate horizontal speed
       jmp SmallBBox        ;set $09 as bounding box control, set other values
-	 
+     
 InitPowerUp:
-	  lda #$80
+      lda #$80
       sta Enemy_State,x         ;set power-up object's state
-	  lda #$01
+      lda #$01
       sta Enemy_Flag,x          ;set buffer flag
       lda #$03
       sta Enemy_BoundBoxCtrl,x  ;set bounding box size control for power-up object
-	  rts
+      rts
 ;--------------------------------
 InitFastGoomba:
-	  lda #$01
-	  sta Enemy_State,x
-	  jsr InitNormalEnemy
-	  jmp SmallBBox
-	  
+      lda #$01
+      sta Enemy_State,x
+      jsr InitNormalEnemy
+      jmp SmallBBox
+      
 ;--------------------------------
 InitKoopaShell:
-	  jsr InitNormalEnemy   ;load appropriate horizontal speed
+      jsr InitNormalEnemy   ;load appropriate horizontal speed
       lda #$04
-	  sta Enemy_State,x
-	  lda #$ff
-	  sta EnemyIntervalTimer,x
+      sta Enemy_State,x
+      lda #$ff
+      sta EnemyIntervalTimer,x
       rts
-	  
+      
 ;--------------------------------
 InitPodoboo:
       lda #$02                  ;set enemy position to below
@@ -2982,21 +2982,21 @@ InitNormalEnemy:
          bne +
          ldy #01
 +:		 lda Enemy_ID,x
-		 cmp #FastGoomba
-		 bne GetESpd
-		 dey
+    	 cmp #FastGoomba
+    	 bne GetESpd
+    	 dey
 GetESpd: lda NormalXSpdData,y  ;get appropriate horizontal speed
 SetESpd: ldy scrolldir
-		 bne +
-		 eor #$ff
-		 clc
-		 adc #$01
+    	 bne +
+    	 eor #$ff
+    	 clc
+    	 adc #$01
 +:		 sta Enemy_X_Speed,x   ;store as speed for enemy object
-	     lda Enemy_ID,x
-		 cmp #BuzzyBeetle
-		 beq +
-		 cmp #Spiny
-		 beq ++
+         lda Enemy_ID,x
+    	 cmp #BuzzyBeetle
+    	 beq +
+    	 cmp #Spiny
+    	 beq ++
          jmp TallBBox          ;branch to set bounding box control and other data
 +: 		 jmp SemiSmallBBox
 ++:		 jmp SmallBBox
@@ -3018,8 +3018,8 @@ InitHammerBro:
       lda #$00                    ;init horizontal speed and timer used by hammer bro
       sta HammerThrowingTimer,x   ;apparently to time hammer throwing
       sta Enemy_X_Speed,x
-	  lda HardModeFlag
-	  bne NoHB
+      lda HardModeFlag
+      bne NoHB
       ldy SecondaryHardMode       ;get secondary hard mode flag
       lda HBroWalkingTimerData,y
       sta EnemyIntervalTimer,x    ;set value as delay for hammer bro to walk left
@@ -3040,8 +3040,8 @@ InitBloober:
 SmallBBox: lda #$09               ;set specific bounding box size control
            bne SetBBox            ;unconditional branch
 SemiSmallBBox:
-		   lda #$0e
-		   bne SetBBox
+    	   lda #$0e
+    	   bne SetBBox
 
 ;--------------------------------
 
@@ -3057,14 +3057,14 @@ GetCent:  tya                         ;send central position adder to A
 TallBBox: lda #$03                    ;set specific bounding box size control
 SetBBox:  sta Enemy_BoundBoxCtrl,x    ;set bounding box control here
           lda #$02
-		  ;ldy Enemy_ID,x
-		  ;cpy #RedCheepCheep
-		  ;beq +
-		  ;cpy #GreyCheepCheep
-		  ;beq +
-		  ldy scrolldir
-		  bne +
-		  lda #$01
+    	  ;ldy Enemy_ID,x
+    	  ;cpy #RedCheepCheep
+    	  ;beq +
+    	  ;cpy #GreyCheepCheep
+    	  ;beq +
+    	  ldy scrolldir
+    	  bne +
+    	  lda #$01
 +:		  sta Enemy_MovingDir,x
 InitVStf: lda #$00                    ;initialize vertical speed
           sta Enemy_Y_Speed,x         ;and movement force
@@ -3100,7 +3100,7 @@ InitLakitu:
 SetupLakitu:
       lda #$00                   ;erase counter for lakitu's reappearance
       sta LakituReappearTimer
-	  sta LakituRespawning,x
+      sta LakituRespawning,x
       jmp InitHorizFlySwimEnemy  ;set $03 as bounding box, set other attributes
       ;jmp TallBBox2              ;set $03 as bounding box again (not necessary) and leave
 
@@ -3114,17 +3114,17 @@ PRDiffAdjustData:
       .db $26, $2c, $32, $38
       .db $20, $22, $24, $26
       .db $13, $14, $15, $16
-	  
+      
 LakituSpinyTimer:
-	  .db $80, $40
+      .db $80, $40
 
 LakituAndSpinyHandler:
           ldx ObjectOffset
-		  lda FrenzyEnemyTimer    ;if timer here not expired, leave
+    	  lda FrenzyEnemyTimer    ;if timer here not expired, leave
           bne ExLSHand
           cpx #$05               ;if we are on the special use slot, leave
           bcs ExLSHand
-		  ldy HardModeFlag
+    	  ldy HardModeFlag
           lda LakituSpinyTimer,y
           sta FrenzyEnemyTimer
           ldy #$04                ;start with the last enemy slot
@@ -3133,9 +3133,9 @@ ChkLak:   lda Enemy_ID,y          ;check all enemy slots to see
           beq CreateSpiny         ;if so, branch out of this loop
           dey                     ;otherwise check another slot
           bpl ChkLak              ;loop until all slots are checked
-		  lda LakituRespawning
-		  bne +
-		  jmp InitNormalEnemy 
+    	  lda LakituRespawning
+    	  bne +
+    	  jmp InitNormalEnemy 
 +:        inc LakituReappearTimer ;increment reappearance timer
           lda LakituReappearTimer
           cmp #$07                ;check to see if we're up to a certain value yet
@@ -3205,29 +3205,29 @@ SetSpSpd:
                 jsr SmallBBox        ;set bounding box control, init attributes, lose contents of A
           endif
           ldy #$02
-		  cmp #$00
-		  bpl +
-		  lda #$f8
-		  .db $2c
+    	  cmp #$00
+    	  bpl +
+    	  lda #$f8
+    	  .db $2c
 +:        lda #$08
-		  sta Enemy_X_Speed,x        ;set horizontal speed to zero because previous contents
+    	  sta Enemy_X_Speed,x        ;set horizontal speed to zero because previous contents
           ;cmp #$00                   ;of A were lost...branch here will never be taken for
           bmi SpinyRte               ;the same reason
           dey
           if SPINYFIX ==1
                 jsr SmallBBox        ;set bounding box control, init attributes
           endif
-		  ldy #$01
+    	  ldy #$01
 SpinyRte: sty Enemy_MovingDir,x      ;set moving direction to the right
           lda #$fd
           sta Enemy_Y_Speed,x        ;set vertical speed to move upwards
-		  lda #Goomba
-		  sta Enemy_ID,x
+    	  lda #Goomba
+    	  sta Enemy_ID,x
           lda #$01
           sta Enemy_Flag,x           ;enable enemy object by setting flag
           ;lda #$05
           lda #$00
-		  sta Enemy_State,x          ;put spiny in egg state and leave
+    	  sta Enemy_State,x          ;put spiny in egg state and leave
 ChpChpEx: rts
 
 ;--------------------------------
@@ -3264,7 +3264,7 @@ InitShortFirebar:
       adc #$00                    ;add carry to page location
       sta Enemy_PageLoc,x
       rts
-	  ;jmp TallBBox2               ;set bounding box control (not used) and leave
+      ;jmp TallBBox2               ;set bounding box control (not used) and leave
 
 ;--------------------------------
 ;$00-$01 - used to hold pseudorandom bits
@@ -3293,8 +3293,8 @@ InitFlyingCheepCheep:
          and #%00000011             ;set pseudorandom offset here
          tay
          lda FlyCCTimerData,y       ;load timer with pseudorandom offset
-		 lsr
-		 lsr
+    	 lsr
+    	 lsr
          sta FrenzyEnemyTimer
          ldy #$03                   ;load Y with default value
          lda SecondaryHardMode
@@ -3372,19 +3372,19 @@ FinCCSt: sta Enemy_PageLoc,x        ;save as enemy's page location
 
 ;--------------------------------
 BowserPoints:
-	  .db $05, $05, $05, $05, $07, $0a, $10, $20
+      .db $05, $05, $05, $05, $07, $0a, $10, $20
 InitBowser:
       lda BowserKilled
-	  beq +
-	  lda #$00
-	  sta Enemy_Flag,x
-	  sta Enemy_ID,x
-	  inc DontRepeat
-	  rts
+      beq +
+      lda #$00
+      sta Enemy_Flag,x
+      sta Enemy_ID,x
+      inc DontRepeat
+      rts
 +:	  jsr DuplicateEnemyObj     ;jump to create another bowser object
       stx BowserFront_Offset    ;save offset of first here
       lda #$00
-	  sta BowserKilled
+      sta BowserKilled
       sta BowserBodyControls    ;initialize bowser's body controls
       sta BridgeCollapseOffset  ;and bridge collapse offset
       lda Enemy_X_Position,x
@@ -3392,52 +3392,52 @@ InitBowser:
       lda #$df
       sta BowserFireBreathTimer ;store something here
       sta Enemy_MovingDir,x     ;and in moving direction
-	  ldy WorldNumber
-	  lda BowserPoints,y
-	  sta BowserHitPoints
-	  stx temp7
-		  ldx VRAM_Buffer1_Offset
-		  lda #$22
-		  sta VRAM_Buffer1,x
-		  lda #$c0
-		  sta VRAM_Buffer1+1,x
-		  lda #$05
-		  sta VRAM_Buffer1+2,x
-		  lda #$11
-		  sta VRAM_Buffer1+3,x
-		  lda #$19
-		  sta VRAM_Buffer1+4,x
-		  lda #$28
-		  sta VRAM_Buffer1+5,x
-		  lda #$00
-		  sta VRAM_Buffer1+6,x
-	      lda BowserHitPoints             ;otherwise, check number of pts
-		  tay
+      ldy WorldNumber
+      lda BowserPoints,y
+      sta BowserHitPoints
+      stx temp7
+    	  ldx VRAM_Buffer1_Offset
+    	  lda #$22
+    	  sta VRAM_Buffer1,x
+    	  lda #$c0
+    	  sta VRAM_Buffer1+1,x
+    	  lda #$05
+    	  sta VRAM_Buffer1+2,x
+    	  lda #$11
+    	  sta VRAM_Buffer1+3,x
+    	  lda #$19
+    	  sta VRAM_Buffer1+4,x
+    	  lda #$28
+    	  sta VRAM_Buffer1+5,x
+    	  lda #$00
+    	  sta VRAM_Buffer1+6,x
+          lda BowserHitPoints             ;otherwise, check number of pts
+    	  tay
 +
-	      cmp #10                   ;more than 9 pts?
-	      bcc ++
-	      sbc #10                   ;if so, subtract 10 and add one to the 10s digit
-		  tay
-	      lda #$01                  ;instead of showing 100 pts, A0 will show, etc.
-	      sta VRAM_Buffer1+6,x
-		  tya
+          cmp #10                   ;more than 9 pts?
+          bcc ++
+          sbc #10                   ;if so, subtract 10 and add one to the 10s digit
+    	  tay
+          lda #$01                  ;instead of showing 100 pts, A0 will show, etc.
+          sta VRAM_Buffer1+6,x
+    	  tya
 -
-	      cmp #10
-	      bcc ++
-		  sbc #10
-	      inc VRAM_Buffer1+6,x
-	      jmp -
-		  tay
-		  sta VRAM_Buffer1+6,x
-		  tya
+          cmp #10
+          bcc ++
+    	  sbc #10
+          inc VRAM_Buffer1+6,x
+          jmp -
+    	  tay
+    	  sta VRAM_Buffer1+6,x
+    	  tya
 ++:	      
-		  sta VRAM_Buffer1+7,x
-		  lda #$00
-		  sta VRAM_Buffer1+8,x
-		  txa
-		  add #$08
-		  sta VRAM_Buffer1_Offset
-		  ldx temp7
+    	  sta VRAM_Buffer1+7,x
+    	  lda #$00
+    	  sta VRAM_Buffer1+8,x
+    	  txa
+    	  add #$08
+    	  sta VRAM_Buffer1_Offset
+    	  ldx temp7
       lda #$20
       sta BowserFeetCounter     ;set bowser's feet timer and in enemy timer
       sta EnemyFrameTimer,x
@@ -3468,8 +3468,8 @@ NextVO1: txa                      ;store object offset to next available vine sl
 DuplicateEnemyObj:
         ldy #$ff                ;start at beginning of enemy slots
 FSLoop: cpy #$05
-		beq FlmEx
-		iny                     ;increment one slot
+    	beq FlmEx
+    	iny                     ;increment one slot
         lda Enemy_Flag,y        ;check enemy buffer flag for empty slot
         bne FSLoop              ;if set, branch and keep checking
         sty DuplicateObj_Offset ;otherwise set offset here
@@ -3495,9 +3495,9 @@ FlameYPosData:
 FlameYMFAdderData:
       .db $ff, $01
 FW:
-	sec
-	sbc #$20
-	jmp SetFrT
+    sec
+    sbc #$20
+    jmp SetFrT
 InitBowserFlame:
         lda FrenzyEnemyTimer        ;if timer not expired yet, branch to leave
         bne FlmEx
@@ -3512,9 +3512,9 @@ InitBowserFlame:
         jsr SetFlameTimer           ;get timer data based on flame counter
         clc
         adc #$20                    ;add 32 frames by default
-		ldy WorldNumber
-		cmp #FinalWorld
-		beq FW
+    	ldy WorldNumber
+    	cmp #FinalWorld
+    	beq FW
         ldy SecondaryHardMode
         beq SetFrT                  ;if secondary mode flag not set, use as timer setting
         sec
@@ -3580,7 +3580,7 @@ FireworksXPosData:
 
 FireworksYPosData:
       .db $60, $40, $70, $40, $60, $30
-	  
+      
 ExitFWk: rts
 InitFireworks:
           lda FrenzyEnemyTimer         ;if timer not expired yet, branch to leave
@@ -3620,7 +3620,7 @@ StarFChk: dey
           sta ExplosionGfxCounter,x    ;initialize explosion counter
           lda #$08
           sta ExplosionTimerCounter,x  ;set explosion timing counter
-		  rts
+    	  rts
 
 ;--------------------------------
 
@@ -3755,7 +3755,7 @@ GSltLp: inx                       ;increment and branch if past
         lda #$01                  ;activate flag for buffer, and
         sta Enemy_Y_HighPos,x     ;put enemy within the screen vertically
         sta Enemy_Flag,x
-		             ;get identifier back and use as offset for jump engine
+    	             ;get identifier back and use as offset for jump engine
         jsr CheckpointEnemyID     ;process each enemy object separately
         dec NumberofGroupEnemies  ;do this until we run out of enemy objects
         bne GrLoop
@@ -3764,14 +3764,14 @@ NextED: jmp Inc2B                 ;jump to increment data offset and leave
 ;--------------------------------
 PPhitbox: .db $09, $03
 InitPiranhaPlant:
-	  lda Enemy_X_Position,x
-	  add #$08
-	  sta Enemy_X_Position,x
-	  lda Enemy_Y_Position,x
-	  add #$08
-	  sta Enemy_Y_Position,x
+      lda Enemy_X_Position,x
+      add #$08
+      sta Enemy_X_Position,x
+      lda Enemy_Y_Position,x
+      add #$08
+      sta Enemy_Y_Position,x
 InitPiranhaPlant1:
-	  lda #$01                    ;set initial speed
+      lda #$01                    ;set initial speed
       sta PiranhaPlant_Y_Speed,x
       lsr
       sta Enemy_State,x            ;initialize enemy state and what would normally
@@ -3781,19 +3781,19 @@ InitPiranhaPlant1:
       sec
       sbc #$19
       sta PiranhaPlantUpYPos,x     ;save original vertical coordinate - 24 pixels here
-	  ldy HardModeFlag
+      ldy HardModeFlag
       lda PPhitbox,y
       jmp SetBBox2                 ;set specific value for bounding box control
-	  
+      
 InitUDPiranhaPlant:
-	  lda Enemy_X_Position,x
-	  add #$08
-	  sta Enemy_X_Position,x
-	  lda Enemy_Y_Position,x
-	  add #$06
-	  sta Enemy_Y_Position,x
+      lda Enemy_X_Position,x
+      add #$08
+      sta Enemy_X_Position,x
+      lda Enemy_Y_Position,x
+      add #$06
+      sta Enemy_Y_Position,x
 InitUDPiranhaPlant1:
-	  lda #$01                    ;set initial speed
+      lda #$01                    ;set initial speed
       sta PiranhaPlant_Y_Speed,x
       lsr
       sta Enemy_State,x            ;initialize enemy state and what would normally
@@ -3812,12 +3812,12 @@ InitEnemyFrenzy:
       sta EnemyFrenzyBuffer ;save in enemy frenzy buffer
       sec
       sbc #$12              ;subtract 12 and use as offset for jump engine
-	  if shufflelevels == 1
-		cmp #$06
-		bcc +
-		lda #$01
+      if shufflelevels == 1
+    	cmp #$06
+    	bcc +
+    	lda #$01
 +:
-	  endif
+      endif
       jsr JumpEngine
 
 ;frenzy object jump table
@@ -4061,7 +4061,7 @@ GameTextOffsets1:
   .db WarpZoneWelcome1-GameText1, WarpZoneWelcome1-GameText1
 
 WriteGameText1:
-			   pha                      ;save text number to stack
+    		   pha                      ;save text number to stack
                asl
                tay                      ;multiply by 2 and use as offset
                cpy #$04                 ;if set to do top status bar or world/lives display,
@@ -4078,7 +4078,7 @@ GameTextLoop1: lda GameText1,x           ;load message data
                cmp #$ff                 ;check for terminator
                beq EndGameText1          ;branch to end text if found
                sta VRAM_Buffer1,y       ;otherwise write data to buffer
-			   inx                      ;and increment increment
+    		   inx                      ;and increment increment
                iny
                bne GameTextLoop1         ;do this for 256 bytes if no terminator found
 EndGameText1:  lda #$00                 ;put null terminator at end
@@ -4092,43 +4092,43 @@ EndGameText1:  lda #$00                 ;put null terminator at end
                tax
                ldy #$00
 WarpNumLoop1:  lda WarpZoneNumbers1,x  ;print warp zone numbers into the
-			   sta VRAM_Buffer1+27,y  ;placeholders from earlier
+    		   sta VRAM_Buffer1+27,y  ;placeholders from earlier
                inx
                iny                    ;put a number in every fourth space
                iny
-			   iny
+    		   iny
                iny
                cpy #$0c
                bcc WarpNumLoop1
                lda #$2c               ;load new buffer pointer at end of message
                sta VRAM_Buffer1_Offset
-			   rts
-	
+    		   rts
+    
 PaletteMTtable:
-	.db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-	.db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00	
-	.db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-	.db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
-	
-	.db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01	
-	.db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01
-	.db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01
-	.db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01
-	
-	.db $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02	
-	.db $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02
-	.db $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02
-	.db $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02
-	
-	.db $03, $03, $03, $03, $03, $03, $03, $03, $01, $01, $01, $01, $01, $01, $01, $01	
-	.db $01, $01, $03, $03, $03, $03, $01, $01, $01, $00, $00, $00, $01, $01, $02, $02
-	.db $02, $02, $01, $01, $01, $01, $00, $01, $00, $00, $00, $00, $00, $00, $00, $00
-	.db $00, $00, $03, $03, $03, $03, $03, $03, $03, $03, $03, $03, $03, $03, $03, $03
-	
-	
+    .db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    .db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00	
+    .db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    .db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+    
+    .db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01	
+    .db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01
+    .db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01
+    .db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01
+    
+    .db $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02	
+    .db $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02
+    .db $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02
+    .db $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02
+    
+    .db $03, $03, $03, $03, $03, $03, $03, $03, $01, $01, $01, $01, $01, $01, $01, $01	
+    .db $01, $01, $03, $03, $03, $03, $01, $01, $01, $00, $00, $00, $01, $01, $02, $02
+    .db $02, $02, $01, $01, $01, $01, $00, $01, $00, $00, $00, $00, $00, $00, $00, $00
+    .db $00, $00, $03, $03, $03, $03, $03, $03, $03, $03, $03, $03, $03, $03, $03, $03
+    
+    
 
-	
-		
+    
+    	
 WorldAddrOffsets:
       .db World1Areas-AreaAddrOffsets, World2Areas-AreaAddrOffsets
       .db World3Areas-AreaAddrOffsets, World4Areas-AreaAddrOffsets
@@ -4219,10 +4219,10 @@ EnemyDataAddrHigh:
 ;      .db $00, $03, $19, $1c
 ;.db "AreaDataHOffsets"
 AreaDataHOffsets:
-	.db AreaDataAddrLow_WaterStart - AreaDataAddrLow            ; Water
-	.db AreaDataAddrLow_GroundStart - AreaDataAddrLow           ; Ground
-	.db AreaDataAddrLow_UndergroundStart - AreaDataAddrLow      ; Underground
-	.db AreaDataAddrLow_CastleStart - AreaDataAddrLow           ; castle
+    .db AreaDataAddrLow_WaterStart - AreaDataAddrLow            ; Water
+    .db AreaDataAddrLow_GroundStart - AreaDataAddrLow           ; Ground
+    .db AreaDataAddrLow_UndergroundStart - AreaDataAddrLow      ; Underground
+    .db AreaDataAddrLow_CastleStart - AreaDataAddrLow           ; castle
 
 AreaDataAddrLow:
     ; Water
@@ -4257,5 +4257,5 @@ AreaDataAddrHigh:
 ;ENEMY OBJECT DATA
 
  			   
-			   
+    		   
 pad $a000
