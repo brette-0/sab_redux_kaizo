@@ -159,6 +159,8 @@ Palette2_MTiles:
              .db $41, $26, $41, $26 ;water/lava top swimmable 90
              .db $26, $26, $26, $26 ;water/lava swimmable 91
              .db $27, $27, $27, $27 ;door 92
+			 .db $41, $26, $41, $26 ;water/lava top 90
+			 .db $26, $26, $26, $26 ;water/lava 91
              
 Palette3_MTiles:
              .db $53, $55, $54, $56 ;question block (coin) c0
@@ -220,6 +222,7 @@ Palette3_MTiles:
              .db $27, $27, $27, $27 ;w7 entrance bottom pal0 ef
              .db $ff, $ff, $ff, $ff ;w7 castle stop pal0 f0
              .db $80, $a0, $81, $a1 ;w7 fence pal0 f1
+			 .db $b0, $b1, $b2, $b3 ;w7 sandstone f2
              
 AreaParserTaskHandler:
              lda #%10000111
@@ -2617,8 +2620,11 @@ InitSign:
 NoInitCode:    
              rts
 InitScrollLock:
-             lda ScrollLockPageLoc
-             cmp #$75
+             lda Enemy_PageLoc,x
+			 cmp EntrancePage
+			 bcc +
+			 lda ScrollLockPageLoc
+             cmp #$75				; $75 is default
              bne +
              lda Enemy_PageLoc,x
              clc
@@ -3861,7 +3867,7 @@ PaletteMTtable:
              .db $03, $03, $03, $03, $03, $03, $03, $03, $01, $01, $01, $01, $01, $01, $01, $01    
              .db $01, $01, $03, $03, $03, $03, $01, $01, $01, $00, $00, $00, $01, $01, $02, $02
              .db $02, $02, $01, $01, $01, $01, $00, $01, $00, $00, $00, $00, $00, $00, $00, $00
-             .db $00, $00, $03, $03, $03, $03, $03, $03, $03, $03, $03, $03, $03, $03, $03, $03
+             .db $00, $00, $00, $03, $03, $03, $03, $03, $03, $03, $03, $03, $03, $03, $03, $03
              
              
              
@@ -3881,7 +3887,7 @@ World3Areas: .db $44, $55, $40, $c3
 World4Areas: .db $42, $56, $4c, $c1
 World5Areas: .db $4a, $51, $57, $c6
 World6Areas: .db $4e, $43, $4d, $c7
-World7Areas: .db $53, $49, $02, $58, $c4
+World7Areas: .db $53, $5b, $82, $58, $c4
 World8Areas: .db $50, $52, $41, $c5
 World9Areas: .db $59, $49, $5a, $c8
              
@@ -3905,7 +3911,7 @@ EnemyDataAddrLow_GroundStart:
              .db <E_GroundArea1, <E_GroundArea2, <E_GroundArea3, <E_GroundArea4, <E_GroundArea5, <E_GroundArea6
              .db <E_GroundArea7, <E_GroundArea8, <E_GroundArea9, <E_GroundArea10, <E_GroundArea11, <E_GroundArea12
              .db <E_GroundArea13, <E_GroundArea14, <E_GroundArea15, <E_GroundArea16, <E_GroundArea17, <E_GroundArea18
-             .db <E_GroundArea19, <E_GroundArea20, <E_GroundArea21, <E_GroundArea22, <E42, <E53, <E73, <E91, <E93
+             .db <E_GroundArea19, <E_GroundArea20, <E_GroundArea21, <E_GroundArea22, <E42, <E53, <E73, <E91, <E93, <EntryW7E
              ; UnderGround
 EnemyDataAddrLow_UndergroundStart:
              .db <E_UndergroundArea1, <E_UndergroundArea2, <E_UndergroundArea3
@@ -3920,7 +3926,7 @@ EnemyDataAddrHigh:
              .db >E_GroundArea1, >E_GroundArea2, >E_GroundArea3, >E_GroundArea4, >E_GroundArea5, >E_GroundArea6
              .db >E_GroundArea7, >E_GroundArea8, >E_GroundArea9, >E_GroundArea10, >E_GroundArea11, >E_GroundArea12
              .db >E_GroundArea13, >E_GroundArea14, >E_GroundArea15, >E_GroundArea16, >E_GroundArea17, >E_GroundArea18
-             .db >E_GroundArea19, >E_GroundArea20, >E_GroundArea21, >E_GroundArea22, >E42, >E53, >E73, >E91, >E93
+             .db >E_GroundArea19, >E_GroundArea20, >E_GroundArea21, >E_GroundArea22, >E42, >E53, >E73, >E91, >E93, >EntryW7E
              ; Underground
              .db >E_UndergroundArea1, >E_UndergroundArea2, >E_UndergroundArea3
              ; Water
@@ -3941,7 +3947,7 @@ AreaDataAddrLow_GroundStart:
              .db <L_GroundArea1, <L_GroundArea2, <L_GroundArea3, <L_GroundArea4, <L_GroundArea5, <L_GroundArea6
              .db <L_GroundArea7, <L_GroundArea8, <L_GroundArea9, <L_GroundArea10, <L_GroundArea11, <L_GroundArea12
              .db <L_GroundArea13, <L_GroundArea14, <L_GroundArea15, <L_GroundArea16, <L_GroundArea17, <L_GroundArea18
-             .db <L_GroundArea19, <L_GroundArea20, <L_GroundArea21, <L_GroundArea22, <L42, <L53, <L73, <L91, <L93
+             .db <L_GroundArea19, <L_GroundArea20, <L_GroundArea21, <L_GroundArea22, <L42, <L53, <L73, <L91, <L93, <EntryW7
              ; Underground
 AreaDataAddrLow_UndergroundStart:
              .db <L_UndergroundArea1, <L_UndergroundArea2, <L_UndergroundArea3
@@ -3956,7 +3962,7 @@ AreaDataAddrHigh:
              .db >L_GroundArea1, >L_GroundArea2, >L_GroundArea3, >L_GroundArea4, >L_GroundArea5, >L_GroundArea6
              .db >L_GroundArea7, >L_GroundArea8, >L_GroundArea9, >L_GroundArea10, >L_GroundArea11, >L_GroundArea12
              .db >L_GroundArea13, >L_GroundArea14, >L_GroundArea15, >L_GroundArea16, >L_GroundArea17, >L_GroundArea18
-             .db >L_GroundArea19, >L_GroundArea20, >L_GroundArea21, >L_GroundArea22, >L42, >L53, >L73, >L91, >L93
+             .db >L_GroundArea19, >L_GroundArea20, >L_GroundArea21, >L_GroundArea22, >L42, >L53, >L73, >L91, >L93, >EntryW7E
              ; Underground
              .db >L_UndergroundArea1, >L_UndergroundArea2, >L_UndergroundArea3
              ; Castle

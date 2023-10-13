@@ -10,5 +10,5 @@ while len(source)-count:
   else: payload += ", "
   payload += f"${hex(term-1)[2:].zfill(2)}, ${hex(item)[2:].zfill(2)}"
   i += 1;count += term
-with open("4-1.asm", "w") as f: 
+with open("entry7-2.asm", "w") as f: 
   f.write(payload)

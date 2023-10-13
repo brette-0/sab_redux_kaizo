@@ -98,7 +98,7 @@ ChangeSizeOffsetAdder:
              ;asl                      ;multiply by 4 to get proper offset
              ;asl
              ;tay                      ;save as offset here
-G;etAreaPal:   ;lda Palette3Data,y       ;fetch palette to be written based on area type
+;GetAreaPal:   ;lda Palette3Data,y       ;fetch palette to be written based on area type
              ;sta VRAM_Buffer1+3,x     ;store it to overwrite blank palette in vram buffer
              ;iny
              ; inx

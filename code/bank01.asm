@@ -611,7 +611,7 @@ World7Pal:
              .db $22, $27, $17, $07
              .db $22, $37, $27, $17
              .db $22, $30, $12, $0f
-             .db $22, $27, $17, $0f
+             .db $22, $27, $17, $07
              .db $22, $16, $27, $18
              .db $22, $1a, $30, $27
              .db $22, $16, $30, $27
@@ -707,19 +707,21 @@ ChangeBankRunner:
              sta Old8000
              sta $8000
              
-             
+             lda WorldNumber
+			 cmp #World7
+			 beq +
              lda AreaType
              beq ++
              cmp #$03
              bne +
-             ++            ldx #%01000110
+++           ldx #%01000110
              bne ++             
-+:        ldy WorldNumber
++:           ldy WorldNumber
              lda WorldCHRTable,y
              tax
              inx
              inx
-++:        stx $8001
+++:          stx $8001
              
              
              lda GamePauseStatus       ;if in pause mode, do not bother with sprites at all

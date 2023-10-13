@@ -349,9 +349,7 @@ E_UndergroundArea1:
 E_UndergroundArea2:
       .db $ff
 
-;underground bonus rooms area used in many levels
-E_UndergroundArea3:
-      .db $ff
+
 
 ;water area used in levels 5-2 and 6-2
 E_WaterArea1:
@@ -707,11 +705,6 @@ L_GroundArea21:
 ;level 4-2
 L_UndergroundArea2:
       .db $48, $0f
-      .db $fd
-
-;underground bonus rooms area used in many levels
-L_UndergroundArea3:
-      .db $48, $01
       .db $fd
 
 ;water area used in levels 5-2 and 6-2

@@ -923,13 +923,16 @@ SetVRAMOffset: sta VRAM_Buffer1_Offset  ;store as new vram buffer offset
              
 GetAlternatePalette1:
              
+			 lda WorldNumber
+			 cmp #World7
+			 beq ++
              lda AreaType
              cmp #$01
              bne +
-             ldy WorldNumber          ;otherwise check world number
+++:          ldy WorldNumber          ;otherwise check world number
              lda WorldPaletteLUT,y
              sta WorldPalette
-+:               lda #$00
++:           lda #$00
              sta TheresPal3
              lda AreaStyle            ;check for mushroom level style
              cmp #$01
@@ -7187,7 +7190,7 @@ MetatileThingy:    ;this table specifies the metatile id that each metatile acts
              .db $c0, $c1, $c2, $c3, $54, $c5, $c6, $c7, $54, $54, $54, $54, $54, $54, $54, $54
              .db $54, $54, $00, $00, $00, $00, $54, $54, $54, $00, $00, $00, $54, $54, $54, $88
              .db $88, $88, $54, $54, $8a, $00, $54, $00, $54, $00, $00, $00, $00, $00, $00, $00    
-             .db $70, $00
+             .db $70, $00, $54
 DoWarpZone:
              lda #$00
              sta WarpZoneCheck

@@ -236,6 +236,8 @@ E_GroundArea20:
  .db #2 * $10 + 2, #48 + $80
  .db PageSkip, #16
       .db $ff
+	  
+
 
 ; :--
 
