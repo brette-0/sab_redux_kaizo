@@ -1445,7 +1445,7 @@ Studs:
 pending:
              .db $21, $68, "LUCAS - TITLE SCREEN"-55, $ff
 hellfire:
-             .db $21, $a7, "HELLFIRE - ARTWORK"-55, $ff
+             .db $21, $a3, "HELLFIRE AND SHEMON - ARTWORK"-55, $ff
 smbarena:
              .db $21, $e4, "SMB ARENA DISCORD SERVER"-55, $ff
 obviouslyme:
