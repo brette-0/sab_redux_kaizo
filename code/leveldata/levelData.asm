@@ -722,13 +722,13 @@ L_WaterArea3:
 	  
 
 
-E73:
+
 E91:
 E93:
 
 	.db $ff
 
-L73:
+
 L91:
 L93:
 

@@ -1240,6 +1240,7 @@ Chavo:  rts
              ora GrabFlag
              ora CrouchingFlag
              ora CrouchingFlag2
+			 ora PlayerOnVine
              bne +
              lda #$80                    
              sta Old8000
