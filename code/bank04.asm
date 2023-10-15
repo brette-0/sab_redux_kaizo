@@ -158,7 +158,7 @@ Palette2_MTiles:
              .db $dd, $df, $de, $e0 ;on off block (on) 8f
              .db $41, $26, $41, $26 ;water/lava top swimmable 90
              .db $26, $26, $26, $26 ;water/lava swimmable 91
-             .db $27, $27, $27, $27 ;door 92
+             .db $27, $5e, $27, $5e ;door 92
 			 .db $41, $26, $41, $26 ;water/lava top 93
 			 .db $26, $26, $26, $26 ;water/lava 94
 			 .db $30, $32, $31, $33 ;invisible wall 95
@@ -3649,6 +3649,11 @@ InitDropPlatform:
 InitHoriPlatform:
              lda #$00
              sta XMoveSecondaryCounter,x  ;init one of the moving counters
+			 lda Enemy_Y_Position,x
+			 and #$f0
+			 sec
+			 sbc #$01
+			 sta Enemy_Y_Position,x
              jmp CommonPlatCode           ;jump ahead to execute more code
              
              
@@ -3861,7 +3866,7 @@ PaletteMTtable:
              .db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01
              
              .db $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02    
-             .db $02, $02, $02, $02, $02, $00, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02
+             .db $02, $02, $00, $02, $02, $00, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02
              .db $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02
              .db $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02
              

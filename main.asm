@@ -2387,7 +2387,16 @@ RightPlatform:
              jsr MoveObjectHorizontally  ;position object horizontally according to
              ldx ObjectOffset            ;counters, return with saved value in A,
              ;sta $00                       ;store saved value here (residual code)
-             lda PlatformCollisionFlag,x   ;check collision flag, if no collision between player
+			 lda Enemy_PageLoc,x
+			 cmp #$09
+			 bne +
+			 lda Enemy_X_Position,x
+			 cmp #$a0
+			 bne +
+			 lda #$00
+			 sta Enemy_X_Speed,x
+			 rts
++:           lda PlatformCollisionFlag,x   ;check collision flag, if no collision between player
              bmi ExXMP                     ;and platform, branch ahead, leave speed unaltered
              lda #$10
              sta Enemy_X_Speed,x           ;otherwise set new speed (gets moving if motionless)
