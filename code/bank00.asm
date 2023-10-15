@@ -7316,14 +7316,14 @@ ImpedePlayerMove:
              cpy #$00                  ;if player moving to the left,
              bmi +                     ;branch to invert bit and leave
              ldy #$00 
-+:     lda #$ff                  ;otherwise load A with value to be used later
++:           lda #$ff                  ;otherwise load A with value to be used later
              jmp NXSpd                 ;and jump to affect movement
-RImpd: ldx #$02                  ;return $02 to X
+RImpd:       ldx #$02                  ;return $02 to X
              cpy #$01                  ;if player moving to the right
              bpl +
              ldy #$00
-+:       lda #$01                  ;otherwise load A with value to be used here
-NXSpd: sty $01
++:           lda #$01                  ;otherwise load A with value to be used here
+NXSpd:       sty $01
              ldy #$10
              sty SideCollisionTimer    ;set timer of some sort
              ldy $01
@@ -7332,7 +7332,7 @@ NXSpd: sty $01
              cmp #$00                  ;if value set in A not set to $ff,
              bpl PlatF                 ;branch ahead, do not decrement Y
              dey                       ;otherwise decrement Y now
-PlatF: sty $00                   ;store Y as high bits of horizontal adder
+PlatF:       sty $00                   ;store Y as high bits of horizontal adder
              sta SideCollisionAdder
              clc
              adc Player_X_Position     ;add contents of A to player's horizontal
@@ -7345,17 +7345,14 @@ PlatF: sty $00                   ;store Y as high bits of horizontal adder
              lda #$00
              sta Player_X_Speed
              
-ExIPM: txa                       ;invert contents of X
+ExIPM:       txa                       ;invert contents of X
              eor #$ff
              and Player_CollisionBits  ;mask out bit that was set here
              sta Player_CollisionBits  ;store to clear bit
              cmp #$fd
              bne EXPM
-             lda Player_OldCollisionBits
-             cmp #$fd
-             bne EXPM
              inc DontJump
-EXPM:  rts
+EXPM:        rts
              
              
 SixSpriteStacker:

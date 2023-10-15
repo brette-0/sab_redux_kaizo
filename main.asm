@@ -4685,7 +4685,7 @@ CargarPTimer:
              sta Player_Y_MoveForce     ;movement force to stop player's vertical movement
              sta StompChainCounter      ;initialize enemy stomp counter
              sta Player_State
-             jmp ErACM
+			 jmp ErACM
              
 MIERDA3:          lda #Sfx_Bump
              sta Square1SoundQueue
@@ -4766,14 +4766,15 @@ eda:
              
              lda #$01
              sta TouchingFloor
-             lda #$00
+             lsr
              ;sta DetectedFoot
-             sta Player_Y_Speed         ;initialize vertical speed and fractional
+                      ;initialize vertical speed and fractional
              sta Player_Y_MoveForce     ;movement force to stop player's vertical movement
              sta StompChainCounter      ;initialize enemy stomp counter
              ;lda #$00
              sta Player_State           ;set player's state to normal
-             jmp +
+			 sta Player_Y_Speed
+			  jmp +
 DoPlayerSideCheck:
              lda GroundedTimer
              cmp #$20

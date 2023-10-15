@@ -610,7 +610,7 @@ World6Pal:
 World7Pal:
              .db $22, $27, $17, $07
              .db $22, $37, $27, $17
-             .db $22, $30, $12, $0f
+             .db $22, $30, $12, $07
              .db $22, $27, $17, $07
              .db $22, $16, $27, $18
              .db $22, $1a, $30, $27
@@ -619,7 +619,7 @@ World7Pal:
 World8Pal:
              .db $22, $29, $1a, $0f
              .db $22, $36, $17, $0f
-             .db $22, $30, $21, $0f
+             .db $22, $30, $16, $0f
              .db $22, $27, $17, $0f
              .db $22, $16, $27, $18
              .db $22, $1a, $30, $27
@@ -659,7 +659,18 @@ ChangeBankRunner:
              iny
              lda ($00),y
              sta VRAM_Buffer1,x
-             cpy #$08
+			 lda WorldNumber
+			 cmp #World7
+			 bne ++
+			 lda AreaType
+			 cmp #$03
+			 bne ++
+			 lda VRAM_Buffer1,x
+			 cmp #$12
+			 bne ++
+			 lda #$16
+			 sta VRAM_Buffer1,x
+++            cpy #$08
              bcc ++
              cpy #$0c
              bcs ++
@@ -668,6 +679,7 @@ ChangeBankRunner:
 ++:            cpy #$1f
              bne --
              inx
+			 
              lda #$00
              sta VRAM_Buffer1,x
              stx VRAM_Buffer1_Offset
