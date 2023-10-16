@@ -4126,11 +4126,15 @@ NoPuta:  tya
              cmp #$91
              bne +
 ++:         ;jmp DoFootCheck
-             ldy AreaType
+             ldy WorldNumber
+			 cpy #World8
+			 beq +++++
+			 ldy AreaType
              cpy #$03
              bne ++
              ldy StarInvincibleTimer
              bne ++
++++++
              jmp KillPlayer
 ++:         ldy #$01
              sty SwimmingFlag
@@ -4406,12 +4410,15 @@ Burh2:   jmp Burh
 PutOnSlope1:
              jmp PutOnSlope
 Ostia:   rts
-e:         ldy AreaType
+e:           ldy WorldNumber
+			 cpy #World8
+			 beq +++++
+             ldy AreaType
              cpy #$03
              bne +
              ldy StarInvincibleTimer
              bne +
-             lda Player_Y_Position
++++++        lda Player_Y_Position
              sec
              sbc #$05
              and #%00001111
@@ -4517,12 +4524,15 @@ Burh:
              pla
              ldy #$08
              sty WaterCooldown
-+:      ldy AreaType
++:           ldy WorldNumber
+			 cpy #World8
+			 beq +++++
+             ldy AreaType
              cpy #$03
              bne +
              ldy StarInvincibleTimer
              bne +
-             pha
++++++        pha
              lda Player_Y_Position
              sec
              sbc #$05
@@ -4843,12 +4853,15 @@ SideCheckLoop:
              beq BHalf1
              cmp #$91
              bne +++
-++:       ldy AreaType
+++:          ldy WorldNumber
+			 cpy #World8
+			 beq +++++
+             ldy AreaType
              cpy #$03
              bne ++++
              ldy StarInvincibleTimer
              bne ++++
-             jmp KillPlayer
++++++        jmp KillPlayer
 ++++:  ;ldy WaterCooldown
              ;bne BHalf
              ldy #$01

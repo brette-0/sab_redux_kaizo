@@ -619,7 +619,7 @@ World7Pal:
 World8Pal:
              .db $22, $29, $1a, $0f
              .db $22, $36, $17, $0f
-             .db $22, $30, $16, $0f
+             .db $22, $30, $16, $07
              .db $22, $27, $17, $0f
              .db $22, $16, $27, $18
              .db $22, $1a, $30, $27
@@ -1791,7 +1791,12 @@ DoFlagpoleEnemy:
              sta Enemy_X_Position,x
              lda #$30
              sta Enemy_Y_Position,x   ;set vertical coordinate for flag
-             lda #$b0
+			 lda WorldNumber
+			 cmp #World8
+			 bne +
+			 lda #$a0
+			 .db $2c
++:           lda #$b0
              sta FlagpoleFNum_Y_Pos   ;set initial vertical coordinate for flagpole's floatey number
              lda #FlagpoleFlagObject
              sta Enemy_ID,x           ;set flag identifier, note that identifier and coordinates

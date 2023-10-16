@@ -162,6 +162,9 @@ Palette2_MTiles:
 			 .db $41, $26, $41, $26 ;water/lava top 93
 			 .db $26, $26, $26, $26 ;water/lava 94
 			 .db $30, $32, $31, $33 ;invisible wall 95
+			 .db $b0, $b2, $b1, $b3 ;w8 rock ground 96
+             .db $82, $b2, $83, $b3 ;w8 rock ground bottom 97
+			 .db $48, $26, $48, $26 ;water/lava top block 98
              
 Palette3_MTiles:
              .db $53, $55, $54, $56 ;question block (coin) c0
@@ -2674,7 +2677,12 @@ InitFlag:
              sta FlagpoleEnemyPage
              lda #$30
              sta Enemy_Y_Position,x   ;set vertical coordinate for flag
-             lda #$b0
+             lda WorldNumber
+			 cmp #World8
+			 bne +
+			 lda #$a0
+			 .db $2c
++:           lda #$b0
              sta FlagpoleFNum_Y_Pos   ;set initial vertical coordinate for flagpole's floatey number
              lda #$01
              sta FlagpoleOnScreen
@@ -3866,7 +3874,7 @@ PaletteMTtable:
              .db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01
              
              .db $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02    
-             .db $02, $02, $00, $02, $02, $00, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02
+             .db $02, $02, $00, $02, $02, $00, $01, $01, $02, $02, $02, $02, $02, $02, $02, $02
              .db $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02
              .db $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02
              

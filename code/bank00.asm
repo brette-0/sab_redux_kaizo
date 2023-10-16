@@ -2044,7 +2044,7 @@ Wo4: .db $b0, $a0, $b0, $50
 Wo5: .db $b0, $90, $b0, $50
 Wo6: .db $b0, $60, $a0, $60
 Wo7: .db $b0, $b0, $00, $50, $50
-Wo8: .db $b0, $b0, $b0, $50
+Wo8: .db $90, $90, $90, $50
 Wo9: .db $b0, $b0, $00, $b0, $50
              
 Entrance_GameTimerSetup:
@@ -4297,6 +4297,10 @@ FlagpoleScoreMods:
 FlagpoleScoreDigits:
              .db $03, $03, $04, $04, $04
              
+FlagpoleYpos:
+			.db $aa, $9a
+FlagpolePlayerPos:
+			.db $a2, $92
 FlagpoleRoutine:
              stx ObjectOffset
              lda GameEngineSubroutine
@@ -4305,11 +4309,16 @@ FlagpoleRoutine:
              lda Player_State
              cmp #$03                  ;if player state not climbing,
              bne SkipScore             ;branch to near the end of code
-             lda Enemy_Y_Position,x    ;check flagpole flag's vertical coordinate
-             cmp #$aa                  ;if flagpole flag down to a certain point,
+			 ldy #$00
+			 lda WorldNumber
+			 cmp #World8
+			 bne + 
+			 iny
++            lda Enemy_Y_Position,x    ;check flagpole flag's vertical coordinate
+             cmp FlagpoleYpos,y        ;if flagpole flag down to a certain point,
              bcs GiveFPScr             ;branch to end the level
              lda Player_Y_Position     ;check player's vertical coordinate
-             cmp #$a2                  ;if player down to a certain point,
+             cmp FlagpolePlayerPos,y   ;if player down to a certain point,
              bcs GiveFPScr             ;branch to end the level
              lda Enemy_YMF_Dummy,x
              adc #$ff                  ;add movement amount to dummy variable
@@ -7183,7 +7192,7 @@ MetatileThingy:    ;this table specifies the metatile id that each metatile acts
              .db $70, $71, $72, $73, $74, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
              
              .db $00, $00, $00, $00, $00, $00, $86, $87, $88, $88, $8a, $8b, $8c, $8d, $8e, $8f
-             .db $91, $91, $54, $00, $00, $54, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
+             .db $91, $91, $54, $00, $00, $54, $54, $54, $54, $00, $00, $00, $00, $00, $00, $00
              .db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
              .db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
              

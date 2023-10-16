@@ -276,9 +276,7 @@ E_GroundArea12:
 E_GroundArea16:
       .db $ff
 
-;level 8-1
-E_GroundArea17:
-      .db $ff
+
 
 
 
@@ -677,10 +675,7 @@ L_GroundArea16:
       .db $10, $51
       .db $fd
 
-;level 8-1
-L_GroundArea17:
-      .db $92, $31
-      .db $fd
+
 
 ;level 8-2
 L_GroundArea19:
