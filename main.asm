@@ -4934,7 +4934,10 @@ BHalf: ldy temp1                 ;load block adder offset
              beq Ultramas1
              cmp #$91
              bne +++
-++:       ldx AreaType
+++:          ldx WorldNumber
+			 cpx #World8
+			 beq ++++
+			 ldx AreaType
              cpx #$03
              beq ++++
 -:      ; ldx WaterCooldown

@@ -359,7 +359,7 @@ E_WaterArea3:
 ;AREA OBJECT DATA
 ;.db "AREAOBJECTDATA"
 
-;level 1-4/6-4
+;level 1-4
 L_CastleArea1:
       .db $9b, $07
       include "code\leveldata\levels\1-4.asm"

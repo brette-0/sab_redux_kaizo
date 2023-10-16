@@ -84,7 +84,7 @@ GetAreaDataAddrsR:
              jsr GetAreaType
              tay
              lda AreaPointer          ;mask out all but 5 LSB
-             and #%00011111
+             and #%00111111
              sta AreaAddrsLOffset     ;save as low offset
              lda EnemyAddrHOffsets,y  ;load base value with 2 altered MSB,
              clc                      ;then add base value to 5 LSB, result
