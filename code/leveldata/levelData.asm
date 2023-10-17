@@ -276,15 +276,6 @@ E_GroundArea12:
 E_GroundArea16:
       .db $ff
 
-
-
-
-
-;level 8-2
-E_GroundArea19:
-      .db $ff
-
-
 ;cloud level used in levels 3-1 and 6-2
 E_GroundArea21:
       .db $ff
@@ -677,10 +668,8 @@ L_GroundArea16:
 
 
 
-;level 8-2
-L_GroundArea19:
-      .db $50, $b1
-      .db $fd
+
+
 
 
 ;cloud level used in levels 3-1 and 6-2
@@ -712,12 +701,14 @@ L_WaterArea3:
 
 
 E91:
+E92:
 E93:
 
 	.db $ff
 
 
 L91:
+L92:
 L93:
 
 	.db $90, $51
