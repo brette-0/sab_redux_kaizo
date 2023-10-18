@@ -1445,22 +1445,24 @@ ExitOutput1: rts
              rts
              
 Text_AddrTable_Low:
-             .db <MuchoTexto, <PocoTexto, <Studs, <pending, <hellfire, <smbarena, <obviouslyme, <ElPepe
+             .db <MuchoTexto, <PocoTexto, <Studs, <lucas, <hellfire, <shemon, <brette, <obviouslyme, <ElPepe
 Text_AddrTable_High:
-             .db >MuchoTexto, >PocoTexto, >Studs, >pending, >hellfire, >smbarena, >obviouslyme, >ElPepe
+             .db >MuchoTexto, >PocoTexto, >Studs, >lucas, >hellfire, >shemon, >brette, >obviouslyme, >ElPepe
              
 MuchoTexto:
              .db $20, $43, "THANKS FOR PLAYING MY HACK"-55, $ff
 PocoTexto:
              .db $20, $C8, "SPECIAL THANKS TO"-55, $ff
 Studs:
-             .db $21, $25, "STUDSX - TECHNICAL HELP"-55, $ff
-pending:
-             .db $21, $68, "LUCAS - TITLE SCREEN"-55, $ff
+             .db $21, $24, "STUDSX - TECHNICAL HELP"-55, $ff
+lucas:
+             .db $21, $65, "LUCAS - TITLE SCREEN"-55, $ff
 hellfire:
-             .db $21, $a3, "HELLFIRE AND SHEMON - ARTWORK"-55, $ff
-smbarena:
-             .db $21, $e4, "SMB ARENA DISCORD SERVER"-55, $ff
+             .db $21, $a2, "HELLFIRE - ARTWORK"-55, $ff
+shemon:
+             .db $21, $e4, "SHEMON - ARTWORK"-55, $ff
+brette:
+             .db $22, $24, "BRETTE - MYSTERIOUS WORLD"-55, $ff
 obviouslyme:
              .db $22, $86, "HACK MADE BY ALEFUNKY"-55, $ff
 ElPepe:

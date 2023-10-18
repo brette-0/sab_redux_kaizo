@@ -412,7 +412,7 @@ WriteCredits:
 Nothing: 
              inc OperMode_Task
 -:        rts
-             FinalText = $07
+             FinalText = $08
              AnteFinalText = FinalText - $01
 CheckForThing:
              lda CurrentText

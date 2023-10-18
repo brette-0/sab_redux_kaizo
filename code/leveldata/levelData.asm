@@ -88,9 +88,6 @@ E_CastleArea6:
 E_CastleArea7:
       .db $ff
 
-;level 8-3
-E_GroundArea2:
-      .db $ff
 
 
 
@@ -371,11 +368,7 @@ L_CastleArea7:
       
       .db $fd
 
-;level 8-3
-L_GroundArea2:
-      .db $90, $b1
-      
-      .db $fd
+
 
 
 
@@ -628,7 +621,7 @@ TestLevel:
       ;.db $6d, $c1, $af, $26, $fd
       
 
-;level 1-3/5-3
+;level 1-3
 L_GroundArea7:
       .db $50, $11
       
@@ -688,8 +681,6 @@ L_UndergroundArea2:
 L_WaterArea1:
       .db $41, $01
       .db $fd
-
-;level 2-2/7-2
 
 
 ;level 7-2
