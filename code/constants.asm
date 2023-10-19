@@ -753,8 +753,8 @@ EnemyOffsetPage         = $05d2
                        
                        
 SavedScore              = $7f00
-WorldSelectEnableFlag   = $7f0a
 SettingsBits            = $7f06
+WorldSelectEnableFlag   = $7f0a
 TopMaxedOut             = $7f10
 ContinueWorld           = $7f11
 ContinueLevel           = $7f12
