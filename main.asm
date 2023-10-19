@@ -1641,6 +1641,8 @@ MakeBJump: cmp #$01                   ;if timer not yet about to expire,
 ChkFireB:  lda WorldNumber            ;check world number here
              cmp #FinalWorld            ;world 8?
              beq SpawnFBr               ;if so, execute this part here
+			 cmp #World9
+			 beq SpawnFBr
              cmp #World6                ;world 6-7?
              bcs BowserGfxHandler       ;if so, skip this part here
 SpawnFBr:  lda BowserFireBreathTimer  ;check timer here

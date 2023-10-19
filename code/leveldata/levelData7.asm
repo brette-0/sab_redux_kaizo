@@ -90,6 +90,50 @@ E_GroundArea2:
  .db #3 * $10 + 2, #48 + $80
  .db PageSkip, #16
       .db $ff
+	
+
+;level 8-4
+E_CastleArea6:
+.db #12 * $10 + 10, #31
+
+ .db #12 * $10 + 5, #29 + $80
+
+ .db #9 * $10 + 3, #12 + $80
+
+ .db #6 * $10 + 5, #12 + $80
+
+ .db #3 * $10 + 8, #27 + $80
+ .db #14 * $10 + 7, #32
+
+ .db #3 * $10 + 4, #12 + $80
+ .db #12 * $10 + 8, #31
+
+ .db #3 * $10 + 5, #34 + $80
+ .db PageSkip, #8
+
+ .db #6 * $10 + 5, #3 + $80
+ .db #9 * $10 + 5, #3
+
+ .db #7 * $10 + 10, #2 + $80
+ .db #11 * $10 + 9, #27
+
+ .db #1 * $10 + 7, #29 + $80
+ .db #7 * $10 + 9, #29
+ .db #11 * $10 + 4, #12
+
+ .db #5 * $10 + 7, #27 + $80
+ .db #10 * $10 + 7, #29
+
+ .db #0 * $10 + 9, #5 + $80
+ .db #10 * $10 + 6, #12
+
+ .db #5 * $10 + 6, #12 + $80
+
+ .db #4 * $10 + 8, #45 + $80
+
+ .db #1 * $10 + 11, #65 + $80
+ .db #9 * $10 + 11, #53
+	.db $ff
 
 
 ;level 8-2
@@ -98,9 +142,15 @@ L_GroundArea19:
 	include "code\leveldata\levels\8-2.asm"
 	.db $fd
 	
-	;level 8-3
+;level 8-3
 L_GroundArea2:
 	.db $90, $b1
 	include "code\leveldata\levels\8-3.asm"
+	.db $fd
+
+;level 8-4
+L_CastleArea6:
+	.db $5b, $06
+	include "code\leveldata\levels\8-4.asm"
 	.db $fd
 	

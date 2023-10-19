@@ -3295,6 +3295,8 @@ InitBowserFlame:
              ldy WorldNumber
              cmp #FinalWorld
              beq FW
+			 cmp #World9
+			 beq FW
              ldy SecondaryHardMode
              beq SetFrT                  ;if secondary mode flag not set, use as timer setting
              sec

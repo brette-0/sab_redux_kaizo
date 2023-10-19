@@ -81,9 +81,6 @@ E_CastleArea1:
 
 
 
-;level 8-4
-E_CastleArea6:
-      .db $ff
 ;level 9-2
 E_CastleArea7:
       .db $ff
@@ -356,11 +353,7 @@ L_CastleArea1:
 
 
 
-;level 8-4
-L_CastleArea6:
-      .db $5b, $06
-     
-      .db $fd
+
 ;level 9-2
 L_CastleArea7:
       .db $00 + $02*$08 + $01*$40

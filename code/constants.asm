@@ -762,6 +762,7 @@ ContinueScore           = $7f13
 ContinueCoins           = $7f1a
 ContinuePwrup           = $7f1e
 ContinueCoinTally       = $7f1f
+World9Beaten            = $7f20
 SavedWord               = $7fbc 
 
 

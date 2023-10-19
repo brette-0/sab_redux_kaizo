@@ -143,8 +143,9 @@ ChkSelect:    cmp #A_Button
              ;bcs ResetTitle              ;if carry flag set, demo over, thus branch
              ;jmp Rundemo                 ;otherwise, run game engine for demo
 ChkWorldSel:  ldx WorldSelectEnableFlag   ;check to see if world selection has been enabled
-             beq NullJoypad
-             cmp #B_Button               ;if so, check to see if the B button was pressed
+             bne + 
+			 jmp NullJoypad
+ +            cmp #B_Button               ;if so, check to see if the B button was pressed
              bne NullJoypad
              iny                         ;if so, increment Y and execute same code as select
 SelectLogic:  ;lda DemoTimer               ;if select or B pressed, check demo timer one last time
@@ -166,22 +167,27 @@ SelectLogic:  ;lda DemoTimer               ;if select or B pressed, check demo t
              jsr DrawMushroomIcon
              jmp NullJoypad
 IncWorldSel:  
-             ldx LevelSelectNumber
+             lda World9Beaten
+			 bne +
+			 lda WorldSelectNumber
+			 cmp #World9
+			 beq ++
++			 ldx LevelSelectNumber
              inx
              cpx #$04
-             bcs +
+             bcs ++
              stx LevelSelectNumber
              lda WorldSelectNumber
              jsr GoContinue
              ldx #$00
              jmp UpdateShroom
-+:              inc WorldSelectNumber       ;increment world select number
+++:          inc WorldSelectNumber       ;increment world select number
              lda WorldSelectNumber
              cmp #$09
              bcc +
              lda #$00
              sta WorldSelectNumber
-+:              ldx #$00
++:           ldx #$00
              stx LevelSelectNumber
              jsr GoContinue
              ldx #$00
@@ -485,12 +491,13 @@ PrintVictoryMessages:
              bne IncMsgCounter         ;if set, branch to increment message counters
              lda PrimaryMsgCounter     ;otherwise load primary message counter
              beq ThankPlayer           ;if set to zero, branch to print first message
-             ldy UnlockWorld9
-             cpy #Unlock9Steps
-             bcs +
              ldy WorldNumber           ;check world number
+			 cpy #World9
+			 beq ++
              cpy #FinalWorld
              bne MRetainerMsg          ;if not at world 8, skip to next part
+			 
+			 
              jmp ++
 +:               ldy WorldNumber
              cpy #World9
@@ -506,17 +513,12 @@ ThankPlayer:   tay                       ;put primary message counter into Y
              ldy CurrentPlayer         ;otherwise get player currently on the screen
              jmp EvalForMusic
 SecondPartMsg: iny                       ;increment Y to do world 8's message
-             lda UnlockWorld9
-             cmp #Unlock9Steps
-             bcs +++
              lda WorldNumber
              cmp #FinalWorld           ;check world number
-             beq EvalForMusic          ;if at world 8, branch to next part
-             jmp ++++
-+++:           lda WorldNumber
-             cmp #World9
-             beq EvalForMusic
-++++:          dey                       ;otherwise decrement Y for world 1-7's message
+             beq EvalForMusic          ;if at world 8, branch to next partç
+			 cmp #World9
+			 beq EvalForMusic
+              dey                       ;otherwise decrement Y for world 1-7's message
              cpy #$04                  ;if counter at 4 (world 1-7 only)
              bcs SetEndTimer           ;branch to set victory end timer
              cpy #$03                  ;if counter at 3 (world 1-7 only)
@@ -538,14 +540,7 @@ IncMsgCounter: lda SecondaryMsgCounter
              sta PrimaryMsgCounter
              cmp #$07                      ;check primary counter one more time
 SetEndTimer:   bcc ExitMsgs                  ;if not reached value yet, branch to leave
-             lda UnlockWorld9
-             cmp #Unlock9Steps
-             bcs +
-             jmp ++
-+:               ldy WorldNumber
-             cpy #World9
-             beq Salir
-             ;lda WorldEndTimer
+	;lda WorldEndTimer
              ;cmp #$06
              ;bcs ExitMsgs
              ;ldy WorldNumber
@@ -570,6 +565,8 @@ PlayerEndWorld:                           ;branch to leave if not
              ldy WorldNumber            ;check world number
              cpy #FinalWorld            ;if on world 8, player is done with game, 
              beq EndChkBButton          ;thus branch to read controller
+			 cpy #World9
+			 beq EndChkBButton
 Tumama:
              lda #$00
              sta AreaNumber             ;otherwise initialize area number used as offset
