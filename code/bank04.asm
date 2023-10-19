@@ -3965,7 +3965,7 @@ AreaDataAddrLow_GroundStart:
              .db <L_GroundArea1, <L_GroundArea2, <L_GroundArea3, <L_GroundArea4, <L_GroundArea5, <L_GroundArea6
              .db <L_GroundArea7, <L_GroundArea8, <L_GroundArea9, <L_GroundArea10, <L_GroundArea11, <L_GroundArea12
              .db <L_GroundArea13, <L_GroundArea14, <L_GroundArea15, <L_GroundArea16, <L_GroundArea17, <L_GroundArea18
-             .db <L_GroundArea19, <L_GroundArea20, <L_GroundArea21, <L_GroundArea22, <L42, <L53, <L73, <L91, <L93, <EntryW7E
+             .db <L_GroundArea19, <L_GroundArea20, <L_GroundArea21, <L_GroundArea22, <L42, <L53, <L73, <L91, <L93, <EntryW7
 			 .db <L92
              ; Underground
 AreaDataAddrLow_UndergroundStart:
