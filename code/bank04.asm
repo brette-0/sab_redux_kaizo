@@ -2739,6 +2739,10 @@ InitPowerUp:
              sta Enemy_Flag,x          ;set buffer flag
              lda #$03
              sta Enemy_BoundBoxCtrl,x  ;set bounding box size control for power-up object
+			 lda Enemy_Y_Position,x
+			 and #$f0
+			 ora #$08
+			 sta Enemy_Y_Position,x
              rts
 InitFastGoomba:
              lda #$01
