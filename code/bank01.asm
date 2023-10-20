@@ -44,11 +44,12 @@ Jigas: .db "Welcome to the beach! Come", $fc, "here and relax a bit.", $ff ;04
 ID05: .db "You can swim in water in this hack! Use ", UP , " + ", Abutton, " to exit the", $fc, "water.", $ff ;05
 Structured: .db "In this video I will be", $fc, "explaining exactly what I do", $fc, "to collect Watch for Rolling", $fc, "Rocks in 0.5xA presses.", $fd, "But first, we need to clear", $fc, "something up.", $ff ;06
 Firefox: .db "You will never reach the", $fc, "princess! Bwahahaha", $fc, "                       -Bowser", $ff ;07
+Kaizo: .db "Welcome to World 9, also", $fc, "called Kaizo World. First, you", $fc, "will need to master shell", $fc, "jumps.", $ff ;08
              
 Textbox_Low:
-             .dl TestText, ID01, VeryLongText, Jigas, ID05, Structured, Firefox
+             .dl TestText, ID01, VeryLongText, Jigas, ID05, Structured, Firefox, Kaizo
 Textbox_High:
-             .dh TestText, ID01, VeryLongText, Jigas, ID05, Structured, Firefox
+             .dh TestText, ID01, VeryLongText, Jigas, ID05, Structured, Firefox, Kaizo
              
 -:  rts
 SetupTextbox:

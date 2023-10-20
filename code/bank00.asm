@@ -145,9 +145,10 @@ ChkSelect:    cmp #A_Button
 ChkWorldSel:  ldx WorldSelectEnableFlag   ;check to see if world selection has been enabled
              bne + 
 			 jmp NullJoypad
- +            cmp #B_Button               ;if so, check to see if the B button was pressed
-             bne NullJoypad
-             iny                         ;if so, increment Y and execute same code as select
++            cmp #B_Button               ;if so, check to see if the B button was pressed
+             beq + 
+			 jmp NullJoypad
++             iny                         ;if so, increment Y and execute same code as select
 SelectLogic:  ;lda DemoTimer               ;if select or B pressed, check demo timer one last time
              ;beq ResetTitle              ;if demo timer expired, branch to reset title screen mode
              ;lda #$18                    ;otherwise reset demo timer
@@ -167,17 +168,25 @@ SelectLogic:  ;lda DemoTimer               ;if select or B pressed, check demo t
              jsr DrawMushroomIcon
              jmp NullJoypad
 IncWorldSel:  
-             lda World9Beaten
-			 bne +
+             
 			 lda WorldSelectNumber
 			 cmp #World9
-			 beq ++
-+			 ldx LevelSelectNumber
+			 bne +			 
+			 ldx LevelSelectNumber
+             inx
+             cpx World9Progress
+             bcs ++
+             stx LevelSelectNumber
+			 bne +++
++			 
+			
+			 
+			 ldx LevelSelectNumber
              inx
              cpx #$04
              bcs ++
              stx LevelSelectNumber
-             lda WorldSelectNumber
++++:         lda WorldSelectNumber
              jsr GoContinue
              ldx #$00
              jmp UpdateShroom
@@ -591,7 +600,10 @@ PressButtonB:
              sta WorldSelectEnableFlag
              lda #$ff                   ;remove onscreen player's lives
              sta NumberofLives
-             lda #$00
+			 lda World9Progress
+			 bne +
+			 inc World9Progress
++:           lda #$00
              sta OldStatus
              inc DisableScreenFlag
              jmp TerminateGame          ;do sub to continue other player or end game
@@ -3238,7 +3250,19 @@ Hidden1UpCoinAmts:
              .db $15, $23, $16, $1b, $17, $18, $23, $63
              
 PlayerEndLevel:
-             lda #$00
+             lda WorldNumber
+			 cmp #World9
+			 bne +
+			 ldx World9Progress
+			 dex
+			 cpx LevelNumber
+			 bcc +
+			 ldx LevelNumber
+			 inx
+			 inx
+			 stx World9Progress
+			 
++:			 lda #$00
              sta GrabFlag
              sta StarInvincibleTimer
              sta PTimer

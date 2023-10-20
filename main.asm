@@ -5422,8 +5422,12 @@ YesIn: ldy #$26
              and #%00001111              ;and mask out high nybble
              sta $04                     ;store masked out result here
              ldx $03                     ;get saved content of block buffer                       ;and leave
+			 txa
+			 tay
              lda MetatileThingy,x
              ldx ObjectOffset            ;get object offset
+			 cpy #$99
+			 beq +++
              cmp #$00                    ;check to see if object bumped into anything
              ;jmp ++
 +:     ;lda SprObject_X_Position,x  ;otherwise load horizontal coordinate
@@ -5433,9 +5437,9 @@ YesIn: ldy #$26
              ;lda MetatileThingy,x
              ;ldx ObjectOffset            ;get object offset
              ;cmp #$00                    ;check to see if object bumped into anything
-++:    bne +
+++:    bne +++
              jmp NoEToBGCollision
-+:       cmp #$8b                        ;okputa
++++:       cmp #$8b                        ;okputa
              bne hypermas
              lda Enemy_State,x
              beq ++++
