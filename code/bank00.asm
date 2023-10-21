@@ -2045,6 +2045,7 @@ WorldNumberOffsetY:
              .db Wo7-YposLevelOffset
              .db Wo8-YposLevelOffset
              .db Wo9-YposLevelOffset
+             .db WoA-YposLevelOffset
 YposLevelOffset:
 Wo1: .db $b0, $b0, $00, $b0, $50
 Wo2: .db $b0, $b0, $00, $b0, $50
@@ -2055,6 +2056,7 @@ Wo6: .db $b0, $60, $a0, $60
 Wo7: .db $b0, $b0, $00, $50, $50
 Wo8: .db $90, $a0, $a0, $50
 Wo9: .db $b0, $b0, $00, $b0, $50
+WoA: .db $b0, $b0, $b0, $50
              
 Entrance_GameTimerSetup:
              lda ScreenLeft_PageLoc

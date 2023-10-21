@@ -10,6 +10,7 @@ WorldNumberOffset:
              .db W7-BankLevelOffset
              .db W8-BankLevelOffset
              .db W9-BankLevelOffset
+             .db WA-BankLevelOffset
 BankLevelOffset:
 W1:	.db $00, $00, $00, $00, $00
 W2: .db $00, $00, $01, $01, $01
@@ -20,6 +21,7 @@ W6: .db $04, $04, $04, $04
 W7:	.db $04, $05, $05, $05, $05
 W8: .db $05, $06, $06, $06
 W9: .db $06, $06, $07, $07
+WA: .db $08, $08, $08, $08
              
 LoadAreaPointerR:
              lda WorldNumber
