@@ -179,6 +179,35 @@ E91:
  .db PageSkip, #16
 	.db $ff
 
+E92:
+	.db #4 * $10 + 11, #46, $03
+ .db PageSkip, #2
+ .db PageSkip, #3
+
+ .db #9 * $10 + 11, #4 + $80
+ .db #13 * $10 + 6, #2
+ .db PageSkip, #5
+ .db PageSkip, #6
+
+ .db #14 * $10 + 7, #2 + $80
+ .db PageSkip, #8
+
+ .db #8 * $10 + 9, #2 + $80
+ .db PageSkip, #10
+ .db PageSkip, #11
+ .db PageSkip, #12
+
+ .db #5 * $10 + 6, #2 + $80
+ .db #8 * $10 + 6, #2
+ .db #11 * $10 + 6, #2
+
+ .db #5 * $10 + 7, #15 + $80
+ .db #12 * $10 + 4, #15
+
+ .db #1 * $10 + 2, #48 + $80
+ .db PageSkip, #16
+	.db $ff
+
 
 ;level 8-2
 L_GroundArea19:
@@ -201,5 +230,10 @@ L_CastleArea6:
 L91:
     .db $5b, $06
 	include "code\leveldata\levels\9-1.asm"
+	.db $fd
+
+L92:
+	.db $5b, $06
+	include "code\leveldata\levels\9-2.asm"
 	.db $fd
 	
