@@ -3262,6 +3262,8 @@ PlayerEndLevel:
 			 ldx LevelNumber
 			 inx
 			 inx
+			 cpx World9Progress
+			 bcc +
 			 stx World9Progress
 			 
 +:			 lda #$00
