@@ -4514,6 +4514,9 @@ FireCannon:
              ldy tempB
              lda Cannon_Creator,y
              tay
+			 lda Saved_ID,y
+			 cmp #BBillSpawner
+			 bne +
              lda #$00
              sta Saved_isDefeated,y
 +:        jmp Next3Slt               ;move onto next slot
