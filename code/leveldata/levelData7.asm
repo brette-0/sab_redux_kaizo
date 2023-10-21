@@ -211,13 +211,13 @@ E92:
 
 ;level 8-2
 L_GroundArea19:
-	.db $50, $b1
+	.db $54, $b1
 	include "code\leveldata\levels\8-2.asm"
 	.db $fd
 	
 ;level 8-3
 L_GroundArea2:
-	.db $90, $b1
+	.db $94, $b1
 	include "code\leveldata\levels\8-3.asm"
 	.db $fd
 

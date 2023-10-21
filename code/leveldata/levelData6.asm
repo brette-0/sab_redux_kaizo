@@ -209,6 +209,6 @@ L_CastleArea5:
 
 ;level 8-1
 L_GroundArea17:
-	.db $92, $31
+	.db $94, $31
 	include "code\leveldata\levels\8-1.asm"
 	.db $fd

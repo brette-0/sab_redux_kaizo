@@ -136,6 +136,7 @@ GetAreaDataAddrsR:
              cmp #$04
              bcc StoreFore
              sta BackgroundColorCtrl  ;if 4 or greater, save value here as bg color control
+		
              lda #$00
 StoreFore:  sta ForegroundScenery    ;if less, save value here as foreground scenery
              pla                      ;pull byte from stack and push it back
@@ -183,4 +184,4 @@ StoreStyle: sta AreaStyle
              lda AreaDataHigh
              adc #$00
              sta AreaDataHigh
-             rts
+			 rts

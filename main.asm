@@ -7483,6 +7483,17 @@ ProcSPlatCollisions:
              jmp ProcLPlatCollisions
              
              
+                          
+FirebarMirrorData:
+             .db $01, $03, $02, $00
+             
+FirebarTblOffsets:
+             .db $00, $09, $12, $1b, $24, $2d
+             .db $36, $3f, $48, $51, $5a, $63
+             
+FirebarYPos:
+             .db $0c, $18
+             
              
              
              

@@ -619,14 +619,14 @@ World7Pal:
              .db $22, $16, $30, $27
              .db $22, $07, $27, $17
 World8Pal:
-             .db $22, $26, $16, $0f
-             .db $22, $36, $17, $0f
-             .db $22, $30, $16, $07
-             .db $22, $27, $17, $0f
-             .db $22, $16, $27, $18
-             .db $22, $1a, $30, $27
-             .db $22, $16, $30, $27
-             .db $22, $0f, $36, $17
+             .db $0f, $26, $16, $0f
+             .db $0f, $36, $17, $0f
+             .db $0f, $30, $16, $07
+             .db $0f, $27, $17, $0f
+             .db $0f, $16, $27, $18
+             .db $0f, $1a, $30, $27
+             .db $0f, $16, $30, $27
+             .db $0f, $0f, $36, $17
              
              
 ChangeBankRunner:        
@@ -1844,7 +1844,7 @@ LuigiColors1:
 BackgroundColors1:
              .db $22, $22, $0f, $0f ;used by area type if bg color ctrl not set
              .db $0f, $22, $0f, $0f ;used by background color control if set
-             .db $12, $12, $0f, $0f
+             .db $12, $12, $0f, $07
              
 GetPlayerColors2: 
              ldx VRAM_Buffer1_Offset  ;get current buffer offset

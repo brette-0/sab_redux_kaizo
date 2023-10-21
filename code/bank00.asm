@@ -866,7 +866,7 @@ BackgroundColors:
              
              
 PlayerColorsOffset:
-             .db MarioColors-PlayerColors, LuigiColors-PlayerColors
+             .db MarioColors-PlayerColors;, LuigiColors-PlayerColors
              
 PlayerColors:
 MarioColors:
@@ -874,9 +874,9 @@ MarioColors:
              .db $22, $16, $27, $18 ;Big
              .db $22, $37, $27, $16 ;Fiery
 LuigiColors:
-             .db $22, $30, $27, $19 ;Small
-             .db $22, $30, $27, $19 ;Big
-             .db $22, $30, $27, $16 ;Fiery
+            ; .db $22, $30, $27, $19 ;Small
+            ; .db $22, $30, $27, $19 ;Big
+            ; .db $22, $30, $27, $16 ;Fiery
              
 GetBackgroundColor:
              ldy BackgroundColorCtrl   ;check background color control
@@ -915,6 +915,7 @@ ClrGetLoop:    lda PlayerColors,y       ;fetch player colors and store them
              ldy AreaType             ;otherwise use area type bits from area offset as offset
 SetBGColor:    lda BackgroundColors,y   ;to background color instead
              sta VRAM_Buffer1+3,x
++             
              lda #$3f                 ;set for sprite palette address
              sta VRAM_Buffer1,x       ;save to buffer
              lda #$10
@@ -927,6 +928,7 @@ SetBGColor:    lda BackgroundColors,y   ;to background color instead
              clc                      ;in case we want to write anything else later
              adc #$07
 SetVRAMOffset: sta VRAM_Buffer1_Offset  ;store as new vram buffer offset
+			 
              rts
              
              
@@ -935,8 +937,8 @@ GetAlternatePalette1:
 			 lda WorldNumber
 			 cmp #World7
 			 beq ++
-             lda AreaType
-             cmp #$01
+             ldy AreaType
+             dey
              bne +
 ++:          ldy WorldNumber          ;otherwise check world number
              lda WorldPaletteLUT,y
@@ -7278,18 +7280,7 @@ FirebarPosLookupTbl:
              .db $00, $0e, $1b, $28, $32, $3b, $42, $46, $48
              .db $00, $0f, $1f, $2d, $38, $42, $4a, $4e, $50
              .db $00, $11, $22, $31, $3e, $49, $51, $56, $58
-             
-FirebarMirrorData:
-             .db $01, $03, $02, $00
-             
-FirebarTblOffsets:
-             .db $00, $09, $12, $1b, $24, $2d
-             .db $36, $3f, $48, $51, $5a, $63
-             
-FirebarYPos:
-             .db $0c, $18
-             
-             
+
 BlockBufferAdderData:
              .db $00, $07, $0e
              
