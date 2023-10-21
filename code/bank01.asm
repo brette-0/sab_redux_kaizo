@@ -671,7 +671,8 @@ ChangeBankRunner:
 			 bne ++
 			 lda #$16
 			 sta VRAM_Buffer1,x
-++            cpy #$08
+++           lda VRAM_Buffer1,x
+			 cpy #$08
              bcc ++
              cpy #$0c
              bcs ++
