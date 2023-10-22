@@ -930,20 +930,27 @@ SetBGColor:    lda BackgroundColors,y   ;to background color instead
 SetVRAMOffset: sta VRAM_Buffer1_Offset  ;store as new vram buffer offset
 			 
              rts
-             
-             
+                     
 GetAlternatePalette1:
              
 			 lda WorldNumber
 			 cmp #World7
+<<<<<<< Updated upstream
 			 beq ++
              ldy AreaType
              dey
              bne +
 ++:          ldy WorldNumber          ;otherwise check world number
+=======
+			 beq SetW7
+             lda AreaType
+             cmp #$01
+             bne SetTPal3
+SetW7:       ldy WorldNumber          ;otherwise check world number
+>>>>>>> Stashed changes
              lda WorldPaletteLUT,y
              sta WorldPalette
-+:           lda #$00
+SetTPal3:    lda #$00
              sta TheresPal3
              lda AreaStyle            ;check for mushroom level style
              cmp #$01
@@ -2057,8 +2064,13 @@ Wo5: .db $b0, $90, $b0, $50
 Wo6: .db $b0, $60, $a0, $60
 Wo7: .db $b0, $b0, $00, $50, $50
 Wo8: .db $90, $a0, $a0, $50
+<<<<<<< Updated upstream
 Wo9: .db $b0, $b0, $b0, $50
 WoA: .db $b0, $b0, $b0, $50
+=======
+Wo9: .db $b0, $b0, $00, $b0, $50
+WoA: .db $a0, $b0, $b0, $50
+>>>>>>> Stashed changes
              
 Entrance_GameTimerSetup:
              lda ScreenLeft_PageLoc
@@ -2082,24 +2094,20 @@ Entrance_GameTimerSetup:
              lda AreaType                ;check area type
              bne ChkStPos                ;if water type, set swimming flag, otherwise do not set
              iny
-ChkStPos: sty SwimmingFlag
+ChkStPos:    sty SwimmingFlag
              ldx PlayerEntranceCtrl      ;get starting position loaded from header
              ldy AltEntranceControl      ;check alternate mode of entry flag for 0 or 1
              beq SetStPos
              cpy #$01
              beq SetStPos
              ldx AltYPosOffset-2,y       ;if not 0 or 1, override $0710 with new offset in X
-SetStPos: lda PlayerStarting_X_Pos,y  ;load appropriate horizontal position
+SetStPos:    lda PlayerStarting_X_Pos,y  ;load appropriate horizontal position
              sta Player_X_Position       ;and vertical positions for the player, using
-             ;lda EntrancePage
              jmp +
              lda ScreenLeft_X_Pos
              clc
              adc #$ff
              sta ScreenRight_X_Pos
-             ;lda ScreenRight_PageLoc
-             ;adc #$00
-             ;sta ScreenRight_PageLoc
              lda #$c0
              sta HorizontalScroll
              sta OldHorizontalScroll
@@ -2109,7 +2117,6 @@ SetStPos: lda PlayerStarting_X_Pos,y  ;load appropriate horizontal position
 +:
              lda PlayerBGPriorityData,x
              sta Player_SprAttrib        ;set player sprite attributes using offset in X
-             ;lda PlayerStarting_Y_Pos,x  ;AltEntranceControl as offset for horizontal and either $0710
              lda AltEntranceControl
              cmp #$02
              bcc +

@@ -583,13 +583,16 @@ ClearVRAM:
              bne -
 -:    rts
              
+W9CHRTable:
+    .db %00001100, %00000100, %00000100, %00000100
+
 WorldCHRTable:
-             .db %00000100, %00000100, %00000100, %00000100, %00001100, %00010100, %00011100, %00100100, %00101100, %00001100
+             .db %00000100, %00000100, %00000100, %00000100, %00001100, %00010100, %00011100, %00100100, %00101100, %00011100
 WorldPalHigh:
-             .db >World4Pal, >World6Pal, >World7Pal, >World8Pal
+             .db >World4Pal, >World6Pal, >World7Pal, >World8Pal, >W9Level1Pal
              
 WorldPalLow:
-             .db <World4Pal, <World6Pal, <World7Pal, <World8Pal
+             .db <World4Pal, <World6Pal, <World7Pal, <World8Pal, <W9Level1Pal
              
 World4Pal:
              .db $22, $29, $1a, $0f
@@ -619,6 +622,7 @@ World7Pal:
              .db $22, $16, $30, $27
              .db $22, $07, $27, $17
 World8Pal:
+<<<<<<< Updated upstream
              .db $0f, $26, $16, $0f
              .db $0f, $36, $17, $0f
              .db $0f, $30, $16, $07
@@ -627,7 +631,31 @@ World8Pal:
              .db $0f, $1a, $30, $27
              .db $0f, $16, $30, $27
              .db $0f, $0f, $36, $17
+=======
+             .db $22, $26, $16, $0f
+             .db $22, $36, $17, $0f
+             .db $22, $30, $16, $07
+             .db $22, $27, $17, $0f
+             .db $22, $16, $27, $18
+             .db $22, $1a, $30, $27
+             .db $22, $16, $30, $27
+             .db $22, $0f, $36, $17
+
+W9Level1Pal:
+             .db $22, $29, $1a, $0f
+             .db $22, $36, $17, $0f
+             .db $22, $30, $21, $0f
+             .db $22, $27, $17, $0f
+             .db $22, $16, $27, $18
+             .db $22, $1a, $30, $27
+             .db $22, $16, $30, $27
+             .db $22, $0f, $36, $17
+
+
+>>>>>>> Stashed changes
              
+World9LevelPalettes:
+            .db $05, $00, $00, $00 
              
 ChangeBankRunner:        
              
@@ -636,11 +664,20 @@ ChangeBankRunner:
              
              dec PCooldown
 +:        
+
+
              lda #$00
              sta BowserGotHit
              
              lda WorldPalette
-             beq +
+             beq goclearVRAM
+             lda WorldNumber
+             cmp #$09           ; = World A
+             bne +
+             ldy LevelNumber
+             lda World9LevelPalettes, y 
+             sta WorldPalette 
++:
              ldy WorldPalette
              dey
              lda WorldPalLow,y
@@ -687,7 +724,7 @@ ChangeBankRunner:
              sta VRAM_Buffer1,x
              stx VRAM_Buffer1_Offset
              sta WorldPalette
-+:
+goclearVRAM:
              lda clearVRAM
              beq +
              lda #$00
@@ -732,8 +769,13 @@ ChangeBankRunner:
 ++           ldx #%01000110
              bne ++             
 +:           ldy WorldNumber
-             lda WorldCHRTable,y
-             tax
+             cpy #$09   ; = World A 
+             bne +
+             ldy LevelNumber 
+             lda W9CHRTable, y 
+             jmp W9CHRskip
++:           lda WorldCHRTable,y
+W9CHRskip:   tax
              inx
              inx
 ++:          stx $8001

@@ -3901,6 +3901,7 @@ WorldAddrOffsets:
              .db World5Areas-AreaAddrOffsets, World6Areas-AreaAddrOffsets
              .db World7Areas-AreaAddrOffsets, World8Areas-AreaAddrOffsets
              .db World9Areas-AreaAddrOffsets ;world 9
+             .db WorldAAreas-AreaAddrOffsets
              
 AreaAddrOffsets:
 World1Areas: .db $45, $49, $80, $46, $c0 ; Why is it $c0 and not $40?  Does it matter?
@@ -3912,6 +3913,7 @@ World6Areas: .db $4e, $43, $4d, $c7
 World7Areas: .db $53, $5b, $82, $58, $c4
 World8Areas: .db $50, $52, $41, $c5
 World9Areas: .db $59, $5c, $5a, $c8
+WorldAAreas: .db $5d
              
              
              
@@ -3934,7 +3936,7 @@ EnemyDataAddrLow_GroundStart:
              .db <E_GroundArea7, <E_GroundArea8, <E_GroundArea9, <E_GroundArea10, <E_GroundArea11, <E_GroundArea12
              .db <E_GroundArea13, <E_GroundArea14, <E_GroundArea15, <E_GroundArea16, <E_GroundArea17, <E_GroundArea18
              .db <E_GroundArea19, <E_GroundArea20, <E_GroundArea21, <E_GroundArea22, <E42, <E53, <E73, <E91, <E93, <EntryW7E
-			 .db <E92
+			 .db <E92, <EA1
              ; UnderGround
 EnemyDataAddrLow_UndergroundStart:
              .db <E_UndergroundArea1, <E_UndergroundArea2, <E_UndergroundArea3
@@ -3950,7 +3952,7 @@ EnemyDataAddrHigh:
              .db >E_GroundArea7, >E_GroundArea8, >E_GroundArea9, >E_GroundArea10, >E_GroundArea11, >E_GroundArea12
              .db >E_GroundArea13, >E_GroundArea14, >E_GroundArea15, >E_GroundArea16, >E_GroundArea17, >E_GroundArea18
              .db >E_GroundArea19, >E_GroundArea20, >E_GroundArea21, >E_GroundArea22, >E42, >E53, >E73, >E91, >E93, >EntryW7E
-			 .db >E92
+			 .db >E92, >EA1
              ; Underground
              .db >E_UndergroundArea1, >E_UndergroundArea2, >E_UndergroundArea3
              ; Water
@@ -3972,7 +3974,7 @@ AreaDataAddrLow_GroundStart:
              .db <L_GroundArea7, <L_GroundArea8, <L_GroundArea9, <L_GroundArea10, <L_GroundArea11, <L_GroundArea12
              .db <L_GroundArea13, <L_GroundArea14, <L_GroundArea15, <L_GroundArea16, <L_GroundArea17, <L_GroundArea18
              .db <L_GroundArea19, <L_GroundArea20, <L_GroundArea21, <L_GroundArea22, <L42, <L53, <L73, <L91, <L93, <EntryW7
-			 .db <L92
+			 .db <L92, <LA1
              ; Underground
 AreaDataAddrLow_UndergroundStart:
              .db <L_UndergroundArea1, <L_UndergroundArea2, <L_UndergroundArea3
@@ -3988,7 +3990,7 @@ AreaDataAddrHigh:
              .db >L_GroundArea7, >L_GroundArea8, >L_GroundArea9, >L_GroundArea10, >L_GroundArea11, >L_GroundArea12
              .db >L_GroundArea13, >L_GroundArea14, >L_GroundArea15, >L_GroundArea16, >L_GroundArea17, >L_GroundArea18
              .db >L_GroundArea19, >L_GroundArea20, >L_GroundArea21, >L_GroundArea22, >L42, >L53, >L73, >L91, >L93, >EntryW7E
-			 .db >L92
+			 .db >L92, >LA1
              ; Underground
              .db >L_UndergroundArea1, >L_UndergroundArea2, >L_UndergroundArea3
              ; Castle
