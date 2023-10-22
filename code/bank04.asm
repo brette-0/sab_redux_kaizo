@@ -2088,6 +2088,7 @@ ExPipeU: lda #$00
              rts     
              
 ProcLoopCommand:
+			
              ;jmp ChkEnemyFrenzy
              
 ChkEnemyFrenzy:
@@ -2188,8 +2189,8 @@ CheckPageCtrlRow:
              and #$0f
              cmp #$0f                 ;check for special row $0f
              bne PositionEnemyObj     ;if not found, branch to position enemy object
-             lda EnemyObjectPageSel   ;if page select set,
-             bne PositionEnemyObj     ;branch without reading second byte
+             ;lda EnemyObjectPageSel   ;if page select set,
+             ;bne PositionEnemyObj     ;branch without reading second byte
              iny
              lda (EnemyData),y        ;otherwise, get second byte, mask out 2 MSB
              and #%01111111
