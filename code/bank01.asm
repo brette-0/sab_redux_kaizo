@@ -583,16 +583,16 @@ ClearVRAM:
              bne -
 -:    rts
              
-W9CHRTable:
-    .db %00001100, %00000100, %00000100, %00000100
+WACHRTable:
+    .db %00001100, %00011100, %00000100, %00000100
 
 WorldCHRTable:
              .db %00000100, %00000100, %00000100, %00000100, %00001100, %00010100, %00011100, %00100100, %00101100, %00011100
 WorldPalHigh:
-             .db >World4Pal, >World6Pal, >World7Pal, >World8Pal, >W9Level1Pal
+             .db >World4Pal, >World6Pal, >World7Pal, >World8Pal, >WALevel1Pal, >WALeve2Pal
              
 WorldPalLow:
-             .db <World4Pal, <World6Pal, <World7Pal, <World8Pal, <W9Level1Pal
+             .db <World4Pal, <World6Pal, <World7Pal, <World8Pal, <WALevel1Pal, <WALeve2Pal
              
 World4Pal:
              .db $22, $29, $1a, $0f
@@ -631,7 +631,7 @@ World8Pal:
              .db $0f, $16, $30, $27
              .db $0f, $0f, $36, $17
 
-W9Level1Pal:
+WALevel1Pal:
              .db $0f, $11, $22, $0f
              .db $22, $26, $08, $0f
              .db $22, $30, $21, $0f
@@ -641,9 +641,19 @@ W9Level1Pal:
              .db $22, $16, $30, $27
              .db $22, $0f, $36, $17
 
+WALeve2Pal:
+             .db $0f, $27, $16, $06
+             .db $0f, $36, $17, $0f
+             .db $0f, $30, $16, $07
+             .db $0f, $27, $17, $0f
+             .db $0f, $16, $27, $18
+             .db $0f, $1a, $30, $27
+             .db $0f, $16, $30, $27
+             .db $0f, $0f, $36, $17
+
              
 World9LevelPalettes:
-            .db $05, $00, $00, $00 
+            .db $05, $06, $00, $00 
              
 ChangeBankRunner:        
              
@@ -760,10 +770,10 @@ goclearVRAM:
              cpy #$09   ; = World A 
              bne +
              ldy LevelNumber 
-             lda W9CHRTable, y 
-             jmp W9CHRskip
+             lda WACHRTable, y 
+             jmp WACHRskip
 +:           lda WorldCHRTable,y
-W9CHRskip:   tax
+WACHRskip:   tax
              inx
              inx
 ++:          stx $8001

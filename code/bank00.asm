@@ -932,8 +932,9 @@ SetVRAMOffset: sta VRAM_Buffer1_Offset  ;store as new vram buffer offset
              rts
                      
 GetAlternatePalette1:
-             
 			 lda WorldNumber
+             cmp #$09; = World A 
+             beq SetW7
 			 cmp #World7
 			 beq SetW7
              lda AreaType
@@ -2057,7 +2058,7 @@ Wo6: .db $b0, $60, $a0, $60
 Wo7: .db $b0, $b0, $00, $50, $50
 Wo8: .db $90, $a0, $a0, $50
 Wo9: .db $b0, $b0, $00, $b0, $50
-WoA: .db $a0, $b0, $b0, $50
+WoA: .db $a0, $80, $b0, $50
              
 Entrance_GameTimerSetup:
              lda ScreenLeft_PageLoc

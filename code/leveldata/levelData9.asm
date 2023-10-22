@@ -53,3 +53,34 @@ EA1:
  .db PageSkip, #16
     .db $ff
 	
+LA2:
+	.db $00, $06
+	include "code\leveldata\levels\a-2.asm"
+	.db $fd
+
+
+EA2:
+ .db PageSkip, #1
+ .db PageSkip, #2
+
+ .db #2 * $10 + 7, #2 + $80
+ .db #6 * $10 + 11, #42
+ .db #13 * $10 + 7, #41
+
+ .db #2 * $10 + 7, #41 + $80
+
+ .db #11 * $10 + 9, #2 + $80
+ .db #14 * $10 + 8, #19
+
+ .db #1 * $10 + 8, #2 + $80
+ .db PageSkip, #7
+ .db PageSkip, #8
+ .db PageSkip, #9
+ .db PageSkip, #10
+ .db PageSkip, #11
+ .db PageSkip, #12
+ .db PageSkip, #13
+ .db PageSkip, #14
+ .db PageSkip, #15
+ .db PageSkip, #16
+	.db $ff

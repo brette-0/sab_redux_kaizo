@@ -4855,7 +4855,10 @@ SideCheckLoop:
              beq BHalf1
              cmp #$91
              bne +++
-++:          ldy WorldNumber
+++:          ldy AreaPointer 
+             cpy #$83
+             beq +++++
+             ldy WorldNumber
 			 cpy #World8
 			 beq +++++
              ldy AreaType

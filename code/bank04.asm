@@ -3913,7 +3913,7 @@ World6Areas: .db $4e, $43, $4d, $c7
 World7Areas: .db $53, $5b, $82, $58, $c4
 World8Areas: .db $50, $52, $41, $c5
 World9Areas: .db $59, $5c, $5a, $c8
-WorldAAreas: .db $5d
+WorldAAreas: .db $5d, $83
              
              
              
@@ -3939,7 +3939,7 @@ EnemyDataAddrLow_GroundStart:
 			 .db <E92, <EA1
              ; UnderGround
 EnemyDataAddrLow_UndergroundStart:
-             .db <E_UndergroundArea1, <E_UndergroundArea2, <E_UndergroundArea3
+             .db <E_UndergroundArea1, <E_UndergroundArea2, <E_UndergroundArea3, <EA2
              ; Water
 EnemyDataAddrLow_WaterStart:
              .db <E_WaterArea1, <E_WaterArea2, <E_WaterArea3
@@ -3954,7 +3954,7 @@ EnemyDataAddrHigh:
              .db >E_GroundArea19, >E_GroundArea20, >E_GroundArea21, >E_GroundArea22, >E42, >E53, >E73, >E91, >E93, >EntryW7E
 			 .db >E92, >EA1
              ; Underground
-             .db >E_UndergroundArea1, >E_UndergroundArea2, >E_UndergroundArea3
+             .db >E_UndergroundArea1, >E_UndergroundArea2, >E_UndergroundArea3, >EA2
              ; Water
              .db >E_WaterArea1, >E_WaterArea2, >E_WaterArea3
              
@@ -3977,7 +3977,7 @@ AreaDataAddrLow_GroundStart:
 			 .db <L92, <LA1
              ; Underground
 AreaDataAddrLow_UndergroundStart:
-             .db <L_UndergroundArea1, <L_UndergroundArea2, <L_UndergroundArea3
+             .db <L_UndergroundArea1, <L_UndergroundArea2, <L_UndergroundArea3, <LA2
              ; Castle
 AreaDataAddrLow_CastleStart:
              .db <L_CastleArea1, <L_CastleArea2, <L_CastleArea3, <L_CastleArea4, <L_CastleArea5, <L_CastleArea6, <L54, <L64
@@ -3992,7 +3992,7 @@ AreaDataAddrHigh:
              .db >L_GroundArea19, >L_GroundArea20, >L_GroundArea21, >L_GroundArea22, >L42, >L53, >L73, >L91, >L93, >EntryW7E
 			 .db >L92, >LA1
              ; Underground
-             .db >L_UndergroundArea1, >L_UndergroundArea2, >L_UndergroundArea3
+             .db >L_UndergroundArea1, >L_UndergroundArea2, >L_UndergroundArea3, >LA2
              ; Castle
              .db >L_CastleArea1, >L_CastleArea2, >L_CastleArea3, >L_CastleArea4, >L_CastleArea5, >L_CastleArea6, >L54, >L64
              
