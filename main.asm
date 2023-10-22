@@ -4128,7 +4128,10 @@ NoPuta:  tya
              cmp #$91
              bne +
 ++:         ;jmp DoFootCheck
-             ldy WorldNumber
+             ldy AreaPointer 
+             cpy #$83
+             beq +++++
+			 ldy WorldNumber
 			 cpy #World8
 			 beq +++++
 			 ldy AreaType
@@ -4412,7 +4415,10 @@ Burh2:   jmp Burh
 PutOnSlope1:
              jmp PutOnSlope
 Ostia:   rts
-e:           ldy WorldNumber
+e:          ldy AreaPointer 
+             cpy #$83
+             beq +++++ 
+			ldy WorldNumber
 			 cpy #World8
 			 beq +++++
              ldy AreaType
@@ -4526,7 +4532,10 @@ Burh:
              pla
              ldy #$08
              sty WaterCooldown
-+:           ldy WorldNumber
++:           ldy AreaPointer 
+             cpy #$83
+             beq +++++
+			 ldy WorldNumber
 			 cpy #World8
 			 beq +++++
              ldy AreaType
@@ -4939,7 +4948,10 @@ BHalf: ldy temp1                 ;load block adder offset
              beq Ultramas1
              cmp #$91
              bne +++
-++:          ldx WorldNumber
+++:          ldx AreaPointer 
+             cpx #$83
+             beq ++++
+			 ldx WorldNumber
 			 cpx #World8
 			 beq ++++
 			 ldx AreaType
