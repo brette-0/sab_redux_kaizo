@@ -1247,12 +1247,12 @@ Chk2Ofs: lda $05                  ;if value of $02 was set earlier for whatever 
              adc FirebarYPos,y        ;add value loaded with offset to player's vertical coordinate
              inc $05                  ;then increment temp and jump back
              jmp FBCLoop
-ChgSDir: ldx #$01                 ;set movement direction by default
-             lda $04                  ;if OAM X coordinate of player's sprite 1
-             cmp $06                  ;is greater than horizontal coordinate of firebar
-             bcs SetSDir              ;then do not alter movement direction
-             inx                      ;otherwise increment it
-SetSDir: stx Enemy_MovingDir      ;store movement direction here
+ChgSDir: ;ldx #$01                 ;set movement direction by default
+             ;lda $04                  ;if OAM X coordinate of player's sprite 1
+             ;cmp $06                  ;is greater than horizontal coordinate of firebar
+             ;bcs SetSDir              ;then do not alter movement direction
+             ;inx                      ;otherwise increment it
+SetSDir: ;stx Enemy_MovingDir      ;store movement direction here
              ldx #$00
              lda $00                  ;save value written to $00 to stack
              pha
