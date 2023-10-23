@@ -3254,6 +3254,9 @@ PlayerEndLevel:
 			 cmp #World9
 			 bne +
 			 ldx World9Progress
+			 cpx #$04
+			 bcs +
+			 ldx World9Progress
 			 dex
 			 cpx LevelNumber
 			 bcc +

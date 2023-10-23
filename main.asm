@@ -1607,7 +1607,10 @@ HammerChk: lda EnemyFrameTimer,x      ;if timer set here not expired yet, skip a
              and #%00001111             ;check to see if it's time to execute sub
              bne SetHmrTmr              ;if not, skip sub, otherwise
              jsr SpawnHammerObj         ;execute sub on every fourth frame to spawn misc object (hammer)
-SetHmrTmr: ldy #$22
+SetHmrTmr:   
+			 lda Enemy_Y_Speed,x
+			 bmi ChkFireB
+			 ldy #$22
              jsr BlockBufferChk_Enemy
              beq ChkFireB               ;then skip to world number check for flames
              cmp #$5f
@@ -1619,9 +1622,7 @@ SetHmrTmr: ldy #$22
              cmp #$60
              beq ChkFireB
              lda Enemy_Y_Position,x
-             clc
-             adc #$08
-             and #%11110000
+			 and #%11110000
              ;ora #%00000001
              sta Enemy_Y_Position,x
              lda PseudoRandomBitReg,x

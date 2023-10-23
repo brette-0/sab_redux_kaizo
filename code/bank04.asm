@@ -3160,7 +3160,7 @@ FinCCSt: sta Enemy_PageLoc,x        ;save as enemy's page location
              rts
              
 BowserPoints:
-             .db $05, $05, $05, $05, $07, $0a, $10, $20
+             .db $05, $05, $05, $05, $07, $0a, $10, $20, #99, #99
 InitBowser:
              lda BowserKilled
              beq +
@@ -3929,7 +3929,7 @@ EnemyAddrHOffsets:
 EnemyDataAddrLow:
              ; Castle
 EnemyDataAddrLow_CastleStart:
-             .db <E_CastleArea1, <E_CastleArea2, <E_CastleArea3, <E_CastleArea4, <E_CastleArea5, <E_CastleArea6, <E54, <E64
+             .db <E_CastleArea1, <E_CastleArea2, <E_CastleArea3, <E_CastleArea4, <E_CastleArea5, <E_CastleArea6, <E54, <E64, <E94
              ; Ground
 EnemyDataAddrLow_GroundStart:
              .db <E_GroundArea1, <E_GroundArea2, <E_GroundArea3, <E_GroundArea4, <E_GroundArea5, <E_GroundArea6
@@ -3946,7 +3946,7 @@ EnemyDataAddrLow_WaterStart:
              
 EnemyDataAddrHigh:
              ; Castle
-             .db >E_CastleArea1, >E_CastleArea2, >E_CastleArea3, >E_CastleArea4, >E_CastleArea5, >E_CastleArea6, >E54, >E64
+             .db >E_CastleArea1, >E_CastleArea2, >E_CastleArea3, >E_CastleArea4, >E_CastleArea5, >E_CastleArea6, >E54, >E64, >E94
              ; Ground
              .db >E_GroundArea1, >E_GroundArea2, >E_GroundArea3, >E_GroundArea4, >E_GroundArea5, >E_GroundArea6
              .db >E_GroundArea7, >E_GroundArea8, >E_GroundArea9, >E_GroundArea10, >E_GroundArea11, >E_GroundArea12
@@ -3980,7 +3980,7 @@ AreaDataAddrLow_UndergroundStart:
              .db <L_UndergroundArea1, <L_UndergroundArea2, <L_UndergroundArea3, <LA2
              ; Castle
 AreaDataAddrLow_CastleStart:
-             .db <L_CastleArea1, <L_CastleArea2, <L_CastleArea3, <L_CastleArea4, <L_CastleArea5, <L_CastleArea6, <L54, <L64
+             .db <L_CastleArea1, <L_CastleArea2, <L_CastleArea3, <L_CastleArea4, <L_CastleArea5, <L_CastleArea6, <L54, <L64, <L94
              
 AreaDataAddrHigh:
              ; Water
@@ -3994,7 +3994,7 @@ AreaDataAddrHigh:
              ; Underground
              .db >L_UndergroundArea1, >L_UndergroundArea2, >L_UndergroundArea3, >LA2
              ; Castle
-             .db >L_CastleArea1, >L_CastleArea2, >L_CastleArea3, >L_CastleArea4, >L_CastleArea5, >L_CastleArea6, >L54, >L64
+             .db >L_CastleArea1, >L_CastleArea2, >L_CastleArea3, >L_CastleArea4, >L_CastleArea5, >L_CastleArea6, >L54, >L64, >L94
              
              
              
