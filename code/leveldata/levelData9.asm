@@ -54,7 +54,7 @@ EA1:
     .db $ff
 	
 LA2:
-	.db $00, $06
+	.db $50, $06
 	include "code\leveldata\levels\a-2.asm"
 	.db $fd
 
