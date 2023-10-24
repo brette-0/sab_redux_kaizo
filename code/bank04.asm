@@ -69,18 +69,18 @@ Palette0_MTiles:
              .db $4f, $e5, $9f, $e6 ;warp pipe end left, points down 2e
              .db $9a, $e7, $bb, $e8 ;warp pipe end right, points down 2f
              .db $30, $32, $31, $33 ;hidden block (star) 30
-             .db $fa, $45, $fb, $47 ;brick (power-up) 31
-             .db $fa, $45, $fb, $47 ;brick (vine) 32
-             .db $fa, $45, $fb, $47 ;brick (star) 33
-             .db $fa, $45, $fb, $47 ;brick (coins) 34
-             .db $fa, $45, $fb, $47 ;brick (1-up) 35
+             .db $ff, $ff, $ff, $ff ;brick (power-up) 31
+             .db $ff, $ff, $ff, $ff ;brick (vine) 32
+             .db $ff, $ff, $ff, $ff ;brick (star) 33
+             .db $ff, $ff, $ff, $ff ;brick (coins) 34
+             .db $ff, $ff, $ff, $ff ;brick (1-up) 35
              .db $86, $8a, $87, $8b ;sideways pipe end top 36
              .db $8e, $91, $8f, $92 ;sideways pipe end bottom 37
              .db $26, $26, $26, $26 ;hidden block (1 coin) 38
              .db $26, $26, $26, $26 ;hidden block (1-up) 39
              .db $26, $26, $26, $26 ;hidden block (power-up) 3a
              .db $26, $26, $26, $26 ;hidden block (star) 3b
-             .db $fa, $45, $fb, $47 ;brick (coin) 3c
+             .db $ff, $ff, $ff, $ff ;brick (coin) 3c
              .db $24, $24, $6a, $6a ;pipe shaft right 3d
              .db $24, $93, $24, $93 ;sideways pipe shaft bottom 3e
              
@@ -106,16 +106,16 @@ Palette1_MTiles:
              .db $fa, $45, $fb, $47 ;breakable brick 52
              .db $45, $47, $45, $47 ;breakable brick (not used) 53
              .db $f2, $f4, $f3, $f5 ;cracked rock terrain 54
-             .db $fd, $45, $fe, $47 ;brick with line (power-up) 55
-             .db $fd, $45, $fe, $47 ;brick with line (vine) 56
-             .db $fd, $45, $fe, $47 ;brick with line (star) 57
-             .db $fd, $45, $fe, $47 ;brick with line (coins) 58
-             .db $fd, $45, $fe, $47 ;brick with line (1-up) 59
-             .db $fa, $45, $fb, $47 ;brick (power-up) 5a
-             .db $fa, $45, $fb, $47 ;brick (vine) 5b
-             .db $fa, $45, $fb, $47 ;brick (star) 5c
-             .db $fa, $45, $fb, $47 ;brick (coins) 5d
-             .db $fa, $45, $fb, $47 ;brick (1-up) 5e
+             .db $3e, $ff, $3e, $ff ;brick with line (power-up) 55
+             .db $3e, $ff, $3e, $ff ;brick with line (vine) 56
+             .db $3e, $ff, $3e, $ff ;brick with line (star) 57
+             .db $3e, $ff, $3e, $ff ;brick with line (coins) 58
+             .db $3e, $ff, $3e, $ff ;brick with line (1-up) 59
+             .db $ff, $ff, $ff, $ff ;brick (power-up) 5a
+             .db $ff, $ff, $ff, $ff ;brick (vine) 5b
+             .db $ff, $ff, $ff, $ff ;brick (star) 5c
+             .db $ff, $ff, $ff, $ff ;brick (coins) 5d
+             .db $ff, $ff, $ff, $ff ;brick (1-up) 5e
              .db $30, $32, $31, $33 ;hidden block (1 coin) 5f
              .db $30, $32, $31, $33 ;hidden block (1-up) 60
              .db $ab, $ac, $ad, $ae ;solid block (3-d block) 61

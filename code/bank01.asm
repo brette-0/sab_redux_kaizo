@@ -37,7 +37,7 @@ ASCII2CHR:
              
              .db $6e, $69, $6a, $6b, $6c, $67, $68 ;button emojis
              
-TestText: .db "Hello! Welcome to this world.", $fc, "In this world you can go", $fc ,"backwards and grab shells!", $ff ;01
+TestText: .db "Hello! Welcome to this game.", $fc, "In this game you can go", $fc ,"backwards and grab shells!", $ff ;01
 ID01:    .db "If you pause, you can save", $fc, "your game. Just select quit", $fc, "and save and then you can", $fc, "continue playing later.", $ff ;02
 VeryLongText: .db "If you hold ", UP, " when releasing a", $fc, "shell, you will throw it", $fc, "upwards and if you hold ", DOWN, " you will release the shell gently", $fc, "on the floor." ,$ff ;03
 Jigas: .db "Welcome to the beach! Come", $fc, "here and relax a bit.", $ff ;04

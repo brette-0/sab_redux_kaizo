@@ -1361,6 +1361,8 @@ BlockGfxData:
              .db $26, $26, $26, $26
              .db $72, $73, $74, $75
              .db $53, $54, $55, $56
+			 .db $3e, $3e, $ff, $ff
+			 .db $ff, $ff, $ff, $ff
 -: rts
 RemoveCoin_Axe:
              ;ldy #$e1                 ;set low byte so offset points to $0341
@@ -1421,18 +1423,22 @@ WriteBlockMetatile:
              beq UseBOffset
              cmp #$74
              beq UseBOffset
-             ldy #$00                ;load offset for brick metatile w/ line
+             ldy #$07
+			 cmp #$58				 ;use offset if metatile is brick with coins (w/ line)
+             beq UseBOffset
+			 iny
+			 cmp #$5d
+             beq UseBOffset          ;use offset if metatile is brick with coins (w/o line)
+			 ldy #$00                ;load offset for brick metatile w/ line
              cmp #$26
              beq VineYes
-             cmp #$58
-             beq UseBOffset          ;use offset if metatile is brick with coins (w/ line)
+                   
              cmp #$51
              beq UseBOffset          ;use offset if metatile is breakable brick w/ line
              cmp #$27
              beq UseBOffset
              iny                     ;increment offset for brick metatile w/o line
-             cmp #$5d
-             beq UseBOffset          ;use offset if metatile is brick with coins (w/o line)
+             
              cmp #$52
              beq UseBOffset          ;use offset if metatile is breakable brick w/o line
              cmp #$28
@@ -1447,7 +1453,7 @@ WriteBlockMetatile:
              and #%11110000
              cmp #$c0
              beq UseBOffset
-+:             ldy #$05
++:           ldy #$05
              lda temp6
              cmp #$c2
              beq UseBOffset

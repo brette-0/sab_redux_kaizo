@@ -2711,6 +2711,8 @@ ShellOrBlockDefeat:
 +:      lda Enemy_ID,x            ;check for piranha plant
              cmp #BlackParatroopa
              beq ExHCF
+			 cmp #Sign
+			 beq ExHCF
              cmp #UDPiranhaPlant
              beq +
              cmp #RUDPiranhaPlant
@@ -2931,13 +2933,15 @@ PlayerEnemyCollision:
              and #%11111110              ;otherwise, clear d0 of current enemy object's
              sta Enemy_CollisionBits,x   ;collision bit
 NoPECol: rts
-             
+HandleSignInteraction: jmp SignDoStuff   
 CheckForPUpCollision:
              ldy Enemy_ID,x
              cpy #PowerUpObject            ;check for power-up object
              bne EColl                     ;if not found, branch to next part
              jmp HandlePowerUpCollision    ;otherwise, unconditional jump backwards
-EColl: lda StarInvincibleTimer       ;if star mario invincibility timer expired,
+EColl:       cpy #Sign
+             beq HandleSignInteraction
+			 lda StarInvincibleTimer       ;if star mario invincibility timer expired,
              beq HandlePECollisions        ;perform task here, otherwise kill enemy like
              lda GrabFlag
              beq +
@@ -3005,8 +3009,6 @@ HandlePECollisions:                    ;branch to leave if either is true
              beq ChkForPlayerInjury2
              cpy #PiranhaPlant            ;branch if piranha plant
              beq InjurePlayer2
-             cpy #Sign
-             beq HandleSignInteraction
              cpy #UDPiranhaPlant
              beq InjurePlayer2
              cmp #RUDPiranhaPlant
@@ -3056,7 +3058,7 @@ Grab:  lda A_B_Buttons                ;check if B is pressed
              lda #$01
              sta GrabFlag
 H:       rts
-HandleSignInteraction: jmp SignDoStuff
+
 InjurePlayer2:
              jmp InjurePlayer
 ChkForPlayerInjury2:
