@@ -7833,12 +7833,10 @@ CheckBlockWhenCrouching:
 ++:			 lda #$01
 			 sta CrouchingFlag
 			 lsr
-			 ldy Player_X_Speed
-			 cpy #$fe
-			 bcs +
-			 cpy #$03
-			 bcs ExitBlockhead
-+:			 sta Player_X_Speed
+			 lda SavedJoypadBits
+			 and #%11111100
+			 sta SavedJoypadBits
+			 
 					
 ExitBlockhead:			 
 			 rts
