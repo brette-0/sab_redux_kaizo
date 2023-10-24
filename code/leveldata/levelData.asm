@@ -154,6 +154,7 @@ E_GroundArea6:
 	  .db PageSkip, $09
 	  
 	  .db $22, $30 + PageFlag
+	  .db $33, ScrollLockEnemy + PageFlag
 	  
 	  
 	  .db $ff
@@ -206,6 +207,8 @@ E_GroundArea7:
 	  .db $2a, Goomba + PageFlag
 	  .db $3a, Goomba
 	  .db $81, $30
+	  
+	  .db $f3, ScrollLockEnemy + PageFlag
 	  
       .db $ff
 

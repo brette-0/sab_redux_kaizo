@@ -1429,6 +1429,8 @@ WriteBlockMetatile:
 			 iny
 			 cmp #$5d
              beq UseBOffset          ;use offset if metatile is brick with coins (w/o line)
+			 cmp #$34
+             beq UseBOffset
 			 ldy #$00                ;load offset for brick metatile w/ line
              cmp #$26
              beq VineYes
@@ -1443,8 +1445,7 @@ WriteBlockMetatile:
              beq UseBOffset          ;use offset if metatile is breakable brick w/o line
              cmp #$28
              beq UseBOffset
-             cmp #$34
-             beq UseBOffset
+             
              ldy #$06
              cmp #$c2
              beq +
@@ -4007,6 +4008,8 @@ ProcFireball_Bubble:
              bne ProcFireballs          ;if button pressed in previous frame, branch
              lda FballCooldown
              bne NoFBall3
+			 lda GrabFlag
+			 bne NoFBall3
              lda FireballCounter        ;load fireball counter
              and #%00000001             ;get LSB and use as offset for buffer
              tax
