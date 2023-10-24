@@ -4095,6 +4095,7 @@ HeadChk: lda #$00
              beq +
              ldy #$25
              jsr BlockBufferColli_Head
+StartHead:
              ldy temp1
              cmp #$00
              jmp ++
@@ -7805,7 +7806,42 @@ RNG_call:
              eor seed+0
              sta seed+0
              rts
-             
+NoHeadColl:
+		.db $29, $2a, $2b, $30, $38, $39, $3a, $3b, $5f, $60, $6f, $73, $92, $88, $8e, $8f, $91, $74, $26, $63
+CheckBlockWhenCrouching:
+			 lda GameEngineSubroutine
+			 cmp #$08
+			 bne ExitBlockhead
+			 lda PlayerSize
+			 ora Player_State
+			 bne ExitBlockhead 
+			 ldy #$27
+			 jsr BlockBufferColli_Head ;do player-to-bg collision detection on other half of player
+			 beq ExitBlockhead
+			 ldy #CheckBlockWhenCrouching-NoHeadColl
+-:			 cmp NoHeadColl,y
+			 beq ExitBlockhead
+			 dey
+			 bne -
+			 ldy PTimer
+			 beq +
+			 cmp #$52
+			 beq ExitBlockhead
+			 jmp ++
++:			 cmp #$c2
+			 beq ExitBlockhead
+++:			 lda #$01
+			 sta CrouchingFlag
+			 lsr
+			 ldy Player_X_Speed
+			 cpy #$fe
+			 bcs +
+			 cpy #$03
+			 bcs ExitBlockhead
++:			 sta Player_X_Speed
+					
+ExitBlockhead:			 
+			 rts
              
 FlagpoleScoreNumTiles:
              .db $fd, $fe

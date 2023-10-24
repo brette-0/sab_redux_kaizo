@@ -2921,7 +2921,7 @@ SaveJoyp:   lda SavedJoypadBits         ;otherwise store A and B buttons in $0a
              lda #$00
              sta Left_Right_Buttons      ;if pressing down while on the ground,
              sta Up_Down_Buttons         ;nullify directional bits
-SizeChk:    jsr PlayerMovementSubs      ;run movement subroutines
+SizeChk:     jsr PlayerMovementSubs      ;run movement subroutines
              ldy #$01                    ;is player small?
              lda PlayerSize
              beq +
@@ -3339,6 +3339,7 @@ PlayerMovementSubs:
              and #%00000100            ;single out bit for down button
 SetCrouch: sta CrouchingFlag         ;store value in crouch flag
              sta CrouchingFlag2
+			 jsr CheckBlockWhenCrouching
 ProcMove:  jsr PlayerPhysicsSub      ;run sub related to jumping and swimming
              lda PlayerChangeSizeFlag  ;if growing/shrinking flag set,
              bne NoMoveSub             ;branch to leave
@@ -3596,9 +3597,10 @@ CheckForJumping:
              beq NoJump                ;if not, branch to something else
              and PreviousA_B_Buttons   ;if button not pressed in previous frame, branch
              beq ProcJumping
-NoJump: lda #$00
-             sta DontJump
-             jmp X_Physics             ;otherwise, jump to something else
+NoJump:      lda DontJump
+			 beq +
+             dec DontJump
++            jmp X_Physics             ;otherwise, jump to something else
 ProcJumping:
              lda PCooldown
              bne InitJS
@@ -7297,21 +7299,21 @@ BlockBuffer_X_Adder:
              .db $03, $0c, $02, $02, $0d, $0d, $08, $03 ;08-0f
              .db $0c, $02, $02, $0d, $0d, $08, $00, $10 ;10-17
              .db $04, $14, $04, $04, $03, $0c, $03, $0c ;18-1f
-             .db $08, $08, $08, $0c, $08, $08, $08
+             .db $08, $08, $08, $0c, $08, $08, $08, $08 ;20-27
              
 BlockBuffer_Y_Adder:
              .db $04, $20, $20, $08, $18, $08, $18, $02
              .db $20, $20, $08, $18, $08, $18, $12, $20
              .db $20, $18, $18, $18, $18, $18, $14, $14
              .db $06, $06, $08, $10, $12, $12, $04, $04
-             .db $09, $09, $20, $1f, $17, $12, $17
+             .db $09, $09, $20, $1f, $17, $12, $17, $0b
              
 BlockBuffer_Y_Adder3:
              .db $e4, $00, $00, $e8, $f8, $e8, $f8, $e2
              .db $00, $00, $08, $f8, $e8, $f8, $f2, $00
              .db $00, $f8, $f8, $f8, $f8, $f8, $f4, $f4
              .db $e6, $e6, $e8, $f0, $f2, $f2, $e4, $e4
-             .db $e9, $e9, $00, $ef, $e7, $e2, $f7
+             .db $e9, $e9, $00, $ef, $e7, $e2, $f7, $eb
              
 jmpidk:
              ldx #$05
@@ -7385,9 +7387,7 @@ ExIPM:       txa                       ;invert contents of X
              eor #$ff
              and Player_CollisionBits  ;mask out bit that was set here
              sta Player_CollisionBits  ;store to clear bit
-             cmp #$fd
-             bne EXPM
-             inc DontJump
+
 EXPM:        rts
              
              
@@ -7470,21 +7470,21 @@ BlockBuffer_X_Adder1:
              .db $03, $0c, $02, $02, $0d, $0d, $08, $03 ;08-0f
              .db $0c, $02, $02, $0d, $0d, $08, $00, $10 ;10-17
              .db $04, $14, $04, $04, $03, $0c, $03, $0c ;18-1f
-             .db $08, $08, $08, $08, $08, $08
+             .db $08, $08, $08, $08, $08, $08, $00, $08
              
 BlockBuffer_Y_Adder1:
              .db $04, $20, $20, $08, $18, $08, $18, $02
              .db $20, $20, $08, $18, $08, $18, $12, $20
              .db $20, $18, $18, $18, $18, $18, $14, $14
              .db $06, $06, $08, $10, $12, $12, $04, $04
-             .db $09, $09, $20, $1f, $17, $14
+             .db $09, $09, $20, $1f, $17, $14, $00, $0b
              
 BlockBuffer_Y_Adder2:
              .db $e4, $00, $00, $e8, $f8, $e8, $f8, $e2
              .db $00, $00, $08, $f8, $e8, $f8, $f2, $00
              .db $00, $f8, $f8, $f8, $f8, $f8, $f4, $f4
              .db $e6, $e6, $e8, $f0, $f2, $f2, $e4, $e4
-             .db $e9, $e9, $00, $ff, $f7, $f4
+             .db $e9, $e9, $00, $ff, $f7, $f4, $00, $eb
              
 BlockBufferAddr1:
              .db <Block_Buffer_1, <Block_Buffer_2
