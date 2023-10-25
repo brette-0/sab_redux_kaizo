@@ -7849,15 +7849,28 @@ CheckBlockWhenCrouching:
 			 beq +
 			 sty PlayerFacingDir
 +:			 sta Left_Right_Buttons
-			 
+
 			 lda SavedJoypadBits
+			 and #A_Button
+			 beq +
+			 lda Player_X_Speed
+			 cmp #CrouchJumpSpd
+			 bcc ++
+			 cmp #CrouchJumpSpd+1
+			 bcc +
+++			 ldy PlayerFacingDir
+			 dey
+			 lda CrouchJumpSpd,y
+			 sta Player_X_Speed
+		     
++:		     lda SavedJoypadBits
 			 and #%11111100
-			 sta SavedJoypadBits
-			 
-			 
-					
+			 sta SavedJoypadBits				
 ExitBlockhead:			 
 			 rts
+			 
+CrouchJumpSpd:
+		   .db $04, $fc
              
 FlagpoleScoreNumTiles:
              .db $fd, $fe
