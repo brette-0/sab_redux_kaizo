@@ -3995,7 +3995,7 @@ NoFBall3:
 +:         rts
              
 ProcFireball_Bubble:
-             lda PlayerStatus
+			 lda PlayerStatus
 			 cmp #$02
 			 bne ProcFireballs
 			 lda A_B_Buttons
@@ -4129,9 +4129,12 @@ RunFB:   txa                          ;add 7 to offset to use
              lda #$03                     ;set maximum speed here
              sta $02
              lda #$00
+			 ldy TimerControl
+			 bne +
              jsr ImposeGravity            ;do sub here to impose gravity on fireball and move vertically
+			 
              jsr MoveObjectHorizontally   ;do another sub to move it horizontally
-             ldx ObjectOffset             ;return fireball offset to X
++:            ldx ObjectOffset             ;return fireball offset to X
              ldy #$00                     ;set for fireball offsets
              txa                          ;move offset to A
              clc
@@ -4218,8 +4221,11 @@ RunFB:   txa                          ;add 7 to offset to use
              sta Sprite_Y_Position,y    ;store as sprite Y coordinate
              lda Fireball_Rel_XPos      ;get relative horizontal coordinate
              sta Sprite_X_Position,y    ;store as sprite X coordinate, then do shared code
-             lda FrameCounter         ;get frame counter
-             lsr                      ;divide by four
+             lda #$00
+			 ldx TimerControl
+			 bne +
+			 lda FrameCounter         ;get frame counter
++:           lsr                      ;divide by four
              lsr
              pha                      ;save result to stack
              and #$01                 ;mask out all but last bit
