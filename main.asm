@@ -7807,7 +7807,7 @@ RNG_call:
              sta seed+0
              rts
 NoHeadColl:
-		.db $29, $2a, $2b, $30, $38, $39, $3a, $3b, $5f, $60, $6f, $73, $92, $88, $8e, $8f, $91, $74, $26, $63
+		.db $29, $2a, $2b, $30, $38, $39, $3a, $3b, $5f, $60, $6f, $73, $92, $88, $91, $26, $63, $25
 CheckBlockWhenCrouching:
 			 lda GameEngineSubroutine
 			 cmp #$08
@@ -7823,19 +7823,37 @@ CheckBlockWhenCrouching:
 			 beq ExitBlockhead
 			 dey
 			 bne -
+			 
 			 ldy PTimer
 			 beq +
 			 cmp #$52
 			 beq ExitBlockhead
-			 jmp ++
+			 bne ++
 +:			 cmp #$c2
 			 beq ExitBlockhead
-++:			 lda #$01
+			 cmp #$72
+			 beq ExitBlockhead
+++:			 
+			 ldy OnOffFlag
+			 beq +
+			 cmp #$8f
+			 beq ExitBlockhead
+			 bne ++
++:			 cmp #$8e
+			 beq ExitBlockhead
+++:			 
+			 lda #$01
 			 sta CrouchingFlag
-			 lsr
+			 lsr 
+			 ldy Left_Right_Buttons
+			 beq +
+			 sty PlayerFacingDir
++:			 sta Left_Right_Buttons
+			 
 			 lda SavedJoypadBits
 			 and #%11111100
 			 sta SavedJoypadBits
+			 
 			 
 					
 ExitBlockhead:			 

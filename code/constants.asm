@@ -726,10 +726,9 @@ TheresPal3              = $7e14
 OldPal3                 = $7e15
 dumbflag                = $7e19
 FloateyShit             = $7e1a
-DontJump                = $7e1f
-BowserGotHit            = $7e20
-PCooldown               = $7e21
-                       
+BowserGotHit            = $7e1f
+PCooldown               = $7e20
+                      
 TextboxID               = $05c1
 CurrentChar             = $05c2
 IncrementedTxtHAdd      = $05c3

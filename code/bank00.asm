@@ -2372,11 +2372,8 @@ GameCoreRoutine:
              rts
              
 GameEngine:
-             lda PlayerStatus           ;check player's status
-             cmp #$02
-             bne +                         ;if not fiery, branch
              jsr ProcFireball_Bubble    ;process fireballs and air bubbles
-+:            ldx #$00
+			 ldx #$00
              
              
 -:              stx ObjectOffset           ;put incremented offset in X as enemy object offset
@@ -3588,8 +3585,6 @@ SetCAnim:  sta PlayerAnimTimerSet    ;store animation timer setting and leave
 CheckForJumping:
              lda #$00
              sta PlayerOnVine
-             lda DontJump
-             bne NoJump
              lda JumpspringAnimCtrl    ;if jumpspring animating, 
              bne NoJump                ;skip ahead to something else
              lda A_B_Buttons           ;check for A button press
@@ -3597,10 +3592,7 @@ CheckForJumping:
              beq NoJump                ;if not, branch to something else
              and PreviousA_B_Buttons   ;if button not pressed in previous frame, branch
              beq ProcJumping
-NoJump:      lda DontJump
-			 beq +
-             dec DontJump
-+            jmp X_Physics             ;otherwise, jump to something else
+NoJump:      jmp X_Physics             ;otherwise, jump to something else
 ProcJumping:
              lda PCooldown
              bne InitJS
@@ -4003,7 +3995,10 @@ NoFBall3:
 +:         rts
              
 ProcFireball_Bubble:
-             lda A_B_Buttons
+             lda PlayerStatus
+			 cmp #$02
+			 bne ProcFireballs
+			 lda A_B_Buttons
              and #B_Button              ;check for b button pressed
              beq ProcFireballs          ;branch if not pressed
              and PreviousA_B_Buttons
