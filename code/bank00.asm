@@ -265,13 +265,23 @@ ChkContinue:  lda #$00
              tax
              lda LevelSelectAreasOffsets,x
              sta AreaNumber
-StartWorld1:  jsr LoadAreaPointer
+StartWorld1:  
+			jsr LoadAreaPointer
              lda #$10
              sta StartTimer
              inc Hidden1UpFlag           ;set 1-up box flag for both players
              inc FetchNewGameTimerFlag   ;set fetch new game timer flag
              inc OperMode                ;set next game mode
              inc DisableScreenFlag
+			 lda WorldNumber
+			 cmp #World9
+			 bne +
+			 lda #$01
+			 sta PlayerSize
+			 lsr
+			 sta PlayerStatus
+			 
++:           
              lda #$00
              sta OperMode_Task           ;set game mode here, and clear demo timer
              sta DemoTimer
@@ -297,7 +307,7 @@ GoContinue:   sta WorldNumber             ;start both players at the first area
              
              sta AreaNumber              ;will make no difference
              sta OffScr_AreaNumber   
-             rts
+			 rts
              if START_WORLD >0
 StartWorldCustom:
              lda #START_WORLD-1
@@ -7279,19 +7289,7 @@ NoKillE:   dex               ;do this until all slots are checked
              if BATTERY
              include code\save.asm
              endif
-             
-FirebarPosLookupTbl:
-             .db $00, $01, $03, $04, $05, $06, $07, $07, $08
-             .db $00, $03, $06, $09, $0b, $0d, $0e, $0f, $10
-             .db $00, $04, $09, $0d, $10, $13, $16, $17, $18
-             .db $00, $06, $0c, $12, $16, $1a, $1d, $1f, $20
-             .db $00, $07, $0f, $16, $1c, $21, $25, $27, $28
-             .db $00, $09, $12, $1b, $21, $27, $2c, $2f, $30
-             .db $00, $0b, $15, $1f, $27, $2e, $33, $37, $38
-             .db $00, $0c, $18, $24, $2d, $35, $3b, $3e, $40
-             .db $00, $0e, $1b, $28, $32, $3b, $42, $46, $48
-             .db $00, $0f, $1f, $2d, $38, $42, $4a, $4e, $50
-             .db $00, $11, $22, $31, $3e, $49, $51, $56, $58
+            
 
 BlockBufferAdderData:
              .db $00, $07, $0e
