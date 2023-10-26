@@ -603,7 +603,8 @@ PressButtonB:
 			 lda World9Progress
 			 bne +
 			 inc World9Progress
-+:           lda #$00
++:           jsr SaveGame
+			 lda #$00
              sta OldStatus
              inc DisableScreenFlag
              jmp TerminateGame          ;do sub to continue other player or end game

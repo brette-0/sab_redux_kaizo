@@ -7869,6 +7869,24 @@ CheckBlockWhenCrouching:
 ExitBlockhead:			 
 			 rts
 			 
+SaveGame:
+			 ldy #$06
+-:           lda PlayerScoreDisplay,y
+             sta ContinueScore,y
+             dey
+             bpl -
+             
+             ldy #$03
+-:           lda PlayerCoinDisplay,y
+             sta ContinueCoins,y
+             dey
+             bpl -
+             lda PlayerStatus
+             sta ContinuePwrup
+             lda CoinTally
+             sta ContinueCoinTally
+			 rts
+			 
 CrouchJumpSpd:
 		   .db $04, $fc
              

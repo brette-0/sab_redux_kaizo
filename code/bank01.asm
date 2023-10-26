@@ -1745,23 +1745,7 @@ QuitToTitleScreen:
              sta ContinueWorld
              lda LevelNumber
              sta ContinueLevel
-             ldy #$06
--:     lda PlayerScoreDisplay,y
-             sta ContinueScore,y
-             dey
-             bpl -
-             
-             ldy #$03
--:     lda PlayerCoinDisplay,y
-             sta ContinueCoins,y
-             dey
-             bpl -
-             lda PlayerStatus
-             sta ContinuePwrup
-             lda CoinTally
-             sta ContinueCoinTally
-             
-             rts
+             jmp SaveGame
              
 DrawMenuCursor:
              ldx VRAM_Buffer1_Offset
