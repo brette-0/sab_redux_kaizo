@@ -166,6 +166,11 @@ Palette2_MTiles:
              .db $82, $b2, $83, $b3 ;w8 rock ground bottom 97
 			 .db $48, $26, $48, $26 ;water/lava top block 98
 			 .db $88, $32, $88, $33 ;no coll mario floor enemies 99
+			 
+			 .db $70, $32, $31, $33 ;wA-3 star 9a
+             .db $30, $71, $31, $33 ;wA-3 star 9b
+             .db $30, $32, $71, $33 ;wA-3 star 9c
+             .db $70, $32, $31, $71 ;wA-3 star 9d
              
 Palette3_MTiles:
              .db $53, $55, $54, $56 ;question block (coin) c0
@@ -793,6 +798,8 @@ XD:      rts
              
 StarTable:
              .db $d2, $d3, $d4, $d5
+StarTableA3:
+			 .db $9a, $9b, $9c, $9d
 DecodeAreaData:          
              
              
@@ -828,13 +835,35 @@ DecodeAreaData:
              sta $03
              
              ldy #$00
-             -          lda $03
+             -          
+			 lda AreaPointer
+			 cmp #$03
+			 bne +
+			 lda $03
+			 cmp #$91
+			 beq ++
++			 lda $03
              bne +
              lda BackgroundColorCtrl
              beq +
-             sty $01
+ ++:            sty $01
              stx $02
-             jsr RNG_call
+             lda AreaPointer
+			 cmp #$03
+			 bne +++
+			 jsr RNG_call
+             and #%00111111
+             cmp #$04
+             bcs ++
+             tay 
+             lda StarTableA3,y
+             .db $2c
+++:          lda #$91
+             ldx $02
+             ldy $01
+			 jmp +
++++:          
+			 jsr RNG_call
              and #%00111111
              cmp #$04
              bcs ++
@@ -858,7 +887,7 @@ DecodeAreaData:
              adc #$01
              sta $fc
              cmp #$76
-             bcs --
+             bcs ExitDecode
              lda #$00
              sta $fb
 +:          cpx #$ff
@@ -869,7 +898,7 @@ DecodeAreaData:
              
              
              
-             
+ExitDecode:            
              rts
              
              jsr JumpEngine             ;run the object!
@@ -3882,7 +3911,7 @@ PaletteMTtable:
              .db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01
              
              .db $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02    
-             .db $02, $02, $00, $02, $02, $00, $01, $01, $02, $00, $02, $02, $02, $02, $02, $02
+             .db $02, $02, $00, $02, $02, $00, $01, $01, $02, $00, $03, $03, $03, $03, $02, $02
              .db $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02
              .db $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02, $02
              
