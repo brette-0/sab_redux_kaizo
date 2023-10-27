@@ -3913,7 +3913,7 @@ World6Areas: .db $4e, $43, $4d, $c7
 World7Areas: .db $53, $5b, $82, $58, $c4
 World8Areas: .db $50, $52, $41, $c5
 World9Areas: .db $59, $5c, $5a, $c8
-WorldAAreas: .db $5d, $83
+WorldAAreas: .db $5d, $83, $03
              
              
              
@@ -3942,7 +3942,7 @@ EnemyDataAddrLow_UndergroundStart:
              .db <E_UndergroundArea1, <E_UndergroundArea2, <E_UndergroundArea3, <EA2
              ; Water
 EnemyDataAddrLow_WaterStart:
-             .db <E_WaterArea1, <E_WaterArea2, <E_WaterArea3
+             .db <E_WaterArea1, <E_WaterArea2, <E_WaterArea3, <EA3
              
 EnemyDataAddrHigh:
              ; Castle
@@ -3956,7 +3956,7 @@ EnemyDataAddrHigh:
              ; Underground
              .db >E_UndergroundArea1, >E_UndergroundArea2, >E_UndergroundArea3, >EA2
              ; Water
-             .db >E_WaterArea1, >E_WaterArea2, >E_WaterArea3
+             .db >E_WaterArea1, >E_WaterArea2, >E_WaterArea3, >EA3
              
 AreaDataHOffsets:
              .db AreaDataAddrLow_WaterStart - AreaDataAddrLow            ; Water
@@ -3967,7 +3967,7 @@ AreaDataHOffsets:
 AreaDataAddrLow:
              ; Water
 AreaDataAddrLow_WaterStart:
-             .db <L_WaterArea1, <L_WaterArea2, <L_WaterArea3
+             .db <L_WaterArea1, <L_WaterArea2, <L_WaterArea3, <LA3
              ; Ground
 AreaDataAddrLow_GroundStart:
              .db <L_GroundArea1, <L_GroundArea2, <L_GroundArea3, <L_GroundArea4, <L_GroundArea5, <L_GroundArea6
@@ -3984,7 +3984,7 @@ AreaDataAddrLow_CastleStart:
              
 AreaDataAddrHigh:
              ; Water
-             .db >L_WaterArea1, >L_WaterArea2, >L_WaterArea3
+             .db >L_WaterArea1, >L_WaterArea2, >L_WaterArea3, >LA3
              ; Ground
              .db >L_GroundArea1, >L_GroundArea2, >L_GroundArea3, >L_GroundArea4, >L_GroundArea5, >L_GroundArea6
              .db >L_GroundArea7, >L_GroundArea8, >L_GroundArea9, >L_GroundArea10, >L_GroundArea11, >L_GroundArea12

@@ -589,10 +589,10 @@ WACHRTable:
 WorldCHRTable:
              .db %00000100, %00000100, %00000100, %00000100, %00001100, %00010100, %00011100, %00100100, %00101100, %00011100
 WorldPalHigh:
-             .db >World4Pal, >World6Pal, >World7Pal, >World8Pal, >WALevel1Pal, >WALeve2Pal
+             .db >World4Pal, >World6Pal, >World7Pal, >World8Pal, >WALevel1Pal, >WALeve2Pal, >WALevel3
              
 WorldPalLow:
-             .db <World4Pal, <World6Pal, <World7Pal, <World8Pal, <WALevel1Pal, <WALeve2Pal
+             .db <World4Pal, <World6Pal, <World7Pal, <World8Pal, <WALevel1Pal, <WALeve2Pal, <WALevel3
              
 World4Pal:
              .db $22, $29, $1a, $0f
@@ -651,9 +651,25 @@ WALeve2Pal:
              .db $0f, $16, $30, $27
              .db $0f, $0f, $36, $17
 
+WALevel3:
+             .db $12, $15, $0e, $25  
+             .db $12, $3a, $1a, $0f
+             .db $12, $30, $0e, $0f
+             .db $12, $27, $0e, $0f
+             .db $12, $16, $27, $18
+             .db $12, $1a, $30, $27
+             .db $12, $16, $30, $27
+             .db $12, $0f, $30, $10
+
+; $0e, $xx, $0e, $xx
+; $xx, $xx, $xx, $xx
+; $xx, $xx, $0e, $xx
+; $xx, $xx, $0e, $xx
+
+
              
 World9LevelPalettes:
-            .db $05, $06, $00, $00 
+            .db $05, $06, $07, $00 
              
 ChangeBankRunner:        
              
