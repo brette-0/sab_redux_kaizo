@@ -2001,6 +2001,8 @@ ShufAmtLoop: lda DefaultSprOffsets,x
              dex                       ;do this until they're all set
              bpl ShufAmtLoop
              inc IRQDisable
+			 lda #$10
+			 sta SelectTimer
              inc OperMode_Task         ;increment to next task
              jsr SetupTextbox1
              lda WorldNumber
@@ -2012,7 +2014,7 @@ ShufAmtLoop: lda DefaultSprOffsets,x
              lda #$01
              sta BackgroundColorCtrl
              
-+:               
++:           
              
              jmp GetPlayerColors       ;get player colors
              

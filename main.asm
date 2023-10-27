@@ -2600,63 +2600,17 @@ ChkBuzzyBeetle:
              
 HurtBowser:
              lda BowserKilled
-             bne testt
+             bne ExHurtBowser
              lda BowserGotHit
              bne +
              dec BowserHitPoints
              inc BowserGotHit
-+:          stx temp7
-             ldx VRAM_Buffer1_Offset
-             lda #$22
-             sta VRAM_Buffer1,x
-             lda #$c0
-             sta VRAM_Buffer1+1,x
-             lda #$05
-             sta VRAM_Buffer1+2,x
-             lda #$11
-             sta VRAM_Buffer1+3,x
-             lda #$19
-             sta VRAM_Buffer1+4,x
-             lda #$28
-             sta VRAM_Buffer1+5,x
-             lda #$00
-             sta VRAM_Buffer1+6,x
-             lda BowserHitPoints       ;otherwise, check number of pts
-             tay
-             +
-             cmp #10                   ;more than 9 pts?
-             bcc ++
-             sbc #10                   ;if so, subtract 10 and add one to the 10s digit
-             tay
-             lda #$01                  ;instead of showing 100 pts, A0 will show, etc.
-             sta VRAM_Buffer1+6,x
-             tya
-             -
-             cmp #10
-             bcc ++
-             sbc #10
-             inc VRAM_Buffer1+6,x
-             jmp -
-             tay
-             sta VRAM_Buffer1+6,x
-             tya
-             jmp ++
-testtt:   
-             rts
-++:          
-             sta VRAM_Buffer1+7,x
-             lda #$00
-             sta VRAM_Buffer1+8,x
-             txa
-             clc
-             adc #$08
-             sta VRAM_Buffer1_Offset
-             ldx temp7
++:           jsr BowserHPDisplay
              lda BowserHitPoints
-             bne testtt                 ;if bowser still has hit points, branch to leave
+             bne ExHurtBowser                ;if bowser still has hit points, branch to leave
              lda #$01
              sta BowserKilled
-             lda #$00                    ;initialize vertical speed
+             lsr                    ;initialize vertical speed
              sta Enemy_Y_Speed,x         ;and movement force
              sta Enemy_Y_MoveForce,x
              sta Enemy_X_Speed,x        ;initialize horizontal speed
@@ -2682,15 +2636,15 @@ SetDBSte: sta Enemy_State,x          ;set defeated enemy state
              
              ldx $01                    ;get enemy offset
              lda #$0a                   ;award 5000 points to player for defeating bowser
-             bne EnemySmackScore        ;unconditional branch to award points
-             
+             jmp EnemySmackScore        ;unconditional branch to award points
+ExHurtBowser: rts            
 ChkOtherEnemies:
              cmp #BulletBill_FrenzyVar
-             beq testtt                 ;branch to leave if bullet bill (frenzy variant) 
+             beq ExHurtBowser                 ;branch to leave if bullet bill (frenzy variant) 
              cmp #Podoboo       
-             beq testtt                 ;branch to leave if podoboo
+             beq ExHurtBowser                 ;branch to leave if podoboo
              cmp #BlackParatroopa
-             beq testtt
+             beq ExHurtBowser
              cmp #RedKoopaShell
              beq ShellOrBlockDefeat
              cmp #UDPiranhaPlant
@@ -2700,8 +2654,9 @@ ChkOtherEnemies:
              cmp #RedPiranhaPlant
              beq ShellOrBlockDefeat
              cmp #$15       
-             bcs ExHCF                 ;branch to leave if identifier => $15
-             
+             bcc ShellOrBlockDefeat                 ;branch to leave if identifier => $15
+ExHCF2:
+             rts
 ShellOrBlockDefeat:
              lda GrabFlag
              beq +
@@ -2710,9 +2665,9 @@ ShellOrBlockDefeat:
              rts
 +:      lda Enemy_ID,x            ;check for piranha plant
              cmp #BlackParatroopa
-             beq ExHCF
+             beq ExHCF2
 			 cmp #Sign
-			 beq ExHCF
+			 beq ExHCF2
              cmp #UDPiranhaPlant
              beq +
              cmp #RUDPiranhaPlant
@@ -2722,7 +2677,13 @@ ShellOrBlockDefeat:
              cmp #PiranhaPlant
              bne StnE                  ;branch if not found
 +:    jmp KillPlant
-StnE: jsr ChkToStunEnemies      ;do yet another sub
+StnE: 
+			 ;lda Enemy_ID,x
+			 ;cmp #Bowser
+			 ;bne +		
+			 ;jmp HurtBowser
++:			 
+			 jsr ChkToStunEnemies      ;do yet another sub
              lda Enemy_State,x
              and #%00011111            ;mask out 2 MSB of enemy object's state
              ora #%00100000            ;set d5 to defeat enemy and save as new state
@@ -3515,6 +3476,8 @@ EnemiesCollision:
              beq +
              cmp #RedPiranhaPlant
              beq +
+			 ;cmp #Bowser
+			 ;beq +
              cmp #$15                    ;if enemy object => $15, branch to leave
              bcs ExSFN2
 +:      cmp #Lakitu                 ;if lakitu, branch to leave
@@ -3564,6 +3527,8 @@ ECLoop: stx $01                     ;save enemy object buffer offset for second 
              beq +
              cmp #RedPiranhaPlant
              beq +
+			 ;cmp #Bowser
+			 ;beq +
              ;cmp #BulletBill_CannonVar
              ;beq +
              cmp #$15                    ;check for enemy object => $15
@@ -3701,10 +3666,13 @@ ProcEnemyCollisions:
              bne +
              lda GrabUp
              bne ++
-+:      
-             lda Enemy_State,y        ;check first enemy state for d7 set
+			 
++:      	 ;lda Enemy_ID,y
+		     ;cmp #Bowser
+			 ;beq ++
+			 lda Enemy_State,y        ;check first enemy state for d7 set
              bpl ShellCollisions      ;branch if d7 is clear
-++:   lda #$05
+     		 lda #$05
              sta FloateyNum_Control,x ;set number of points control for floatey numbers
              lda #$30
              sta FloateyNum_Timer,x   ;set timer for floatey numbers
@@ -3712,7 +3680,7 @@ ProcEnemyCollisions:
              sta FloateyNum_Y_Pos,x   ;set vertical coordinate
              lda Enemy_Rel_XPos
              sta FloateyNum_X_Pos,x   ;set horizontal coordinate and leave
-             jsr ShellOrBlockDefeat   ;then kill enemy, then load
+++:          jsr ShellOrBlockDefeat   ;then kill enemy, then load
              ldx ObjectOffset
              ldy $01                  ;original offset of second enemy
              
@@ -3722,7 +3690,11 @@ ShellCollisions:
              lda Enemy_ID,x
              cmp #BlackParatroopa
              beq ExitProcessEColl
+			 
              jsr ShellOrBlockDefeat
+			 ;lda Enemy_ID,x
+		     ;cmp #Bowser
+			 ;beq ++
              ldx ObjectOffset
              lda ShellChainCounter,x  ;get chain counter for shell
              clc
@@ -3740,7 +3712,7 @@ ShellCollisions:
              ldx ObjectOffset         ;load original offset of first enemy
              inc ShellChainCounter,x  ;increment chain counter for additional enemies
              inc EnemyDefeatPitch
-             ldx $01
+++:          ldx $01
              lda Enemy_ID,x
              cmp #PiranhaPlant
              beq +
@@ -3842,6 +3814,8 @@ EnemyTurnAround:
              beq RXSpd
              cmp #RedKoopaShell
              beq RXSpd
+			 cmp #Bowser
+			 beq ExitEnemyTurn
              cmp #$07
              bcs ExTA                 ;if any OTHER enemy object => $07, leave
 RXSpd: lda Enemy_X_Speed,x      ;load horizontal speed
@@ -3871,6 +3845,7 @@ ExTA:  rts                      ;leave!!!
              cmp #$80
              ror
              sta Enemy_X_Speed,x
+ExitEnemyTurn:
              rts
              
 LargePlatformCollision:
@@ -7513,7 +7488,52 @@ FirebarTblOffsets:
 FirebarYPos:
              .db $0c, $18
              
-             
+BowserHPDisplay:
+			stx temp7
+             ldx VRAM_Buffer1_Offset
+             lda #$22
+             sta VRAM_Buffer1,x
+             lda #$c0
+             sta VRAM_Buffer1+1,x
+             lda #$05
+             sta VRAM_Buffer1+2,x
+             lda #$11
+             sta VRAM_Buffer1+3,x
+             lda #$19
+             sta VRAM_Buffer1+4,x
+             lda #$28
+             sta VRAM_Buffer1+5,x
+             lda #$00
+             sta VRAM_Buffer1+6,x
+             lda BowserHitPoints       ;otherwise, check number of pts
+             tay
+             +
+             cmp #10                   ;more than 9 pts?
+             bcc ++
+             sbc #10                   ;if so, subtract 10 and add one to the 10s digit
+             tay
+             lda #$01                  ;instead of showing 100 pts, A0 will show, etc.
+             sta VRAM_Buffer1+6,x
+             tya
+             -
+             cmp #10
+             bcc ++
+             sbc #10
+             inc VRAM_Buffer1+6,x
+             jmp -
+             tay
+             sta VRAM_Buffer1+6,x
+             tya
+++:          
+             sta VRAM_Buffer1+7,x
+             lda #$00
+             sta VRAM_Buffer1+8,x
+             txa
+             clc
+             adc #$08
+             sta VRAM_Buffer1_Offset
+             ldx temp7
+			 rts
              
              
              
