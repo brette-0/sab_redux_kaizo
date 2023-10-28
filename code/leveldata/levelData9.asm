@@ -157,31 +157,3 @@ EA3:
  .db PageSkip, #15
  .db PageSkip, #16
  .db $ff
-
-LA4:
-	.db $5b, $06
-	include "code\leveldata\levels\a-4.asm"
-	.db $fd
-
-EA4:
-	 .db #4 * $10 + 7, #64, $00
-
- .db #7 * $10 + 6, #19 + $80
- .db #7 * $10 + 10, #8
- .db #9 * $10 + 6, #2
- .db #11 * $10 + 6, #19
- .db PageSkip, #3
- .db PageSkip, #4
- .db PageSkip, #5
- .db PageSkip, #6
- .db PageSkip, #7
- .db PageSkip, #8
- .db PageSkip, #9
- .db PageSkip, #10
- .db PageSkip, #11
- .db PageSkip, #12
- .db PageSkip, #13
- .db PageSkip, #14
- .db PageSkip, #15
- .db PageSkip, #16
-	.db $ff

@@ -38,39 +38,29 @@ base $a000
 include code\leveldata\levelDataA.asm
 pad $c000    
 base $a000
-include code\leveldata\levelDataA.asm
 pad $c000    
 
 base $a000
-include code\leveldata\levelDataA.asm
 pad $c000    
 base $a000
-include code\leveldata\levelDataA.asm
 pad $c000    
 
 base $a000
-include code\leveldata\levelDataA.asm
 pad $c000    
 base $a000
-include code\leveldata\levelDataA.asm
 pad $c000    
 
 base $a000
-include code\leveldata\levelDataA.asm
 pad $c000    
 base $a000
-include code\leveldata\levelDataA.asm
 pad $c000    
 
 base $a000
-include code\leveldata\levelDataA.asm
 pad $c000    
 base $a000
-include code\leveldata\levelDataA.asm
 pad $c000    
 
 base $a000
-include code\leveldata\levelDataA.asm
 pad $c000    
 
 
