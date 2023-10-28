@@ -567,7 +567,7 @@ BlockUsed               = $6032
 temp9                   = $6034
 BowserKilled            = $6035
 ParallaxOffset          = $6036
-World9Debug             = $6037 ;i dont fucking now why i have this
+World9Debug             = $6037 ;i dont now why i have this
 StartTimer              = $6038
                        
 Flag1kCoins             = $6039

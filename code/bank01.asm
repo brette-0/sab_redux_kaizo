@@ -47,10 +47,19 @@ Firefox: .db "You will never reach the", $fc, "princess! Bwahahaha", $fc, "     
 Kaizo: .db "Welcome to World 9, also", $fc, "called Kaizo World. First, you", $fc, "will need to master shell", $fc, "jumps.", $ff ;08
 Lava: .db "The power of the star is not", $fc,"good enough to protect you", $fc,"from firebars while in lava.", $ff ;09
              
+Temple: .db "What Wizardry lead you here?", $fc, "Nothing but the power of a", $fc, "Genie could bring you here", $ff; 0A 
+MoltenCave: .db "I would keep a shell handy", $fc, "To traverse these pilars", $ff; 0B 
+MC_Q: .db "What is the name of the", $fc, "Great Demon King Bowser?", $ff; 0C 
+MC_A: .db "Barry", $ff; 0D 
+MC_B: .db "Brette", $ff; 0E 
+MC_C: .db "Bruce", $ff;0F
+
+Space: .db "How are you even breathing?", $ff; 10
+
 Textbox_Low:
-             .dl TestText, ID01, VeryLongText, Jigas, ID05, Structured, Firefox, Kaizo, Lava
+             .dl TestText, ID01, VeryLongText, Jigas, ID05, Structured, Firefox, Kaizo, Lava, Temple, MoltenCave, MC_Q, MC_A, MC_B, MC_C, Space
 Textbox_High:
-             .dh TestText, ID01, VeryLongText, Jigas, ID05, Structured, Firefox, Kaizo, Lava
+             .dh TestText, ID01, VeryLongText, Jigas, ID05, Structured, Firefox, Kaizo, Lava, Temple, MoltenCave, MC_Q, MC_A, MC_B, MC_C, Space
              
 -:  rts
 SetupTextbox:

@@ -373,7 +373,7 @@ VictoryModeSubroutines:
              .dw PrintVictoryMessages
              .dw EndCastleAward
              .dw PlayerEndWorld
-             .dw WipeTheFuckingScreen
+             .dw WipeTheScreen
              .dw DisplayCredits
              .dw WriteCredits
              .dw Nothing
@@ -382,7 +382,7 @@ VictoryModeSubroutines:
 Okso:
              ;.dw "CREDITS TO"-55
              ;.dw "TEST - TEST"-55
-WipeTheFuckingScreen:
+WipeTheScreen:
              jsr InitScreen
              inc test
              lda test
@@ -6975,6 +6975,7 @@ BoundBoxCtrlData:
              .db $02, $0c, $0e, $14 ;0e
              .db $02, $09, $0e, $16 ;0f
              .db $03, $17, $0d, $20 ;10
+             .db $02, $14, $0e, $20 ;11
              
 GetFireballBoundBox:
              txa         ;add seven bytes to offset
@@ -7295,6 +7296,8 @@ NoKillE:   dex               ;do this until all slots are checked
 
 BlockBufferAdderData:
              .db $00, $07, $0e
+             .pad BlockBufferAdderData + 10
+             .db $0e
              
 BlockBuffer_X_Adder:
              .db $08, $03, $0c, $02, $02, $0d, $0d, $08 ;00-07

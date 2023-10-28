@@ -4030,7 +4030,12 @@ ExPBGCol: rts                       ;otherwise leave
 DoFootCheck1:
              jmp DoFootCheck
 ChkCollSize:
-             ldy #$02                    ;load default offset
+             lda AreaPointer
+             cmp #$03
+             bne +
+             ldy #$11
+             bne GBBAdr
++:           ldy #$02                    ;load default offset
              lda CrouchingFlag
              bne GBBAdr                  ;if player crouching, skip ahead
              lda PlayerSize
@@ -4385,7 +4390,6 @@ micaracuando:
              cmp #$8a
              beq Burh2
              jmp +++
-Fuck:
              ;ldy SwimmingFlag
              ;bne +
              ;inc OldSwim
