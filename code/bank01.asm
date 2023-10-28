@@ -42,7 +42,8 @@ ID01:    .db "If you pause, you can save", $fc, "your game. Just select quit", $
 VeryLongText: .db "If you hold ", UP, " when releasing a", $fc, "shell, you will throw it", $fc, "upwards and if you hold ", DOWN, " you will release the shell gently", $fc, "on the floor." ,$ff ;03
 Jigas: .db "Welcome to the beach! Come", $fc, "here and relax a bit.", $ff ;04
 ID05: .db "You can swim in water in this hack! Use ", UP , " + ", Abutton, " to exit the", $fc, "water.", $ff ;05
-Structured: .db "In this video I will be", $fc, "explaining exactly what I do", $fc, "to collect Watch for Rolling", $fc, "Rocks in 0.5xA presses.", $fd, "But first, we need to clear", $fc, "something up.", $ff ;06
+;Structured: .db "In this video I will be", $fc, "explaining exactly what I do", $fc, "to collect Watch for Rolling", $fc, "Rocks in 0.5xA presses.", $fd, "But first, we need to clear", $fc, "something up.", $ff
+Structured: .db "Ancient beings says that", $fc, "reading allat makes spirits", $fc, "unlock something.", $ff ;06
 Firefox: .db "You will never reach the", $fc, "princess! Bwahahaha", $fc, "                       -Bowser", $ff ;07
 Kaizo: .db "Welcome to World 9, also", $fc, "called Kaizo World. First, you", $fc, "will need to master shell", $fc, "jumps.", $ff ;08
 Lava: .db "The power of the star is not", $fc,"good enough to protect you", $fc,"from firebars while in lava.", $ff ;09
@@ -343,7 +344,10 @@ WaitForInputAndEnd:
              sbc tempF
              beq +
              bmi +
-             ldy #$00
+			 ldy TextboxID
+			 lda #$01
+			 sta SignReadList-1,y
+			 ldy #$00
              sty TextboxID
              sty CurrentChar
              sty IncrementedTxtHAdd
@@ -682,6 +686,7 @@ World9LevelPalettes:
              
 ChangeBankRunner:        
              
+			 
              lda PCooldown
              beq +
              

@@ -155,7 +155,7 @@ SelectLogic:  ;lda DemoTimer               ;if select or B pressed, check demo t
              ;sta DemoTimer
              lda SelectTimer             ;check select/B button timer
              ora FirstBootFlag
-             bne NullJoypad              ;if not expired, branch
+             bne ++              ;if not expired, branch
              lda #$10                    ;otherwise reset select button timer
              sta SelectTimer
              cpy #$01                    ;was the B button pressed earlier?  if so, branch
@@ -166,7 +166,8 @@ SelectLogic:  ;lda DemoTimer               ;if select or B pressed, check demo t
              sta TitleScreenSelect
 +:
              jsr DrawMushroomIcon
-             jmp NullJoypad
+++:            jmp NullJoypad
+LastSelectWorld: .db $09, $0a
 IncWorldSel:  
              
 			 lda WorldSelectNumber
@@ -191,8 +192,20 @@ IncWorldSel:
              ldx #$00
              jmp UpdateShroom
 ++:          inc WorldSelectNumber       ;increment world select number
+			 ldy #$08
+			 lda #$00
+-			 clc
+			 adc SignReadList,y
+			 dey
+			 bpl -
+			 ldy #$00
+			 cmp #$09
+			 bne +
+			 iny
+			 
++:           
              lda WorldSelectNumber
-             cmp #$09
+             cmp LastSelectWorld,y
              bcc +
              lda #$00
              sta WorldSelectNumber
@@ -3527,11 +3540,11 @@ InitCSTimer: sta ClimbSideTimer       ;initialize timer here
              
              
 Luigi_JumpMForceData:
-             .db $18, $18, $18, $22, $22, $0d, $04
+             ;.db $18, $18, $18, $22, $22, $0d, $04
 Luigi_FallMForceData:
-             .db $42, $42, $3e, $5d, $5d, $0a, $09
+             ;.db $42, $42, $3e, $5d, $5d, $0a, $09
 Luigi_FrictionData:
-             .db $b4, $68, $50
+             ;.db $b4, $68, $50
              ;.db $b4, $68, $a0
              
 Enemy_PSwitch:

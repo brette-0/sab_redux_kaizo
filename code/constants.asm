@@ -762,6 +762,7 @@ ContinueCoins           = $7f1a
 ContinuePwrup           = $7f1e
 ContinueCoinTally       = $7f1f
 World9Progress          = $7f20
+SignReadList			= $7f21
 SavedWord               = $7fbc 
 
 
