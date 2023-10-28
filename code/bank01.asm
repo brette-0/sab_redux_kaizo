@@ -345,9 +345,11 @@ WaitForInputAndEnd:
              beq +
              bmi +
 			 ldy TextboxID
+			 cpy #$09
+			 bcs ++
 			 lda #$01
 			 sta SignReadList-1,y
-			 ldy #$00
+++:			 ldy #$00
              sty TextboxID
              sty CurrentChar
              sty IncrementedTxtHAdd

@@ -7974,6 +7974,7 @@ LevelSelectAreasOffsets:
              .db $00, $02, $03, $04
              .db $00, $01, $02, $03
              .db $00, $01, $02, $03
+			 .db $00, $01, $02, $03
              include code\irq.asm
              include code\writebuffer.asm
              
