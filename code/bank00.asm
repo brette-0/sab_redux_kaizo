@@ -2973,7 +2973,12 @@ PlayerSubs: jsr ScrollHandler           ;move the screen if necessary
              ldx #$00                    ;set offset for player object
              jsr BoundingBoxCore         ;get player's bounding box coordinates
              jsr PlayerBGCollision       ;do collision detection and process
-             ldy SwimmingFlag
+             lda AreaPointer
+			 cmp #$03
+			 bne +
+			 lda #$01
+			 sta SwimmingFlag
++:			 ldy SwimmingFlag
              bne +
              sty OldSwim
              ldy #$70

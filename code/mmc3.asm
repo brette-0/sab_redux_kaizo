@@ -107,10 +107,10 @@ setCHR:
              ;sta $8001
              
              ldx OnOffBits
-             lda AreaType
-             bne +
-             tax
-             axs #-4
+             ;lda AreaType
+             ;bne +
+             ;tax
+             ;axs #-4
 +:    lda OnOffCb,x    ;load depending of on block and pswitch flag
              tay
              lda #$85

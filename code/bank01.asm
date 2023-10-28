@@ -486,12 +486,12 @@ OnOffCbW:
              .db %00010111, %00011111, %01110111, %01111111 ;Off, On, pswitchOff, pswitchoOn (water area)
 OnOffCHR:
              ldx OnOffBits
-             lda AreaType
-             bne +
-             inx
-             inx
-             inx
-             inx
+            ;lda AreaType
+            ;bne +
+            ;inx
+            ;inx
+            ;inx
+            ;inx
 +:        lda OnOffCb,x    ;load CHR bank depending if block is on or pswitch is triggered
              tay
              lda #$85

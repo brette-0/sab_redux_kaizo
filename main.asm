@@ -4030,12 +4030,7 @@ ExPBGCol: rts                       ;otherwise leave
 DoFootCheck1:
              jmp DoFootCheck
 ChkCollSize:
-             lda AreaPointer
-             cmp #$03
-             bne +
-             ldy #$11
-             bne GBBAdr
-+:           ldy #$02                    ;load default offset
+             ldy #$02                    ;load default offset
              lda CrouchingFlag
              bne GBBAdr                  ;if player crouching, skip ahead
              lda PlayerSize
@@ -4075,11 +4070,17 @@ HeadChk: lda #$00
              beq +
              ldy #$25
              jsr BlockBufferColli_Head
-StartHead:
+
              ldy temp1
              cmp #$00
              jmp ++
-+:         jsr BlockBufferColli_Head
++:          lda AreaPointer
+             cmp #$03
+             bne +
+             ldy #$11
+             
++:           
+			jsr BlockBufferColli_Head
              ;cmp #$00
 ++:         beq DoFootCheck1             ;player, and branch if nothing above player's head
              cmp #$71

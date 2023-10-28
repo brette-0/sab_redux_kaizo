@@ -848,21 +848,6 @@ DecodeAreaData:
              beq +
  ++:            sty $01
              stx $02
-             lda AreaPointer
-			 cmp #$03
-			 bne +++
-			 jsr RNG_call
-             and #%00111111
-             cmp #$04
-             bcs ++
-             tay 
-             lda StarTableA3,y
-             .db $2c
-++:          lda #$91
-             ldx $02
-             ldy $01
-			 jmp +
-+++:          
 			 jsr RNG_call
              and #%00111111
              cmp #$04
