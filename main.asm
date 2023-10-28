@@ -4005,10 +4005,14 @@ PlayerBGCollision:
              cmp #$0d
              beq ExPBGCol
              lda #$01                  ;load default player state for swimming
+			 
              ldy SwimmingFlag          ;if swimming flag set,
              bne SetPSte               ;branch ahead to set default state
              ldy OldSwim
              bne SetPSte
+			 ldy AreaPointer
+			 cpy #$03
+			 beq SetPSte
              lda Player_State          ;if player in normal state,
              beq SetFallS              ;branch to set default state for falling
              cmp #$03
@@ -4077,7 +4081,7 @@ HeadChk: lda #$00
 +:          lda AreaPointer
              cmp #$03
              bne +
-             ldy #$11
+             ldy #$25
              
 +:           
 			jsr BlockBufferColli_Head

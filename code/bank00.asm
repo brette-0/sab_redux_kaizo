@@ -2978,6 +2978,21 @@ PlayerSubs: jsr ScrollHandler           ;move the screen if necessary
 			 bne +
 			 lda #$01
 			 sta SwimmingFlag
+			 lda Player_Y_HighPos
+			 cmp #$01
+			 bne +
+			 lda Player_Y_Position
+			 cmp #$e3
+			 bcs ++
+			 cmp #$08
+			 bcs +
+			 lda #$09
+			 sta Player_Y_Position
+			 lda #$00
+			 sta Player_Y_Speed
+			 beq +
+++:			 lda #$00
+			 sta SwimmingFlag
 +:			 ldy SwimmingFlag
              bne +
              sty OldSwim
