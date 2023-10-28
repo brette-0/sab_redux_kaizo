@@ -6380,6 +6380,10 @@ EnemyJump:
              ldy #$15                  ;set Y to check the bottom middle (8,18) of enemy object
              inx
              jsr BBChk_E 
+			 cpy #$99
+			 bne +
+			 jmp MakePKoopaJump
++:			 cmp #$00
              beq DoSide1            ;standing on anything, then branch to same place if not
              cmp #$8c
              beq Enemy_PSwitchJmp2
@@ -6400,7 +6404,7 @@ EnemyJump:
              ldy PTimer
              bne +
              cmp #$72
-             beq ++
+             beq MakePKoopaJump
 +:      ldy OnOffFlag
              beq ++++
              cmp #$8f
@@ -6449,6 +6453,7 @@ bruh:    pla
              beq FY3
              cmp #$91
              beq FY3
+MakePKoopaJump:
 ++:     lda #$00                    ;initialize vertical speed
              sta Enemy_Y_Speed,x         ;and movement force
              sta Enemy_Y_MoveForce,x            ;do something here to vertical speed and something else
@@ -6808,6 +6813,8 @@ BBChk_E: pha                         ;save contents of A to stack
              and #%00001111              ;and mask out high nybble
              sta $04                     ;store masked out result here
              ldx $03                     ;get saved content of block buffer                       ;and leave
+			 txa
+			 tay
              lda MetatileThingy,x
              ldx ObjectOffset            ;get object offset
              cmp #$00
@@ -6816,6 +6823,8 @@ xc:    lda SprObject_X_Position,x  ;otherwise load horizontal coordinate
              and #%00001111              ;and mask out high nybble
              sta $04                     ;store masked out result here
              ldx $03                     ;get saved content of block buffer                       ;and leave
+			 txa
+			 tay
              lda MetatileThingy,x
              ldx ObjectOffset            ;get object offset
              cmp #$00
