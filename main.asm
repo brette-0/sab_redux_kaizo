@@ -7956,9 +7956,10 @@ PlayerStarting_Y_Pos:
 PlayerBGPriorityData:
              .db $00, $20, $00, $00, $00, $00, $00, $00
              
-GameTimerData:
+
              .db $20 ;dummy byte, used as part of bg priority data
-             .db $03, $03, $02
+GameTimerData:
+             .db $09, $03, $03, $02
 GameTimerSec:
              .db $00, $05, $00, $05
 ForceThing:

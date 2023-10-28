@@ -59,8 +59,8 @@ UnPause:
              sta PauseSoundBuffer
              sta SetupPause
              
-			 lda AreaPointer
-			 cmp #$03
+			 ldy AreaPointer
+			 cpy #$03
 			 beq ++
              ldy AreaType
              dey
@@ -72,7 +72,7 @@ UnPause:
              ;sta Mirror_PPU_CTRL_REG2
              ;sta PPU_CTRL_REG2
              
-  ++:           
+ ++:           
              lda WorldNumber
              cmp #$04
              bne +
