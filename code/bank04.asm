@@ -3927,7 +3927,7 @@ World6Areas: .db $4e, $43, $4d, $c7
 World7Areas: .db $53, $5b, $82, $58, $c4
 World8Areas: .db $50, $52, $41, $c5
 World9Areas: .db $59, $5c, $5a, $c8
-WorldAAreas: .db $5d, $83, $03
+WorldAAreas: .db $5d, $83, $03, $c9
              
              
              
@@ -3943,7 +3943,7 @@ EnemyAddrHOffsets:
 EnemyDataAddrLow:
              ; Castle
 EnemyDataAddrLow_CastleStart:
-             .db <E_CastleArea1, <E_CastleArea2, <E_CastleArea3, <E_CastleArea4, <E_CastleArea5, <E_CastleArea6, <E54, <E64, <E94
+             .db <E_CastleArea1, <E_CastleArea2, <E_CastleArea3, <E_CastleArea4, <E_CastleArea5, <E_CastleArea6, <E54, <E64, <E94, <EA4
              ; Ground
 EnemyDataAddrLow_GroundStart:
              .db <E_GroundArea1, <E_GroundArea2, <E_GroundArea3, <E_GroundArea4, <E_GroundArea5, <E_GroundArea6
@@ -3960,7 +3960,7 @@ EnemyDataAddrLow_WaterStart:
              
 EnemyDataAddrHigh:
              ; Castle
-             .db >E_CastleArea1, >E_CastleArea2, >E_CastleArea3, >E_CastleArea4, >E_CastleArea5, >E_CastleArea6, >E54, >E64, >E94
+             .db >E_CastleArea1, >E_CastleArea2, >E_CastleArea3, >E_CastleArea4, >E_CastleArea5, >E_CastleArea6, >E54, >E64, >E94, >EA4
              ; Ground
              .db >E_GroundArea1, >E_GroundArea2, >E_GroundArea3, >E_GroundArea4, >E_GroundArea5, >E_GroundArea6
              .db >E_GroundArea7, >E_GroundArea8, >E_GroundArea9, >E_GroundArea10, >E_GroundArea11, >E_GroundArea12
@@ -3994,7 +3994,7 @@ AreaDataAddrLow_UndergroundStart:
              .db <L_UndergroundArea1, <L_UndergroundArea2, <L_UndergroundArea3, <LA2
              ; Castle
 AreaDataAddrLow_CastleStart:
-             .db <L_CastleArea1, <L_CastleArea2, <L_CastleArea3, <L_CastleArea4, <L_CastleArea5, <L_CastleArea6, <L54, <L64, <L94
+             .db <L_CastleArea1, <L_CastleArea2, <L_CastleArea3, <L_CastleArea4, <L_CastleArea5, <L_CastleArea6, <L54, <L64, <L94, <LA4
              
 AreaDataAddrHigh:
              ; Water
@@ -4008,7 +4008,7 @@ AreaDataAddrHigh:
              ; Underground
              .db >L_UndergroundArea1, >L_UndergroundArea2, >L_UndergroundArea3, >LA2
              ; Castle
-             .db >L_CastleArea1, >L_CastleArea2, >L_CastleArea3, >L_CastleArea4, >L_CastleArea5, >L_CastleArea6, >L54, >L64, >L94
+             .db >L_CastleArea1, >L_CastleArea2, >L_CastleArea3, >L_CastleArea4, >L_CastleArea5, >L_CastleArea6, >L54, >L64, >L94, >LA4
              
              
              

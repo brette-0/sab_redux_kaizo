@@ -2091,7 +2091,7 @@ Wo6: .db $b0, $60, $a0, $60
 Wo7: .db $b0, $b0, $00, $50, $50
 Wo8: .db $90, $a0, $a0, $50
 Wo9: .db $b0, $b0, $b0, $50
-WoA: .db $a0, $80, $b0, $50
+WoA: .db $a0, $80, $90, $50
 
              
 Entrance_GameTimerSetup:

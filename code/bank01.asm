@@ -48,7 +48,7 @@ Firefox: .db "You will never reach the", $fc, "princess! Bwahahaha", $fc, "     
 Kaizo: .db "Welcome to World 9, also", $fc, "called Kaizo World. First, you", $fc, "will need to master shell", $fc, "jumps.", $ff ;08
 Lava: .db "The power of the star is not", $fc,"good enough to protect you", $fc,"from firebars while in lava.", $ff ;09
              
-Temple: .db "What Wizardry lead you here?", $fc, "Nothing but the power of a", $fc, "Genie could bring you here", $ff; 0A 
+Temple: .db "What Wizard led you here?", $fc, "No Mortal can possibly", $fc, "Survive mystery world.", $ff; 0A 
 MoltenCave: .db "I would keep a shell handy", $fc, "To traverse these pilars", $ff; 0B 
 MC_Q: .db "What is the name of the", $fc, "Great Demon King Bowser?", $ff; 0C 
 MC_A: .db "Barry", $ff; 0D 
@@ -599,15 +599,15 @@ ClearVRAM:
 -:    rts
              
 WACHRTable:
-    .db %00001100, %00011100, %00000100, %00000100
+    .db %00001100, %00011100, %00001100, %00000100
 
 WorldCHRTable:
              .db %00000100, %00000100, %00000100, %00000100, %00001100, %00010100, %00011100, %00100100, %00101100, %00011100
 WorldPalHigh:
-             .db >World4Pal, >World6Pal, >World7Pal, >World8Pal, >WALevel1Pal, >WALeve2Pal, >WALevel3
+             .db >World4Pal, >World6Pal, >World7Pal, >World8Pal, >WALevel1Pal, >WALeve2Pal, >WALevel3, >WALevel4
              
 WorldPalLow:
-             .db <World4Pal, <World6Pal, <World7Pal, <World8Pal, <WALevel1Pal, <WALeve2Pal, <WALevel3
+             .db <World4Pal, <World6Pal, <World7Pal, <World8Pal, <WALevel1Pal, <WALeve2Pal, <WALevel3, <WALevel4
              
 World4Pal:
              .db $22, $29, $1a, $0f
@@ -668,23 +668,28 @@ WALeve2Pal:
 
 WALevel3:
              .db $12, $15, $0e, $25  
-             .db $12, $3a, $1a, $0f
+             .db $12, $27, $0f, $0f
              .db $12, $30, $0e, $0f
-             .db $12, $27, $0e, $0f
+             .db $12, $2c, $0e, $0f
              .db $12, $16, $27, $18
-             .db $12, $1a, $30, $27
-             .db $12, $16, $30, $27
-             .db $12, $0f, $30, $10
+             .db $12, $0c, $30, $28
+             .db $12, $2c, $30, $3c
+             .db $12, $22, $30, $32
 
-; $0e, $xx, $0e, $xx
-; $xx, $xx, $xx, $xx
-; $xx, $xx, $0e, $xx
-; $xx, $xx, $0e, $xx
+WALevel4:
+             .db $0f, $01, $0f, $01
+             .db $0f, $12, $0c, $1f
+             .db $0f, $30, $0f, $2d
+             .db $0f, $21, $11, $01
+             .db $0f, $16, $27, $18
+             .db $0f, $1a, $30, $27
+             .db $0f, $16, $30, $27
+             .db $0f, $00, $30, $10
 
 
              
 World9LevelPalettes:
-            .db $05, $06, $07, $00 
+            .db $05, $06, $07, $08
              
 ChangeBankRunner:        
              
@@ -788,6 +793,13 @@ goclearVRAM:
              lda #$84
              sta Old8000
              sta $8000
+
+             ldy WorldNumber
+             cpy #$09   ; = World A 
+             bne +
+             ldy LevelNumber 
+             lda WACHRTable, y 
+             jmp WACHRskip
              
              lda WorldNumber
 			 cmp #World7
@@ -798,12 +810,6 @@ goclearVRAM:
              bne +
 ++           ldx #%01000110
              bne ++             
-+:           ldy WorldNumber
-             cpy #$09   ; = World A 
-             bne +
-             ldy LevelNumber 
-             lda WACHRTable, y 
-             jmp WACHRskip
 +:           lda WorldCHRTable,y
 WACHRskip:   tax
              inx
