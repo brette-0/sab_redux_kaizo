@@ -2995,7 +2995,7 @@ PlayerSubs: jsr ScrollHandler           ;move the screen if necessary
 			 cmp #$01
 			 bne +
 			 lda Player_Y_Position
-			 cmp #$e3
+			 cmp #$dd
 			 bcs ++
 			 cmp #$08
 			 bcs +
