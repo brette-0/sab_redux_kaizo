@@ -524,9 +524,8 @@ PrintVictoryMessages:
              lda PrimaryMsgCounter     ;otherwise load primary message counter
              beq ThankPlayer           ;if set to zero, branch to print first message
              ldy WorldNumber           ;check world number
-			 cpy #World9
-			 beq ++
              cpy #FinalWorld
+             bcs ++
              bne MRetainerMsg          ;if not at world 8, skip to next part
 			 
 			 
@@ -549,6 +548,8 @@ SecondPartMsg: iny                       ;increment Y to do world 8's message
              cmp #FinalWorld           ;check world number
              beq EvalForMusic          ;if at world 8, branch to next partç
 			 cmp #World9
+			 beq EvalForMusic
+             cmp #$09
 			 beq EvalForMusic
               dey                       ;otherwise decrement Y for world 1-7's message
              cpy #$04                  ;if counter at 4 (world 1-7 only)
@@ -596,23 +597,29 @@ PlayerEndWorld:                           ;branch to leave if not
              bne EndExitOne
              ldy WorldNumber            ;check world number
              cpy #FinalWorld            ;if on world 8, player is done with game, 
-             beq EndChkBButton          ;thus branch to read controller
-			 cpy #World9
-			 beq EndChkBButton
+             bcs EndChkBButton          ;thus branch to read controller
 Tumama:
              lda #$00
              sta AreaNumber             ;otherwise initialize area number used as offset
              sta LevelNumber            ;and level number control to start at area 1
              sta OperMode_Task          ;initialize secondary mode of operation
              inc WorldNumber            ;increment world number to move onto the next world
-             jsr LoadAreaPointer        ;get area address offset for the next area
+                        jsr LoadAreaPointer        ;get area address offset for the next area
              inc FetchNewGameTimerFlag  ;set flag to load game timer from header
              inc DisableScreenFlag
              lda #GameModeValue
              sta OperMode               ;set mode of operation to game mode
 EndExitOne:    rts                        ;and leave
-EndChkBButton: lda #$01
-             sta DisableScreenFlag
+EndChkBButton: 
+             ldy WorldNumber
+             cpy #$09 
+             bne +
+             ldy #$00
+             sty PlayerStatus
+             iny 
+             sty PlayerSize
++:
+             sty DisableScreenFlag
              inc OperMode_Task
              rts
 PressButtonB:
@@ -2091,7 +2098,7 @@ Wo6: .db $b0, $60, $a0, $60
 Wo7: .db $b0, $b0, $00, $50, $50
 Wo8: .db $90, $a0, $a0, $50
 Wo9: .db $b0, $b0, $b0, $50
-WoA: .db $a0, $80, $90, $50
+WoA: .db $a0, $80, $90, $70
 
              
 Entrance_GameTimerSetup:

@@ -43,24 +43,22 @@ VeryLongText: .db "If you hold ", UP, " when releasing a", $fc, "shell, you will
 Jigas: .db "Welcome to the beach! Come", $fc, "here and relax a bit.", $ff ;04
 ID05: .db "You can swim in water in this hack! Use ", UP , " + ", Abutton, " to exit the", $fc, "water.", $ff ;05
 ;Structured: .db "In this video I will be", $fc, "explaining exactly what I do", $fc, "to collect Watch for Rolling", $fc, "Rocks in 0.5xA presses.", $fd, "But first, we need to clear", $fc, "something up.", $ff
-Structured: .db "Ancient beings says that", $fc, "reading allat makes spirits", $fc, "unlock something.", $ff ;06
+Structured: .db "Ancient beings say that", $fc, "reading allat makes spirits", $fc, "unlock something.", $ff ;06
 Firefox: .db "You will never reach the", $fc, "princess! Bwahahaha", $fc, "                       -Bowser", $ff ;07
 Kaizo: .db "Welcome to World 9, also", $fc, "called Kaizo World. First, you", $fc, "will need to master shell", $fc, "jumps.", $ff ;08
 Lava: .db "The power of the star is not", $fc,"good enough to protect you", $fc,"from firebars while in lava.", $ff ;09
              
 Temple: .db "What Wizard led you here?", $fc, "No Mortal can possibly", $fc, "Survive mystery world.", $ff; 0A 
 MoltenCave: .db "I would keep a shell handy", $fc, "To traverse these pilars", $ff; 0B 
-MC_Q: .db "What is the name of the", $fc, "Great Demon King Bowser?", $ff; 0C 
-MC_A: .db "Barry", $ff; 0D 
-MC_B: .db "Brette", $ff; 0E 
-MC_C: .db "Bruce", $ff;0F
-
-Space: .db "How are you even breathing?", $ff; 10
+Quiz: .db "What is the name of the", $fc, "Brother of the Great Demon", $fc, "King?", $fc, $fc, "Left : Brette", $fc, "Middle : Barry", $fc, "Right : Bruce",$ff; 0C 
+Finale1: .db "No Mortal can overcome me", $fc, $fc, $fc, $fc, "Mario... Return to your home", $ff;
+Final2: .db "... foolish plumber", $fc, "May sisyphus gloat at your", $fc, "fate", $ff; 0F
+Space: .db "How are you even breathing?", $ff; 0D
 
 Textbox_Low:
-             .dl TestText, ID01, VeryLongText, Jigas, ID05, Structured, Firefox, Kaizo, Lava, Temple, MoltenCave, MC_Q, MC_A, MC_B, MC_C, Space
+             .dl TestText, ID01, VeryLongText, Jigas, ID05, Structured, Firefox, Kaizo, Lava, Temple, MoltenCave, Quiz, Space, Finale1, Final2
 Textbox_High:
-             .dh TestText, ID01, VeryLongText, Jigas, ID05, Structured, Firefox, Kaizo, Lava, Temple, MoltenCave, MC_Q, MC_A, MC_B, MC_C, Space
+             .dh TestText, ID01, VeryLongText, Jigas, ID05, Structured, Firefox, Kaizo, Lava, Temple, MoltenCave, Quiz, Space, Finale1, Final2
              
 -:  rts
 SetupTextbox:
