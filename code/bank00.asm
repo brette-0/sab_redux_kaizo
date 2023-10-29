@@ -112,6 +112,7 @@ ChkSelect:    cmp #A_Button
              cmp #Select_Button+Start_Button+A_Button
              bne +
              ldy #$00
+			 sty TitleScreenSelect
              tya
 -:                        sta SavedScore,y
              iny

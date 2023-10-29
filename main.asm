@@ -4081,7 +4081,7 @@ HeadChk: lda #$00
 +:          lda AreaPointer
              cmp #$03
              bne +
-             ldy #$25
+             ldy #$24
              
 +:           
 			jsr BlockBufferColli_Head
@@ -5140,6 +5140,7 @@ HandleAxeMetatile:
              
              lda #$00
              sta OperMode_Task   ;reset secondary mode
+			 sta GrabFlag
              lda #$02
              sta OperMode        ;set primary mode to autoctrl mode
              lda #$18

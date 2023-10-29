@@ -345,7 +345,7 @@ WaitForInputAndEnd:
              beq +
              bmi +
 			 ldy TextboxID
-			 cpy #$09
+			 cpy #$0a
 			 bcs ++
 			 lda #$01
 			 sta SignReadList-1,y
@@ -1771,12 +1771,13 @@ RestartSetting:
              
 QuitToTitleScreen:
              inc DoFin
-             inc DisableScreenFlag
+			 inc DisableScreenFlag
              lda #$00
              sta GamePauseStatus
              sta OldHorizontalScroll
              sta HurryUp
              sta UnknownHurryUp
+			 sta FirstFrame
              lda #$02
              sta OldNameTableSelect
              lda WorldNumber
