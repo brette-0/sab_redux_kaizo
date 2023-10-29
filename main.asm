@@ -6380,6 +6380,7 @@ EnemyJump:
              ldy #$15                  ;set Y to check the bottom middle (8,18) of enemy object
              inx
              jsr BBChk_E 
+			 ldy $03
 			 cpy #$99
 			 bne +
 			 jmp MakePKoopaJump
@@ -6813,8 +6814,8 @@ BBChk_E: pha                         ;save contents of A to stack
              and #%00001111              ;and mask out high nybble
              sta $04                     ;store masked out result here
              ldx $03                     ;get saved content of block buffer                       ;and leave
-			 txa
-			 tay
+			 ;txa
+			 ;tay
              lda MetatileThingy,x
              ldx ObjectOffset            ;get object offset
              cmp #$00
@@ -6823,8 +6824,8 @@ xc:    lda SprObject_X_Position,x  ;otherwise load horizontal coordinate
              and #%00001111              ;and mask out high nybble
              sta $04                     ;store masked out result here
              ldx $03                     ;get saved content of block buffer                       ;and leave
-			 txa
-			 tay
+			 ;txa
+			 ;tay
              lda MetatileThingy,x
              ldx ObjectOffset            ;get object offset
              cmp #$00

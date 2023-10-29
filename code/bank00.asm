@@ -398,6 +398,8 @@ Okso:
 WipeTheScreen:
              jsr InitScreen
              inc test
+			 lda #$b0
+			 sta Player_Y_Position
              lda test
              cmp #$0f
              bne +
@@ -483,7 +485,13 @@ CheckForThing:
 +:        rts
              
 PlayerVictoryWalk:
-             ldy #$01                ;set value here to not walk player by default
+             lda WorldNumber
+			 cmp #$09 ; 09 = world a
+			 bne +
+			 lda #$04
+			 sta OperMode_Task
+			 rts
++:			 ldy #$01                ;set value here to not walk player by default
              sty olddirscroll
              sty scrolldir
              dey
@@ -7524,12 +7532,6 @@ BlockBuffer_Y_Adder1:
              .db $06, $06, $08, $10, $12, $12, $04, $04
              .db $09, $09, $20, $1f, $17, $14, $00, $0b
              
-BlockBuffer_Y_Adder2:
-             .db $e4, $00, $00, $e8, $f8, $e8, $f8, $e2
-             .db $00, $00, $08, $f8, $e8, $f8, $f2, $00
-             .db $00, $f8, $f8, $f8, $f8, $f8, $f4, $f4
-             .db $e6, $e6, $e8, $f0, $f2, $f2, $e4, $e4
-             .db $e9, $e9, $00, $ff, $f7, $f4, $00, $eb
              
 BlockBufferAddr1:
              .db <Block_Buffer_1, <Block_Buffer_2
@@ -7569,8 +7571,10 @@ BlockBufferCollision:
              
              lda SprObject_Y_Position  ;get vertical coordinate of object
              clc
-             adc BlockBuffer_Y_Adder2,y   ;add it to value obtained using Y as offset
+             adc BlockBuffer_Y_Adder,y   ;add it to value obtained using Y as offset
              and #%11110000              ;mask out low nybble
+			 sec
+			 sbc #$20                    ;subtract 32 pixels for the status bar
              sta $02                     ;store result here
              tay                         ;use as offset for block buffer
              lda ($f7),y                 ;check current content of block buffer
