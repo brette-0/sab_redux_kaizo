@@ -2627,7 +2627,9 @@ InitCannon:
              ;$37-$3e are gruped goombas and koopas
              ;$3f crashes so is a potentially free slot
 InitSign:
-             lda $7fce,x
+             lda #$01
+			 sta Enemy_MovingDir,x
+			 lda $7fce,x
              sta Enemy_State,x
              lda #$01
              sta Enemy_Flag,x          ;set buffer flag
