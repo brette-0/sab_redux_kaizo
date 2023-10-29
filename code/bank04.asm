@@ -3271,11 +3271,11 @@ NextVO1: txa                      ;store object offset to next available vine sl
 DuplicateEnemyObj:
              ldy #$ff                ;start at beginning of enemy slots
 FSLoop: cpy #$05
-             beq FlmEx
+             beq +
              iny                     ;increment one slot
              lda Enemy_Flag,y        ;check enemy buffer flag for empty slot
              bne FSLoop              ;if set, branch and keep checking
-             sty DuplicateObj_Offset ;otherwise set offset here
+ +           sty DuplicateObj_Offset ;otherwise set offset here
              txa                     ;transfer original enemy buffer offset
              ora #%10000000          ;store with d7 set as flag in new enemy
              sta Enemy_Flag,y        ;slot as well as enemy offset

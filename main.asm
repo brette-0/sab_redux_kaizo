@@ -1577,8 +1577,8 @@ GetPRCmp:  lda FrameCounter           ;get frame counter
              tay
              lda PRandomRange,y         ;load value using pseudorandom offset
              sta MaxRangeFromOrigin     ;and store here
-GetDToO:   ldy #$16
-             jsr BlockBufferChk_Enemy
+GetDToO:     ;ldy #$16
+             ;jsr BlockBufferChk_Enemy
              lda Enemy_X_Position,x
              clc                        ;add movement speed to bowser's horizontal
              adc BowserMovementSpeed    ;coordinate and save as new horizontal position
@@ -1676,6 +1676,8 @@ CopyFToR: tya                      ;move bowser's rear object position value to 
              adc Enemy_X_Position,x   ;add to bowser's front object horizontal coordinate
              ldy DuplicateObj_Offset
              sta Enemy_X_Position,y   ;store A as bowser's rear horizontal coordinate
+			 lda Enemy_PageLoc,x
+			 sta Enemy_PageLoc,y
              lda Enemy_Y_Position,x
              clc                      ;add eight pixels to bowser's front object
              adc #$08                 ;vertical coordinate and store as vertical coordinate
