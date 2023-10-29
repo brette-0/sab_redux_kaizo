@@ -34,7 +34,8 @@ EA4:
  .db #13 * $10 + 7, #41
  .db PageSkip, #10
  .db PageSkip, #11
- .db PageSkip, #12
+
+ .db #1 * $10 + 10, #64 + $80, $10
 
  .db #15 * $10 + 5, #4 + $80
 

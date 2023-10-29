@@ -55,10 +55,12 @@ Finale1: .db "No Mortal can overcome me", $fc, $fc, $fc, $fc, "Mario... Return t
 Final2: .db "... foolish plumber", $fc, "May sisyphus gloat at your", $fc, "fate", $ff; 0F
 Space: .db "How are you even breathing?", $ff; 0D
 
+Final3: .db "You are strong for a mortal", $fc, "No Matter, even if you are", $fc, "strong, no mortal can fly", $fc, "You will never reach me!", $ff; 10
+
 Textbox_Low:
-             .dl TestText, ID01, VeryLongText, Jigas, ID05, Structured, Firefox, Kaizo, Lava, Temple, MoltenCave, Quiz, Space, Finale1, Final2
+             .dl TestText, ID01, VeryLongText, Jigas, ID05, Structured, Firefox, Kaizo, Lava, Temple, MoltenCave, Quiz, Space, Finale1, Final2, Final3
 Textbox_High:
-             .dh TestText, ID01, VeryLongText, Jigas, ID05, Structured, Firefox, Kaizo, Lava, Temple, MoltenCave, Quiz, Space, Finale1, Final2
+             .dh TestText, ID01, VeryLongText, Jigas, ID05, Structured, Firefox, Kaizo, Lava, Temple, MoltenCave, Quiz, Space, Finale1, Final2, Final3
              
 -:  rts
 SetupTextbox:
