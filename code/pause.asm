@@ -18,8 +18,8 @@ PauseRoutine:
              
              sta GamePauseStatus
 ChkPauseTimer: 
-             ;lda debug              ;check if debug mode is enabled          
-             ;beq +                  ;skip the debug routine if not
+             lda debug              ;check if debug mode is enabled          
+             beq +                  ;skip the debug routine if not
              jsr DebugModeRoutine    
 +:               
              lda GamePauseTimer     ;check if pause timer is still counting down
