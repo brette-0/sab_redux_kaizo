@@ -2818,11 +2818,9 @@ HandlePowerUpCollision:
              sta EnemyDefeatPitch
 +:    lda #StarPowerMusic     ;into the area music queue, then leave
              sta AreaMusicQueue
-             ldy HardModeFlag
-             lda yee,y                ;otherwise set star mario invincibility
+             lda #$23               ;otherwise set star mario invincibility
              sta StarInvincibleTimer ;timer, and load the star mario music
              rts
-yee: .db $23, $16
 Shroom_PUp:
              jmp UpToSuper
 Flower_PUp:

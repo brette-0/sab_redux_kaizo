@@ -288,9 +288,11 @@ StartWorld1:
              inc OperMode                ;set next game mode
              inc DisableScreenFlag
 			 lda WorldNumber
+			 cmp #$09
+			 beq ++
 			 cmp #World9
 			 bne +
-			 lda #$01
+++:			 lda #$01
 			 sta PlayerSize
 			 lsr
 			 sta PlayerStatus
@@ -3013,9 +3015,9 @@ PlayerSubs: jsr ScrollHandler           ;move the screen if necessary
 			 lda Player_Y_Position
 			 cmp #$dd
 			 bcs ++
-			 cmp #$08
+			 cmp #$0b
 			 bcs +
-			 lda #$09
+			 lda #$0c
 			 sta Player_Y_Position
 			 lda #$00
 			 sta Player_Y_Speed
@@ -3581,7 +3583,9 @@ Enemy_PSwitch:
              sta PTimer
              lda #$00
              sta Enemy_Y_Speed,x         ;initialize vertical speed and fractional
-             jmp ErACM
+             jsr ErACM
+			 ldx ObjectOffset
+			 rts
              
 JumpMForceData:
              .db $20, $20, $1e, $28, $28, $0d, $04
