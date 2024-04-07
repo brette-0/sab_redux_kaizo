@@ -37,8 +37,8 @@ ASCII2CHR:
              
              .db $6e, $69, $6a, $6b, $6c, $67, $68 ;button emojis
              
-TestText: .db "Hello! Welcome to this game.", $fc, "In this game you can go", $fc ,"backwards and grab shells!", $ff ;01
-ID01:    .db "If you pause, you can save", $fc, "your game. Just select quit", $fc, "and save and then you can", $fc, "continue playing later.", $ff ;02
+TestText: .db "If you haven not played", $fc, "Super Ale Bros. Redux", $fc ,"Please play it first", $fc ,"for maximum enjoyment", $ff ;01
+ID01:    .db "Oh yeah, one more thung", $fc,  "Select to restart!", $ff ;02
 VeryLongText: .db "If you hold ", UP, " when releasing a", $fc, "shell, you will throw it", $fc, "upwards and if you hold ", DOWN, " you will release the shell gently", $fc, "on the floor." ,$ff ;03
 Jigas: .db "Welcome to the beach! Come", $fc, "here and relax a bit.", $ff ;04
 ID05: .db "You can swim in water in this hack! Use ", UP , " + ", Abutton, " to exit the", $fc, "water.", $ff ;05
@@ -602,7 +602,7 @@ WACHRTable:
     .db %00001100, %00011100, %00001100, %00100100
 
 WorldCHRTable:
-             .db %00000100, %00000100, %00000100, %00000100, %00001100, %00010100, %00011100, %00100100, %00101100, %00011100
+             .db %00001100, %00000100, %00000100, %00000100, %00001100, %00010100, %00011100, %00100100, %00101100, %00011100
 WorldPalHigh:
              .db >World4Pal, >World6Pal, >World7Pal, >World8Pal, >WALevel1Pal, >WALeve2Pal, >WALevel3, >WALevel4
              

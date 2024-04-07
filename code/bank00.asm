@@ -2942,7 +2942,11 @@ PlayerCtrlRoutine:
              bcc SaveJoyp                ;not in the vertical area between status bar or bottom,
 DisJoyp:    lda #$00                    ;disable controller bits
              sta SavedJoypadBits
-SaveJoyp:   lda SavedJoypadBits         ;otherwise store A and B buttons in $0a
+SaveJoyp:   lax SavedJoypadBits         ;otherwise store A and B buttons in $0a
+            cmp #Select_Button
+            bne +
+            jmp KillPlayer
+            +: txa 
              and #%11000000
              sta A_B_Buttons
              lda SavedJoypadBits         ;store left and right buttons in $0c

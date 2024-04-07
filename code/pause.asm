@@ -18,10 +18,10 @@ PauseRoutine:
              
              sta GamePauseStatus
 ChkPauseTimer: 
-             lda debug              ;check if debug mode is enabled          
-             beq +                  ;skip the debug routine if not
+             ;lda debug              ;check if debug mode is enabled          
+             ;beq +                  ;skip the debug routine if not
              jsr DebugModeRoutine    
-+:               
+;+:               
              lda GamePauseTimer     ;check if pause timer is still counting down
              beq ChkStart
              dec GamePauseTimer     ;if so, decrement and leave
@@ -127,6 +127,7 @@ DebugModeRoutine:
              lda A_B_Buttons         ;check to see if A is pressed
              and #A_Button           ;on controller 1
              bne Inour
+             beq Ex
              ;lda #$01
              ;sta    TextboxID
              ;rts

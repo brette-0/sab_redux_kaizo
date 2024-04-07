@@ -127,34 +127,25 @@ E_GroundArea6:
 	  ;.db $8a, HammerBro
 	  ;.db $9a, HammerBro
  
-	  .db $4a, Goomba + PageFlag
-	  .db $5b, Sign, $01
-	  ;.db $94, PowerUpObject, $00
-	  .db $aa, Goomba
-	  .db $8a, $3b + PageFlag
-	  .db $97, Goomba
-	  .db $aa, Goomba
-	  
-	  .db $4a, GreenKoopa + PageFlag
-	  .db $8a, GreenKoopa
-	  
-	  .db $2a, Goomba + PageFlag
-	  
-	  .db $ba, ThreeGoombas + PageFlag
-	  
-	  .db $24, GreenParatroopaJump + PageFlag
-	  .db $9a, RedKoopa
-	  .db $ea, Goomba
-	  
-	  .db $a9, UDPiranhaPlant + PageFlag
-	  .db $ca, GreenKoopa
-	  .db $fa, RedKoopa
-	  
-	  
-	  .db PageSkip, $09
-	  
-	  .db $22, $30 + PageFlag
-	  .db $33, ScrollLockEnemy + PageFlag
+ .db #13 * $10 + 11, #64, $00
+ .db PageSkip, #2
+ .db PageSkip, #3
+ .db PageSkip, #4
+ .db PageSkip, #5
+
+ .db #15 * $10 + 4, #39 + $80
+ .db PageSkip, #7
+ .db PageSkip, #8
+
+ .db #0 * $10 + 11, #64 + $80, $00
+
+ .db #3 * $10 + 2, #48 + $80
+ .db PageSkip, #11
+ .db PageSkip, #12
+ .db PageSkip, #13
+ .db PageSkip, #14
+ .db PageSkip, #15
+ .db PageSkip, #16
 	  
 	  
 	  .db $ff
